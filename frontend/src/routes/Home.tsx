@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Organization } from '@/types/organization.types';
 
-export function Home() {
+export const Home = () => {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
 
   useEffect(() => {
@@ -59,4 +59,4 @@ export function Home() {
       </Table>
     </section>
   );
-}
+};
