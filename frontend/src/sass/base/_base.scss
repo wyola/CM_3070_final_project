@@ -1,0 +1,41 @@
+@use '../abstract/variables' as *;
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+html {
+  font-size: 100%; // 1rem -> 16px
+}
+
+body {
+  line-height: $line-height-regular;
+  color: $color-text-dark;
+
+  .content {
+    max-width: 90rem;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+main {
+  flex: 1;
+}

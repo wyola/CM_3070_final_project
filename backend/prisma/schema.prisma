@@ -1,0 +1,38 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./src/database/sqlite.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Organization {
+  id             Int      @id @default(autoincrement())
+  name           String
+  krs            String   @unique
+  email          String   @unique
+  phone          String
+  city           String
+  postalCode     String
+  address        String
+  voivodeship    String
+  geolocation    String?
+  logo           String
+  description    String?
+  website        String?
+  acceptsReports Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User?
+}
+
+model User {
+  id             Int          @id @default(autoincrement())
+  email          String       @unique
+  password       String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int          @unique
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}

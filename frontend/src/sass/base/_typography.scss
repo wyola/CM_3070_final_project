@@ -1,0 +1,16 @@
+@use '../abstract/variables' as *;
+
+.heading-primary {
+  font-size: $font-size-x-large;
+  line-height: $line-height-small;
+}
+
+.heading-secondary {
+  font-size: $font-size-large;
+  line-height: $line-height-medium;
+}
+
+.heading-tertiary {
+  font-size: $font-size-medium;
+  line-height: $line-height-large;
+}

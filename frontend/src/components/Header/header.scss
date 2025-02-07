@@ -1,0 +1,24 @@
+.header {
+  padding: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.5rem;
+
+    &--image {
+      width: 2.5rem;
+    }
+  }
+
+  &__nav {
+    ul {
+      display: inline-flex;
+      gap: 2rem;
+    }
+  }
+}
