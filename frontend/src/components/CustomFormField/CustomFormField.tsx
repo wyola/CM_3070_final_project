@@ -1,5 +1,4 @@
 import { InputHTMLAttributes } from 'react';
-import { useForm } from 'react-hook-form';
 import {
   FormControl,
   FormField,
@@ -7,6 +6,7 @@ import {
   FormLabel,
   Input,
 } from '@/components';
+import { useFormContext } from 'react-hook-form';
 
 type CustomFormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
@@ -20,11 +20,11 @@ export const CustomFormField = ({
   id,
   ...inputProps
 }: CustomFormFieldProps) => {
-  const form = useForm();
+  const { control } = useFormContext();
 
   return (
     <FormField
-      control={form.control}
+      control={control}
       name={name}
       render={({ field }) => (
         <FormItem>
