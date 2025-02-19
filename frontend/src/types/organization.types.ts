@@ -5,12 +5,15 @@ export interface Organization {
   krs: string;
   phone: string;
   city: string;
+  postalCode: string;
+  voivodeship: string;
   address: string;
   geolocation: string | null;
-  logo: string;
+  logo: File | null | '';
   description: string;
   website: string | null;
   acceptsReports: boolean;
+  password: string;
 }
 
 export interface RegistrationResult {
