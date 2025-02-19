@@ -10,7 +10,6 @@ import { WhitelistService } from './whitelist.service';
 
 const prisma = new PrismaClient();
 
-// Common select object for organization queries
 const organizationSelect = {
   id: true,
   name: true,
@@ -48,7 +47,7 @@ export class OrganizationService {
       const hashedPassword = await bcrypt.hash(data.password, 10);
 
       const result = await prisma.$transaction(async (tx) => {
-        // Remove password from data before creating organization
+        
         const { password, ...organizationData } = data;
 
         const organization = await tx.organization.create({

@@ -26,11 +26,26 @@ export const CustomFormField = ({
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field: { onChange, value, ...fieldProps } }) => (
         <FormItem>
           <FormLabel htmlFor={id}>{label}</FormLabel>
           <FormControl>
-            <Input id={id} {...field} {...inputProps} />
+            <Input
+              id={id}
+              {...fieldProps}
+              onChange={
+                inputProps.type === 'file'
+                  ? (event) => {
+                      const files = event.target.files;
+                      if (files?.length) {
+                        onChange(files);
+                      }
+                    }
+                  : onChange
+              }
+              {...(inputProps.type === 'file' ? {} : { value })}
+              {...inputProps}
+            />
           </FormControl>
         </FormItem>
       )}

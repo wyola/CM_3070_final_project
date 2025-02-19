@@ -1,44 +1,68 @@
-import { CustomFormField } from '@/components';
+import { Button, CustomFormField } from '@/components';
+import { Organization } from '@/types/organization.types';
+import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
-interface RegistrationData {
-  name: string;
-  email: string;
-  krs: string;
-  phone: string;
-  city: string;
-  postalCode: string;
-  voivodeship: string;
-  address: string;
-  geolocation: string;
-  logo: string;
-  description: string;
-  website: string;
-  acceptsReports: boolean;
-}
-
 export const Register = () => {
-  const methods = useForm<RegistrationData>({
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const methods = useForm<Organization>({
     defaultValues: {
       name: '',
       email: '',
       krs: '',
       phone: '',
       city: '',
-      postalCode: '00-001',
-      voivodeship: 'MAZOWIECKIE',
+      postalCode: '',
+      voivodeship: '',
       address: '',
-      geolocation: '',
+      geolocation: null,
       logo: '',
       description: '',
       website: '',
       acceptsReports: false,
+      password: '',
     },
   });
 
-  const onSubmit = (data: RegistrationData) => {
-    console.log(data);
-    // Handle form submission logic here
+  const onSubmit = async (data: Organization) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      console.log(data.logo);
+
+      if (data.logo instanceof FileList && data.logo.length > 0) {
+        formData.append('logo', data.logo[0]);
+      }
+
+      (
+        Object.entries(data) as [keyof Organization, string | boolean | null][]
+      ).forEach(([key, value]) => {
+        if (key !== 'logo' && value !== null) {
+          formData.append(key, String(value));
+        }
+        console.log(data);
+      });
+
+      const response = await fetch('http://localhost:3000/api/organizations', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Registration failed: ${response.statusText}`);
+      }
+      const result = await response.json();
+      console.log('Registration successful:', result);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Registration failed');
+      console.error('Registration error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -62,6 +86,14 @@ export const Register = () => {
             type="email"
             name="email"
             id="email"
+            required
+          />
+
+          <CustomFormField
+            label="Password"
+            type="password"
+            name="password"
+            id="password"
             required
           />
 
@@ -114,15 +146,7 @@ export const Register = () => {
             required
           />
 
-          <CustomFormField
-            label="Geolocation"
-            type="text"
-            name="geolocation"
-            id="geolocation"
-            placeholder="Latitude, Longitude"
-          />
-
-          <CustomFormField label="Logo URL" type="url" name="logo" id="logo" />
+          <CustomFormField label="Logo URL" type="file" name="logo" id="logo" />
 
           <CustomFormField
             label="Description"
@@ -146,9 +170,9 @@ export const Register = () => {
             id="acceptsReports"
           />
 
-          <button type="submit" className="submit-button">
+          <Button type="submit" className="submit-button">
             Register
-          </button>
+          </Button>
         </form>
       </section>
     </FormProvider>
