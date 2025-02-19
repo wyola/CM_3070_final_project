@@ -8,7 +8,11 @@ export function MainPagesLayout() {
       <main>
         <Outlet />
       </main>
-      <footer style={{ background: '#d7ccc8', height: '200px' }}>footer</footer>
+      <footer
+        style={{ background: '#d7ccc8', height: '200px', marginTop: '48px' }}
+      >
+        footer
+      </footer>
     </>
   );
 }

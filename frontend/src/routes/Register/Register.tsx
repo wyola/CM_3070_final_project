@@ -2,6 +2,7 @@ import { Button, CustomFormField } from '@/components';
 import { Organization } from '@/types/organization.types';
 import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
+import './register.scss';
 
 export const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -67,12 +68,20 @@ export const Register = () => {
 
   return (
     <FormProvider {...methods}>
-      <section className="content">
-        <h1>Register Organization</h1>
+      <section className="content register">
+        <h1 className="heading-primary">Register Organization</h1>
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
-          className="registration-form"
+          className="register__form"
         >
+          <CustomFormField
+            label="KRS Number"
+            type="text"
+            name="krs"
+            id="krs"
+            required
+          />
+
           <CustomFormField
             label="Organization Name"
             type="text"
@@ -94,14 +103,6 @@ export const Register = () => {
             type="password"
             name="password"
             id="password"
-            required
-          />
-
-          <CustomFormField
-            label="KRS Number"
-            type="text"
-            name="krs"
-            id="krs"
             required
           />
 
@@ -146,7 +147,12 @@ export const Register = () => {
             required
           />
 
-          <CustomFormField label="Logo URL" type="file" name="logo" id="logo" />
+          <CustomFormField
+            label="Upload Logo"
+            type="file"
+            name="logo"
+            id="logo"
+          />
 
           <CustomFormField
             label="Description"
@@ -168,6 +174,7 @@ export const Register = () => {
             type="checkbox"
             name="acceptsReports"
             id="acceptsReports"
+            className="register__form-checkbox"
           />
 
           <Button type="submit" className="submit-button">

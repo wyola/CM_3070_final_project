@@ -5,7 +5,7 @@ import { Home } from './routes/Home.tsx';
 import { Login } from './routes/Login.tsx';
 import './sass/main.scss';
 import { MainPagesLayout } from './layouts/MainPagesLayout.tsx';
-import { Register } from './routes/Register.tsx';
+import { Register } from './routes/Register/Register.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

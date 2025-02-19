@@ -12,12 +12,14 @@ type CustomFormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
   id: string;
+  className?: string;
 };
 
 export const CustomFormField = ({
   label,
   name,
   id,
+  className,
   ...inputProps
 }: CustomFormFieldProps) => {
   const { control } = useFormContext();
@@ -27,7 +29,7 @@ export const CustomFormField = ({
       control={control}
       name={name}
       render={({ field: { onChange, value, ...fieldProps } }) => (
-        <FormItem>
+        <FormItem className={className}>
           <FormLabel htmlFor={id}>{label}</FormLabel>
           <FormControl>
             <Input
