@@ -278,7 +278,49 @@ const upload = multer({ storage });
  *       500:
  *         description: Server error
  */
+
+/**
+ * @swagger
+ * /api/organizations/{id}:
+ *   get:
+ *     summary: Get organization by ID
+ *     tags: [Organizations]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Organization ID
+ *     responses:
+ *       200:
+ *         description: Organization retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Organization retrieved successfully"
+ *                 organization:
+ *                   $ref: '#/components/schemas/Organization'
+ *       404:
+ *         description: Organization not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Organization not found"
+ *       500:
+ *         description: Server error
+ */
+
 router.post('/', upload.single('logo'), organizationController.register);
 router.get('/', organizationController.getOrganizations);
+router.get('/:id', organizationController.getOrganizationById);
 
 export default router;

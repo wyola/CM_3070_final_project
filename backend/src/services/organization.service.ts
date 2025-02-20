@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, Organization } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import {
   OrganizationRegistrationDto,
@@ -47,7 +47,6 @@ export class OrganizationService {
       const hashedPassword = await bcrypt.hash(data.password, 10);
 
       const result = await prisma.$transaction(async (tx) => {
-        
         const { password, ...organizationData } = data;
 
         const organization = await tx.organization.create({
@@ -120,5 +119,13 @@ export class OrganizationService {
         pages,
       },
     };
+  }
+
+  public async getOrganizationById(id: number): Promise<Organization | null> {
+    const organization = await prisma.organization.findUnique({
+      where: { id },
+    });
+
+    return organization;
   }
 }
