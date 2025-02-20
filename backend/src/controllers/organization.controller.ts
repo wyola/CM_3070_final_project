@@ -11,7 +11,6 @@ const organizationService = new OrganizationService();
 
 export class OrganizationController {
   public register = async (req: Request, res: Response): Promise<void> => {
-    // Check if file exists first
     if (!req.file) {
       res.status(400).json({
         message: 'Logo is required',
@@ -28,10 +27,8 @@ export class OrganizationController {
     const logoPath = req.file.path;
 
     try {
-      // Validate the data first
       const validatedData = organizationSchema.parse(req.body);
 
-      // If validation passes, proceed with registration
       const result = await organizationService.register(
         validatedData,
         logoPath
@@ -48,7 +45,6 @@ export class OrganizationController {
         },
       });
     } catch (error) {
-      // If validation fails, delete the uploaded file
       await fs.unlink(logoPath).catch(() => {
         // Ignore error if file deletion fails
       });
@@ -96,6 +92,41 @@ export class OrganizationController {
         return;
       }
       res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+
+  public getOrganizationById = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const id = parseInt(req.params.id);
+
+      if (isNaN(id)) {
+        res.status(400).json({
+          message: 'Invalid ID format',
+        });
+        return;
+      }
+
+      const organization = await organizationService.getOrganizationById(id);
+
+      if (!organization) {
+        res.status(404).json({
+          message: 'Organization not found',
+        });
+        return;
+      }
+
+      res.status(200).json({
+        message: 'Organization retrieved successfully',
+        organization,
+      });
+    } catch (error) {
+      console.error('Error getting organization:', error);
+      res.status(500).json({
+        message: 'Internal server error',
+      });
     }
   };
 }

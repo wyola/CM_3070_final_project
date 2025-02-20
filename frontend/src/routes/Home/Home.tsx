@@ -8,6 +8,8 @@ import {
 } from '@/components';
 import { useEffect, useState } from 'react';
 import { Organization } from '@/types/organization.types';
+import { useNavigate } from 'react-router';
+import './home.scss';
 
 export const Home = () => {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
@@ -26,6 +28,12 @@ export const Home = () => {
     fetchOrganizations();
   }, []);
 
+  const navigate = useNavigate();
+
+  const handleRowClick = (organizationId: number) => {
+    navigate(`/organization/${organizationId}`);
+  };
+
   const columns = [
     { header: 'Name', accessor: 'name' },
     { header: 'Email', accessor: 'email' },
@@ -36,7 +44,7 @@ export const Home = () => {
   ];
 
   return (
-    <section className="content">
+    <section className="content home">
       <Table>
         <TableHeader>
           <TableRow>
@@ -47,9 +55,13 @@ export const Home = () => {
         </TableHeader>
         <TableBody>
           {organizations.map((organization) => (
-            <TableRow key={organization.id}>
+            <TableRow
+              key={organization.id}
+              onClick={() => handleRowClick(organization.id)}
+            >
               {columns.map((column) => (
                 <TableCell key={`${organization.id}-${column.accessor}`}>
+                  {/* TODO: fix TS issue */}
                   {organization[column.accessor as keyof Organization]}
                 </TableCell>
               ))}
