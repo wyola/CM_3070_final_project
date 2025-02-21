@@ -3,6 +3,7 @@ import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import { swaggerSpec } from './config/swagger.config';
 import organizationRoutes from './routes/organization.routes';
+import authRoutes from './routes/auth.routes';
 
 const app: Application = express();
 
@@ -22,5 +23,6 @@ app.use('/uploads', express.static('uploads'));
 // Routes
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/organizations', organizationRoutes);
+app.use('/api/auth', authRoutes);
 
 export default app;
