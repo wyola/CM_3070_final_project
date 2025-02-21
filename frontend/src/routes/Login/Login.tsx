@@ -1,13 +1,52 @@
 import { Button, CustomFormField } from '@/components';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import './login.scss';
+import { useState } from 'react';
+import { LoginFormData, LoginResponse } from '@/types/login.types';
 
 export const Login = () => {
-  const methods = useForm();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const methods = useForm<LoginFormData>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
   const { handleSubmit } = methods;
 
-  const onSubmit = () => {};
+  const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid email or password');
+      }
+
+      const result = (await response.json()) as LoginResponse;
+
+      localStorage.setItem('token', result.data.accessToken);
+
+      navigate(`/organization/${result.data.user.id}`);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Login failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section className="content login">

@@ -1,10 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "sqlite"
   url      = "file:./src/database/sqlite.db"
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model Organization {
@@ -28,21 +28,21 @@ model Organization {
 }
 
 model User {
-  id             Int           @id @default(autoincrement())
-  email          String        @unique
+  id             Int            @id @default(autoincrement())
+  email          String         @unique
   password       String
-  organization   Organization  @relation(fields: [organizationId], references: [id])
-  organizationId Int          @unique
+  organizationId Int            @unique
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
   refreshTokens  RefreshToken[]
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  organization   Organization   @relation(fields: [organizationId], references: [id])
 }
 
 model RefreshToken {
   id        Int      @id @default(autoincrement())
   token     String   @unique
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
   expiresAt DateTime
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }

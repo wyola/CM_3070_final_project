@@ -32,7 +32,7 @@ This is the backend service for the AnimalAllies application, built with Node.js
 
 ### Common Prisma Commands
 
-- `npx prisma generate` - Generate Prisma Client
+- `npx prisma generate` - Generate Prisma Client - useful to run after applying migrations
 - `npx prisma migrate dev` - Create a migration from schema changes
 - `npx prisma migrate deploy` - Apply pending migrations
 - `npx prisma migrate reset` - Reset database and apply all migrations
