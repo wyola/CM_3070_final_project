@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/card';
+import { CustomCard } from '../CustomCard/CustomCard';
 import './organizationHeader.scss';
 
 type OrganizationHeaderProps = {
@@ -13,12 +13,12 @@ export const OrganizationHeader = ({
   description,
 }: OrganizationHeaderProps) => {
   return (
-    <Card className="organization-header">
+    <CustomCard className="organization-header">
       <div className="organization-header__title">
         <img src={`http://localhost:3000/${logo}`} alt={`logo of ${name}`} />
         <h1 className="heading-primary">{name}</h1>
       </div>
       <p className="organization-header__description">{description}</p>
-    </Card>
+    </CustomCard>
   );
 };
