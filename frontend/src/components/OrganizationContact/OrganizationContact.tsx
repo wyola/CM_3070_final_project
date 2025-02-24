@@ -1,5 +1,6 @@
 import { CustomCard } from '../CustomCard/CustomCard';
 import { IconLabel } from '../IconLabel/IconLabel';
+import './organizationContact.scss';
 
 type OrganizationContactProps = {
   website?: string | null;
@@ -21,16 +22,22 @@ export const OrganizationContact = ({
   voivodeship,
 }: OrganizationContactProps) => {
   return (
-    <CustomCard className="organization-header">
+    <CustomCard className="organization-contact">
       {website && <IconLabel iconSrc="/website.svg" label={website} />}
       <IconLabel iconSrc="/phone.svg" label={phone} />
       <IconLabel iconSrc="/email.svg" label={email} />
-      <div className="organization-header__address">
-        <IconLabel iconSrc="/pin.svg" label={streetNumber} />
-        <p>
+      <div className="organization-contact__address">
+        <IconLabel
+          iconSrc="/pin.svg"
+          label={streetNumber}
+          className="organization-contact__address--street"
+        />
+        <p className="organization-contact__address--city">
           {postalCode} {city}
         </p>
-        <p>{voivodeship}</p>
+        <p className="organization-contact__address--voivodeship">
+          {voivodeship}
+        </p>
       </div>
     </CustomCard>
   );

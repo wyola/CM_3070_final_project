@@ -1,8 +1,10 @@
+import { CustomCard } from '@/components/CustomCard/CustomCard';
 import { OrganizationContact } from '@/components/OrganizationContact/OrganizationContact';
 import { OrganizationHeader } from '@/components/OrganizationHeader/OrganizationHeader';
 import { Organization as OrganizationI } from '@/types/organization.types';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import './organization.scss'
 
 export const Organization = () => {
   const { id } = useParams();
@@ -63,8 +65,8 @@ export const Organization = () => {
         city={city}
         voivodeship={voivodeship}
       />
-      <div>current needs</div>
-      <div>volunteering options</div>
+      <CustomCard>current needs</CustomCard>
+      <CustomCard>volunteering options</CustomCard>
     </section>
   );
 };
