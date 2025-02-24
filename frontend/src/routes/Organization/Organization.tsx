@@ -1,3 +1,4 @@
+import { OrganizationContact } from '@/components/OrganizationContact/OrganizationContact';
 import { OrganizationHeader } from '@/components/OrganizationHeader/OrganizationHeader';
 import { Organization as OrganizationI } from '@/types/organization.types';
 import { useEffect, useState } from 'react';
@@ -37,14 +38,31 @@ export const Organization = () => {
   if (error) return <div>Error: {error}</div>;
   if (!organization) return <div>Organization not found</div>;
 
+  const {
+    logo,
+    name,
+    description,
+    website,
+    phone,
+    email,
+    address,
+    voivodeship,
+    postalCode,
+    city,
+  } = organization;
+
   return (
     <section className="content organization">
-      <OrganizationHeader
-        logo={organization.logo}
-        name={organization.name}
-        description={organization.description}
+      <OrganizationHeader logo={logo} name={name} description={description} />
+      <OrganizationContact
+        website={website}
+        phone={phone}
+        email={email}
+        streetNumber={address}
+        postalCode={postalCode}
+        city={city}
+        voivodeship={voivodeship}
       />
-      <div>contact info</div>
       <div>current needs</div>
       <div>volunteering options</div>
     </section>
