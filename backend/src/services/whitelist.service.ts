@@ -38,4 +38,8 @@ export class WhitelistService {
   getVoivodeshipForKrs(krs: string): string {
     return this.whitelistedOrgs.get(krs)?.Voivodeship || '';
   }
+
+  getOrganizationInfoByKrs(krs: string): WhitelistEntry | null {
+    return this.whitelistedOrgs.get(krs) || null;
+  }
 }

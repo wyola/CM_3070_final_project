@@ -128,4 +128,22 @@ export class OrganizationService {
 
     return organization;
   }
+
+  async getOrganizationInfoByKrs(krs: string): Promise<any> {
+    if (!/^[0-9]{10}$/.test(krs)) {
+      throw new Error('Invalid KRS format. Must be 10 digits.');
+    }
+
+    const whitelistInfo = this.whitelistService.getOrganizationInfoByKrs(krs);
+
+    if (!whitelistInfo) {
+      throw new Error('Organization with this KRS not found in whitelist');
+    }
+
+    return {
+      name: whitelistInfo.Name,
+      voivodeship: whitelistInfo.Voivodeship,
+      city: whitelistInfo.City || '',
+    };
+  }
 }

@@ -319,8 +319,70 @@ const upload = multer({ storage });
  *         description: Server error
  */
 
+/**
+ * @swagger
+ * /api/organizations/krs/{krs}:
+ *   get:
+ *     summary: Get organization information by KRS number
+ *     tags: [Organizations]
+ *     parameters:
+ *       - in: path
+ *         name: krs
+ *         required: true
+ *         schema:
+ *           type: string
+ *           pattern: '^[0-9]{10}$'
+ *         description: KRS number (10 digits)
+ *     responses:
+ *       200:
+ *         description: Organization information retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Organization information retrieved successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                       example: "Organization Name"
+ *                     voivodeship:
+ *                       type: string
+ *                       example: "MAZOWIECKIE"
+ *                     city:
+ *                       type: string
+ *                       example: "Warszawa"
+ *       404:
+ *         description: Organization not found in whitelist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Organization with this KRS not found in whitelist"
+ *       400:
+ *         description: Invalid KRS format
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid KRS format. Must be 10 digits."
+ *       500:
+ *         description: Server error
+ */
+
 router.post('/', upload.single('logo'), organizationController.register);
 router.get('/', organizationController.getOrganizations);
 router.get('/:id', organizationController.getOrganizationById);
+router.get('/krs/:krs', organizationController.getOrganizationByKrs);
 
 export default router;
