@@ -4,7 +4,10 @@ import { OrganizationHeader } from '@/components/OrganizationHeader/Organization
 import { Organization as OrganizationI } from '@/types/organization.types';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import './organization.scss'
+import { axiosInstance } from '@/lib/axios';
+import axios from 'axios';
+import './organization.scss';
+import { API_ENDPOINTS } from '@/constants';
 
 export const Organization = () => {
   const { id } = useParams();
@@ -15,18 +18,18 @@ export const Organization = () => {
   useEffect(() => {
     const fetchOrganization = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/organizations/${id}`
+        const { data: response } = await axiosInstance.get(
+          API_ENDPOINTS.ORGANIZATIONS.BY_ID(Number(id))
         );
-        if (!response.ok) {
-          throw new Error('Organization not found');
-        }
-        const data = await response.json();
-        setOrganization(data.organization);
+        setOrganization(response.organization);
       } catch (error) {
-        setError(
-          error instanceof Error ? error.message : 'Failed to load organization'
-        );
+        if (axios.isAxiosError(error)) {
+          setError(
+            error.response?.data?.message || 'Failed to load organization'
+          );
+        } else {
+          setError('An unexpected error occurred');
+        }
       } finally {
         setIsLoading(false);
       }

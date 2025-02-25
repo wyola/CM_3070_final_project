@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router';
 import './header.scss';
+import { LOGIN, REPORT } from '@/constants';
 
 export const Header = () => {
   return (
@@ -11,10 +12,10 @@ export const Header = () => {
       <nav className="header__nav">
         <ul>
           <li>
-            <NavLink to="/report">Report</NavLink>
+            <NavLink to={REPORT}>Report</NavLink>
           </li>
           <li>
-            <NavLink to="/login">Login</NavLink>
+            <NavLink to={LOGIN}>Login</NavLink>
           </li>
         </ul>
       </nav>
