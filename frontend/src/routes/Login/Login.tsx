@@ -1,10 +1,12 @@
 import { Button, CustomFormField } from '@/components';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
-import './login.scss';
 import { useState } from 'react';
 import { LoginFormData, LoginResponse } from '@/types/login.types';
 import { API_ENDPOINTS, ORGANIZATION, REGISTER } from '@/constants';
+import { axiosInstance } from '@/lib/axios';
+import axios from 'axios';
+import './login.scss';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -25,25 +27,19 @@ export const Login = () => {
     setError(null);
 
     try {
-      const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('Invalid email or password');
-      }
-
-      const result = (await response.json()) as LoginResponse;
+      const { data: result } = await axiosInstance.post<LoginResponse>(
+        API_ENDPOINTS.AUTH.LOGIN,
+        data
+      );
 
       localStorage.setItem('token', result.data.accessToken);
-
       navigate(`${ORGANIZATION}/${result.data.user.id}`);
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Login failed');
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'Login failed');
+      } else {
+        setError('An unexpected error occurred');
+      }
     } finally {
       setIsLoading(false);
     }

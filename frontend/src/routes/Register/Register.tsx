@@ -3,7 +3,8 @@ import { OrganizationRegistration } from '@/types/organization.types';
 import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { SuccessMessage } from '@/components/SuccessMessage/SuccessMessage';
-import { API_ENDPOINTS } from '@/constants';
+import axios from 'axios';
+import { organizationRegistrationApi } from '@/lib/axios';
 import './register.scss';
 
 export const Register = () => {
@@ -40,36 +41,14 @@ export const Register = () => {
     setError(null);
 
     try {
-      const formData = new FormData();
-
-      if (data.logo instanceof FileList && data.logo.length > 0) {
-        formData.append('logo', data.logo[0]);
-      }
-
-      (
-        Object.entries(data) as [
-          keyof OrganizationRegistration,
-          string | boolean | null
-        ][]
-      ).forEach(([key, value]) => {
-        if (key !== 'logo' && value !== null) {
-          formData.append(key, String(value));
-        }
-      });
-
-      const response = await fetch(API_ENDPOINTS.ORGANIZATIONS.ALL, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Registration failed: ${response.statusText}`);
-      }
-
+      await organizationRegistrationApi.register(data);
       setRegistrationSuccessful(true);
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Registration failed');
-      console.error('Registration error:', error);
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'Registration failed');
+      } else {
+        setError('An unexpected error occurred');
+      }
     } finally {
       setIsLoading(false);
     }

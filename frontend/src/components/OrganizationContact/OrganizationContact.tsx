@@ -25,7 +25,9 @@ export const OrganizationContact = ({
     <CustomCard className="organization-contact">
       {website && (
         <IconLabel iconSrc="/website.svg">
-          <a href={website}>Go to website</a>
+          <a href={website} target="_blank">
+            Go to website
+          </a>
         </IconLabel>
       )}
       <IconLabel iconSrc="/phone.svg">

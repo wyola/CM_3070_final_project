@@ -10,19 +10,26 @@ import { useEffect, useState } from 'react';
 import { Organization } from '@/types/organization.types';
 import { useNavigate } from 'react-router';
 import { API_ENDPOINTS, ORGANIZATION } from '@/constants';
+import { axiosInstance } from '@/lib/axios';
 import './home.scss';
 
 export const Home = () => {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchOrganizations = async () => {
       try {
-        const response = await fetch(API_ENDPOINTS.ORGANIZATIONS.ALL);
-        const data = await response.json();
-        setOrganizations(data.data.organizations);
+        const { data: response } = await axiosInstance.get(
+          API_ENDPOINTS.ORGANIZATIONS.ALL
+        );
+        setOrganizations(response.data.organizations);
       } catch (error) {
         console.error('Error fetching organizations:', error);
+        setError('Failed to load organizations');
+      } finally {
+        setIsLoading(false);
       }
     };
 
