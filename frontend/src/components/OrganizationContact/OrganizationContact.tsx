@@ -23,15 +23,24 @@ export const OrganizationContact = ({
 }: OrganizationContactProps) => {
   return (
     <CustomCard className="organization-contact">
-      {website && <IconLabel iconSrc="/website.svg" label={website} />}
-      <IconLabel iconSrc="/phone.svg" label={phone} />
-      <IconLabel iconSrc="/email.svg" label={email} />
+      {website && (
+        <IconLabel iconSrc="/website.svg">
+          <a href={website}>Go to website</a>
+        </IconLabel>
+      )}
+      <IconLabel iconSrc="/phone.svg">
+        <a href={`tel:${phone}`}>{phone}</a>
+      </IconLabel>
+      <IconLabel iconSrc="/email.svg">
+        <a href={`mailto:${email}`}>{email}</a>
+      </IconLabel>
       <div className="organization-contact__address">
         <IconLabel
           iconSrc="/pin.svg"
-          label={streetNumber}
           className="organization-contact__address--street"
-        />
+        >
+          {streetNumber}
+        </IconLabel>
         <p className="organization-contact__address--city">
           {postalCode} {city}
         </p>
