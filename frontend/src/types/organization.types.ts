@@ -9,11 +9,16 @@ export interface Organization {
   voivodeship: string;
   address: string;
   geolocation: string | null;
-  logo: File | null | '';
+  logo: string;
   description: string;
   website: string | null;
   acceptsReports: boolean;
   password: string;
+}
+
+export interface OrganizationRegistration
+  extends Omit<Organization, 'id' | 'logo'> {
+  logo: File | null | '';
 }
 
 export interface RegistrationResult {

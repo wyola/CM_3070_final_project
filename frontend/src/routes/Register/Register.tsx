@@ -1,5 +1,5 @@
 import { Button, CustomFormField } from '@/components';
-import { Organization } from '@/types/organization.types';
+import { OrganizationRegistration } from '@/types/organization.types';
 import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import './register.scss';
@@ -10,7 +10,7 @@ export const Register = () => {
   const [error, setError] = useState<string | null>(null);
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
 
-  const methods = useForm<Organization>({
+  const methods = useForm<OrganizationRegistration>({
     defaultValues: {
       name: '',
       email: '',
@@ -34,7 +34,7 @@ export const Register = () => {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async (data: Organization) => {
+  const onSubmit = async (data: OrganizationRegistration) => {
     setIsLoading(true);
     setError(null);
 
@@ -46,7 +46,10 @@ export const Register = () => {
       }
 
       (
-        Object.entries(data) as [keyof Organization, string | boolean | null][]
+        Object.entries(data) as [
+          keyof OrganizationRegistration,
+          string | boolean | null
+        ][]
       ).forEach(([key, value]) => {
         if (key !== 'logo' && value !== null) {
           formData.append(key, String(value));

@@ -61,7 +61,6 @@ export const Home = () => {
             >
               {columns.map((column) => (
                 <TableCell key={`${organization.id}-${column.accessor}`}>
-                  {/* TODO: fix TS issue */}
                   {organization[column.accessor as keyof Organization]}
                 </TableCell>
               ))}
