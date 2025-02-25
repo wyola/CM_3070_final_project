@@ -9,4 +9,4 @@ export const API_ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/api/auth/login`,
     REFRESH: `${API_BASE_URL}/api/auth/refresh`,
   },
-} as const;
+};

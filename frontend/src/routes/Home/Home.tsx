@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Organization } from '@/types/organization.types';
 import { useNavigate } from 'react-router';
-import { API_ENDPOINTS } from '@/constants';
+import { API_ENDPOINTS, ORGANIZATION } from '@/constants';
 import './home.scss';
 
 export const Home = () => {
@@ -32,7 +32,7 @@ export const Home = () => {
   const navigate = useNavigate();
 
   const handleRowClick = (organizationId: number) => {
-    navigate(`/organization/${organizationId}`);
+    navigate(`${ORGANIZATION}/${organizationId}`);
   };
 
   const columns = [

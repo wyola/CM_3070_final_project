@@ -7,21 +7,22 @@ import './sass/main.scss';
 import { MainPagesLayout } from './layouts/MainPagesLayout.tsx';
 import { Register } from './routes/Register/Register.tsx';
 import { Organization } from './routes/Organization/Organization.tsx';
+import { HOME, LOGIN, REGISTER, ORGANIZATION_ID } from '@/constants';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainPagesLayout />}>
+        <Route path={HOME} element={<MainPagesLayout />}>
           <Route index element={<Home />} />
         </Route>
-        <Route path="/login" element={<MainPagesLayout />}>
+        <Route path={LOGIN} element={<MainPagesLayout />}>
           <Route index element={<Login />} />
         </Route>
-        <Route path="/register" element={<MainPagesLayout />}>
+        <Route path={REGISTER} element={<MainPagesLayout />}>
           <Route index element={<Register />} />
         </Route>
-        <Route path="/organization/:id" element={<MainPagesLayout />}>
+        <Route path={ORGANIZATION_ID} element={<MainPagesLayout />}>
           <Route index element={<Organization />} />
         </Route>
       </Routes>

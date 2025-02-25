@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router';
 import './login.scss';
 import { useState } from 'react';
 import { LoginFormData, LoginResponse } from '@/types/login.types';
-import { API_ENDPOINTS } from '@/constants';
+import { API_ENDPOINTS, ORGANIZATION, REGISTER } from '@/constants';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ export const Login = () => {
 
       localStorage.setItem('token', result.data.accessToken);
 
-      navigate(`/organization/${result.data.user.id}`);
+      navigate(`${ORGANIZATION}/${result.data.user.id}`);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Login failed');
     } finally {
@@ -80,7 +80,7 @@ export const Login = () => {
         </form>
       </FormProvider>
       <p className="login__register">
-        Don't have account? <Link to="/register">Register here &rarr;</Link>
+        Don't have account? <Link to={REGISTER}>Register here &rarr;</Link>
       </p>
     </section>
   );
