@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router';
 import './login.scss';
 import { useState } from 'react';
 import { LoginFormData, LoginResponse } from '@/types/login.types';
+import { API_ENDPOINTS } from '@/constants';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export const Login = () => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

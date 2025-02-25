@@ -2,8 +2,9 @@ import { Button, CustomFormField } from '@/components';
 import { OrganizationRegistration } from '@/types/organization.types';
 import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
-import './register.scss';
 import { SuccessMessage } from '@/components/SuccessMessage/SuccessMessage';
+import { API_ENDPOINTS } from '@/constants';
+import './register.scss';
 
 export const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +57,7 @@ export const Register = () => {
         }
       });
 
-      const response = await fetch('http://localhost:3000/api/organizations', {
+      const response = await fetch(API_ENDPOINTS.ORGANIZATIONS.ALL, {
         method: 'POST',
         body: formData,
       });
@@ -66,10 +67,6 @@ export const Register = () => {
       }
 
       setRegistrationSuccessful(true);
-
-      // const result = await response.json();
-
-      // console.log('Registration successful:', result);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Registration failed');
       console.error('Registration error:', error);

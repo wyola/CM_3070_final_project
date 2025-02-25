@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Organization } from '@/types/organization.types';
 import { useNavigate } from 'react-router';
+import { API_ENDPOINTS } from '@/constants';
 import './home.scss';
 
 export const Home = () => {
@@ -17,7 +18,7 @@ export const Home = () => {
   useEffect(() => {
     const fetchOrganizations = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/organizations');
+        const response = await fetch(API_ENDPOINTS.ORGANIZATIONS.ALL);
         const data = await response.json();
         setOrganizations(data.data.organizations);
       } catch (error) {

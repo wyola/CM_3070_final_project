@@ -4,7 +4,8 @@ import { OrganizationHeader } from '@/components/OrganizationHeader/Organization
 import { Organization as OrganizationI } from '@/types/organization.types';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import './organization.scss'
+import './organization.scss';
+import { API_ENDPOINTS } from '@/constants';
 
 export const Organization = () => {
   const { id } = useParams();
@@ -16,7 +17,7 @@ export const Organization = () => {
     const fetchOrganization = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/organizations/${id}`
+          API_ENDPOINTS.ORGANIZATIONS.BY_ID(Number(id))
         );
         if (!response.ok) {
           throw new Error('Organization not found');
