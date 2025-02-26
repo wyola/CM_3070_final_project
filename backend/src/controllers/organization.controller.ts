@@ -146,10 +146,8 @@ export class OrganizationController {
       });
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message.includes('Invalid KRS format')) {
-          res.status(400).json({ message: error.message });
-          return;
-        }
+        res.status(400).json({ message: error.message });
+        return;
       }
       console.error('Error getting organization by KRS:', error);
       res.status(500).json({ message: 'Internal server error' });

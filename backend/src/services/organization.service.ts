@@ -134,6 +134,14 @@ export class OrganizationService {
       throw new Error('Invalid KRS format. Must be 10 digits.');
     }
 
+    const existingOrganization = await prisma.organization.findUnique({
+      where: { krs },
+    });
+
+    if (existingOrganization) {
+      throw new Error('Organization with this KRS is already registered');
+    }
+
     const whitelistInfo = this.whitelistService.getOrganizationInfoByKrs(krs);
 
     if (!whitelistInfo) {

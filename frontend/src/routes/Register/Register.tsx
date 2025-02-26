@@ -5,6 +5,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { SuccessMessage } from '@/components/SuccessMessage/SuccessMessage';
 import axios from 'axios';
 import { axiosInstance, organizationRegistrationApi } from '@/lib/axios';
+import { API_ENDPOINTS } from '@/constants';
 import './register.scss';
 
 export const Register = () => {
@@ -40,7 +41,7 @@ export const Register = () => {
       if (krsNumber?.length === 10) {
         try {
           const { data: response } = await axiosInstance.get(
-            `/api/organizations/krs/${krsNumber}`
+            API_ENDPOINTS.ORGANIZATIONS.BY_KRS(krsNumber)
           );
 
           setIsKRSValid(true);

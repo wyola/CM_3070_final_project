@@ -367,15 +367,21 @@ const upload = multer({ storage });
  *                   type: string
  *                   example: "Organization with this KRS not found in whitelist"
  *       400:
- *         description: Invalid KRS format
+ *         description: Invalid KRS format or Organization is already registered
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Invalid KRS format. Must be 10 digits."
+ *               oneOf:
+ *                 - type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Invalid KRS format. Must be 10 digits."
+ *                 - type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Organization with this KRS is already registered"
  *       500:
  *         description: Server error
  */

@@ -4,6 +4,7 @@ export const API_ENDPOINTS = {
   ORGANIZATIONS: {
     ALL: '/api/organizations',
     BY_ID: (id: number) => `/api/organizations/${id}`,
+    BY_KRS: (krs: string) => `/api/organizations/krs/${krs}`,
   },
   AUTH: {
     LOGIN: `/api/auth/login`,
