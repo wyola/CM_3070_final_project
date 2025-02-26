@@ -1,16 +1,17 @@
 import { Button, CustomFormField } from '@/components';
 import { OrganizationRegistration } from '@/types/organization.types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { SuccessMessage } from '@/components/SuccessMessage/SuccessMessage';
 import axios from 'axios';
-import { organizationRegistrationApi } from '@/lib/axios';
+import { axiosInstance, organizationRegistrationApi } from '@/lib/axios';
 import './register.scss';
 
 export const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
+  const [isKRSValid, setIsKRSValid] = useState(false);
 
   const methods = useForm<OrganizationRegistration>({
     defaultValues: {
@@ -30,6 +31,40 @@ export const Register = () => {
       password: '',
     },
   });
+
+  const { watch, setValue } = methods;
+  const krsNumber = watch('krs');
+
+  useEffect(() => {
+    const validateKRS = async () => {
+      if (krsNumber?.length === 10) {
+        try {
+          const { data: response } = await axiosInstance.get(
+            `/api/organizations/krs/${krsNumber}`
+          );
+
+          setIsKRSValid(true);
+          setValue('name', response.data.name);
+          setValue('city', response.data.city);
+          setValue('voivodeship', response.data.voivodeship);
+        } catch (error) {
+          setIsKRSValid(false);
+          if (axios.isAxiosError(error)) {
+            setError(error.response?.data?.message || 'KRS validation failed');
+          } else {
+            setError('Failed to validate KRS number');
+          }
+        }
+      } else {
+        setIsKRSValid(false);
+      }
+    };
+
+    validateKRS();
+  }, [krsNumber, setValue]);
+
+  const placeholderDisabled = 'This field will be filled automatically';
+  const placeholderEnabled = 'Validate KRS to enable this field';
 
   const {
     handleSubmit,
@@ -69,10 +104,11 @@ export const Register = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="register__form">
               <CustomFormField
                 label="KRS Number"
-                type="text"
+                type="number"
                 name="krs"
                 id="krs"
                 required
+                placeholder="Enter KRS number to validate it"
               />
 
               <CustomFormField
@@ -81,30 +117,8 @@ export const Register = () => {
                 name="name"
                 id="name"
                 required
-              />
-
-              <CustomFormField
-                label="Email"
-                type="email"
-                name="email"
-                id="email"
-                required
-              />
-
-              <CustomFormField
-                label="Password"
-                type="password"
-                name="password"
-                id="password"
-                required
-              />
-
-              <CustomFormField
-                label="Phone Number"
-                type="tel"
-                name="phone"
-                id="phone"
-                required
+                disabled
+                placeholder={placeholderDisabled}
               />
 
               <CustomFormField
@@ -113,6 +127,51 @@ export const Register = () => {
                 name="city"
                 id="city"
                 required
+                disabled
+                placeholder={placeholderDisabled}
+              />
+
+              <CustomFormField
+                label="Voivodeship"
+                type="text"
+                name="voivodeship"
+                id="voivodeship"
+                required
+                disabled
+                placeholder={placeholderDisabled}
+              />
+              <CustomFormField
+                label="Email"
+                type="email"
+                name="email"
+                id="email"
+                required
+                disabled={!isKRSValid}
+                placeholder={isKRSValid ? 'Email address' : placeholderEnabled}
+              />
+
+              <CustomFormField
+                label="Password"
+                type="password"
+                name="password"
+                id="password"
+                required
+                disabled={!isKRSValid}
+                placeholder={
+                  isKRSValid ? 'Minimum 8 characters' : placeholderEnabled
+                }
+              />
+
+              <CustomFormField
+                label="Phone Number"
+                type="tel"
+                name="phone"
+                id="phone"
+                required
+                disabled={!isKRSValid}
+                placeholder={
+                  isKRSValid ? 'Phone number 9 digits' : placeholderEnabled
+                }
               />
 
               <CustomFormField
@@ -122,14 +181,12 @@ export const Register = () => {
                 id="postalCode"
                 pattern="[0-9]{2}-[0-9]{3}"
                 required
-              />
-
-              <CustomFormField
-                label="Voivodeship"
-                type="text"
-                name="voivodeship"
-                id="voivodeship"
-                required
+                disabled={!isKRSValid}
+                placeholder={
+                  isKRSValid
+                    ? 'Postal code in format 00-000'
+                    : placeholderEnabled
+                }
               />
 
               <CustomFormField
@@ -138,6 +195,12 @@ export const Register = () => {
                 name="address"
                 id="address"
                 required
+                disabled={!isKRSValid}
+                placeholder={
+                  isKRSValid
+                    ? 'Street, building number, apartment number'
+                    : placeholderEnabled
+                }
               />
 
               <CustomFormField
@@ -145,6 +208,7 @@ export const Register = () => {
                 type="file"
                 name="logo"
                 id="logo"
+                disabled={!isKRSValid}
               />
 
               <CustomFormField
@@ -153,6 +217,12 @@ export const Register = () => {
                 name="description"
                 id="description"
                 required
+                disabled={!isKRSValid}
+                placeholder={
+                  isKRSValid
+                    ? 'Short description of your organization'
+                    : placeholderEnabled
+                }
               />
 
               <CustomFormField
@@ -160,6 +230,10 @@ export const Register = () => {
                 type="url"
                 name="website"
                 id="website"
+                disabled={!isKRSValid}
+                placeholder={
+                  isKRSValid ? 'Address of your website' : placeholderEnabled
+                }
               />
 
               <CustomFormField
@@ -168,6 +242,8 @@ export const Register = () => {
                 name="acceptsReports"
                 id="acceptsReports"
                 className="register__form-checkbox"
+                disabled={!isKRSValid}
+                placeholder={placeholderEnabled}
               />
 
               <Button
