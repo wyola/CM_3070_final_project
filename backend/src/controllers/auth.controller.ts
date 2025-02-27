@@ -20,7 +20,7 @@ export class AuthController {
 
       const user = await authService.validateUser(email, password);
       if (!user) {
-        res.status(401).json({ message: 'Invalid credentials' });
+        res.status(400).json({ message: 'Invalid credentials' });
         return;
       }
 

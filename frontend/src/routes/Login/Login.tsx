@@ -11,7 +11,7 @@ import './login.scss';
 export const Login = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>();
 
   const methods = useForm<LoginFormData>({
     defaultValues: {
@@ -24,7 +24,7 @@ export const Login = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
-    setError(null);
+    setError(undefined);
 
     try {
       const { data: result } = await axiosInstance.post<LoginResponse>(
@@ -56,6 +56,7 @@ export const Login = () => {
             name="email"
             id="email"
             required
+            errorMessage={error}
           />
 
           <CustomFormField
@@ -64,6 +65,7 @@ export const Login = () => {
             name="password"
             id="password"
             required
+            errorMessage={error}
           />
 
           <Button
