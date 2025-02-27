@@ -50,7 +50,7 @@ const authController = new AuthController();
  *                           type: integer
  *                         email:
  *                           type: string
- *       401:
+ *       400:
  *         description: Invalid credentials
  */
 router.post('/login', authController.login);
