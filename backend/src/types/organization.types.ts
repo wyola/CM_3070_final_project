@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const organizationSchema = z.object({
   name: z.string().min(2).max(100),
+  voivodeship: z.string().min(2).max(100),
   krs: z.string().regex(/^[0-9]{10}$/, 'KRS must be exactly 10 digits'),
   email: z.string().email(),
   password: z.string().min(8),
@@ -12,7 +13,7 @@ export const organizationSchema = z.object({
     .regex(/^[0-9]{2}-[0-9]{3}$/, 'Postal code must be in format XX-XXX'),
   address: z.string().min(5).max(200),
   geolocation: z.string().optional(),
-  description: z.string().optional(),
+  description: z.string().min(20),
   website: z.string().url().optional(),
   acceptsReports: z
     .preprocess((val) => val === 'true' || val === true, z.boolean())

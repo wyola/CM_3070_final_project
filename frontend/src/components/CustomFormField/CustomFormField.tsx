@@ -4,15 +4,19 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
   Input,
 } from '@/components';
 import { useFormContext } from 'react-hook-form';
+import './customFormField.scss';
 
 type CustomFormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
   id: string;
   className?: string;
+  required?: boolean;
+  errorMessage?: string;
 };
 
 export const CustomFormField = ({
@@ -20,6 +24,8 @@ export const CustomFormField = ({
   name,
   id,
   className,
+  required,
+  errorMessage,
   ...inputProps
 }: CustomFormFieldProps) => {
   const { control } = useFormContext();
@@ -29,8 +35,11 @@ export const CustomFormField = ({
       control={control}
       name={name}
       render={({ field: { onChange, value, ...fieldProps } }) => (
-        <FormItem className={className}>
-          <FormLabel htmlFor={id}>{label}</FormLabel>
+        <FormItem className={`${className} form-item`}>
+          <FormLabel htmlFor={id}>
+            {label}
+            {required && <span className="form-item__required"> *</span>}
+          </FormLabel>
           <FormControl>
             <Input
               id={id}
@@ -49,6 +58,9 @@ export const CustomFormField = ({
               {...inputProps}
             />
           </FormControl>
+          <FormMessage className="form-item__message">
+            {errorMessage}
+          </FormMessage>
         </FormItem>
       )}
     />

@@ -11,27 +11,27 @@ const organizationService = new OrganizationService();
 
 export class OrganizationController {
   public register = async (req: Request, res: Response): Promise<void> => {
-    if (!req.file) {
-      res.status(400).json({
-        message: 'Logo is required',
-        errors: [
-          {
-            field: 'logo',
-            message: 'Logo is missing',
-          },
-        ],
-      });
-      return;
-    }
-
-    const logoPath = req.file.path;
+    const isLogoMissing = !req.file;
 
     try {
       const validatedData = organizationSchema.parse(req.body);
 
+      if (isLogoMissing) {
+        res.status(400).json({
+          message: 'Validation failed',
+          errors: [
+            {
+              field: 'logo',
+              message: 'Logo is missing',
+            },
+          ],
+        });
+        return;
+      }
+
       const result = await organizationService.register(
         validatedData,
-        logoPath
+        req.file!.path
       );
 
       res.status(201).json({
@@ -45,17 +45,26 @@ export class OrganizationController {
         },
       });
     } catch (error) {
-      await fs.unlink(logoPath).catch(() => {
-        // Ignore error if file deletion fails
-      });
+      if (req.file) {
+        await fs.unlink(req.file.path).catch(() => {
+          // Ignore error if file deletion fails
+        });
+      }
 
       if (error instanceof z.ZodError) {
+        const errors = error.errors.map((err) => ({
+          field: err.path.join('.'),
+          message: err.message,
+        }));
+        if (isLogoMissing) {
+          errors.push({
+            field: 'logo',
+            message: 'Logo is missing',
+          });
+        }
         res.status(400).json({
           message: 'Validation failed',
-          errors: error.errors.map((err) => ({
-            field: err.path.join('.'),
-            message: err.message,
-          })),
+          errors,
         });
         return;
       }

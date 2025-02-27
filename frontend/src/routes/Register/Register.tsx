@@ -11,6 +11,9 @@ import './register.scss';
 export const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<
+    { field: string; message: string }[]
+  >([]);
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
   const [isKRSValid, setIsKRSValid] = useState(false);
 
@@ -75,13 +78,18 @@ export const Register = () => {
   const onSubmit = async (data: OrganizationRegistration) => {
     setIsLoading(true);
     setError(null);
+    setFormErrors([]);
 
     try {
       await organizationRegistrationApi.register(data);
       setRegistrationSuccessful(true);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setError(error.response?.data?.message || 'Registration failed');
+        if (error.response?.data?.errors) {
+          setFormErrors(error.response.data.errors);
+        } else {
+          setError(error.response?.data?.message || 'Registration failed');
+        }
       } else {
         setError('An unexpected error occurred');
       }
@@ -110,6 +118,9 @@ export const Register = () => {
                 id="krs"
                 required
                 placeholder="Enter KRS number to validate it"
+                errorMessage={
+                  formErrors.find((error) => error.field === 'krs')?.message
+                }
               />
 
               <CustomFormField
@@ -120,6 +131,12 @@ export const Register = () => {
                 required
                 disabled
                 placeholder={placeholderDisabled}
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'name')
+                        ?.message
+                    : ''
+                }
               />
 
               <CustomFormField
@@ -130,6 +147,12 @@ export const Register = () => {
                 required
                 disabled
                 placeholder={placeholderDisabled}
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'city')
+                        ?.message
+                    : ''
+                }
               />
 
               <CustomFormField
@@ -140,6 +163,12 @@ export const Register = () => {
                 required
                 disabled
                 placeholder={placeholderDisabled}
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'voivodeship')
+                        ?.message
+                    : ''
+                }
               />
               <CustomFormField
                 label="Email"
@@ -149,6 +178,12 @@ export const Register = () => {
                 required
                 disabled={!isKRSValid}
                 placeholder={isKRSValid ? 'Email address' : placeholderEnabled}
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'email')
+                        ?.message
+                    : ''
+                }
               />
 
               <CustomFormField
@@ -161,6 +196,12 @@ export const Register = () => {
                 placeholder={
                   isKRSValid ? 'Minimum 8 characters' : placeholderEnabled
                 }
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'password')
+                        ?.message
+                    : ''
+                }
               />
 
               <CustomFormField
@@ -172,6 +213,12 @@ export const Register = () => {
                 disabled={!isKRSValid}
                 placeholder={
                   isKRSValid ? 'Phone number 9 digits' : placeholderEnabled
+                }
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'phone')
+                        ?.message
+                    : ''
                 }
               />
 
@@ -188,6 +235,12 @@ export const Register = () => {
                     ? 'Postal code in format 00-000'
                     : placeholderEnabled
                 }
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'postalCode')
+                        ?.message
+                    : ''
+                }
               />
 
               <CustomFormField
@@ -202,6 +255,12 @@ export const Register = () => {
                     ? 'Street, building number, apartment number'
                     : placeholderEnabled
                 }
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'address')
+                        ?.message
+                    : ''
+                }
               />
 
               <CustomFormField
@@ -209,7 +268,14 @@ export const Register = () => {
                 type="file"
                 name="logo"
                 id="logo"
+                required
                 disabled={!isKRSValid}
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'logo')
+                        ?.message
+                    : ''
+                }
               />
 
               <CustomFormField
@@ -224,6 +290,12 @@ export const Register = () => {
                     ? 'Short description of your organization'
                     : placeholderEnabled
                 }
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'voivodeship')
+                        ?.message
+                    : ''
+                }
               />
 
               <CustomFormField
@@ -234,6 +306,12 @@ export const Register = () => {
                 disabled={!isKRSValid}
                 placeholder={
                   isKRSValid ? 'Address of your website' : placeholderEnabled
+                }
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'website')
+                        ?.message
+                    : ''
                 }
               />
 
