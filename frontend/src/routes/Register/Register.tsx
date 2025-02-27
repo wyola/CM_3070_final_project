@@ -41,6 +41,12 @@ export const Register = () => {
 
   useEffect(() => {
     const validateKRS = async () => {
+      setValue('name', '');
+      setValue('city', '');
+      setValue('voivodeship', '');
+      setIsKRSValid(false);
+      setError(null);
+      setFormErrors([]);
       if (krsNumber?.length === 10) {
         try {
           const { data: response } = await axiosInstance.get(
@@ -113,12 +119,13 @@ export const Register = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="register__form">
               <CustomFormField
                 label="KRS Number"
-                type="number"
+                type="text"
                 name="krs"
                 id="krs"
                 required
                 placeholder="Enter KRS number to validate it"
                 errorMessage={
+                  error ||
                   formErrors.find((error) => error.field === 'krs')?.message
                 }
               />
