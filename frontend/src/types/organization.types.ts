@@ -1,4 +1,4 @@
-export interface Organization {
+export interface OrganizationI {
   id: number;
   name: string;
   email: string;
@@ -16,13 +16,13 @@ export interface Organization {
   password: string;
 }
 
-export interface OrganizationRegistration
-  extends Omit<Organization, 'id' | 'logo'> {
+export interface OrganizationRegistrationI
+  extends Omit<OrganizationI, 'id' | 'logo'> {
   logo: File | null | '';
 }
 
-export interface RegistrationResult {
-  organization: Organization;
+export interface RegistrationResultI {
+  organization: OrganizationI;
   user: {
     id: number;
     email: string;

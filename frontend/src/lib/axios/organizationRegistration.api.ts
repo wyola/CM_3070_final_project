@@ -1,9 +1,9 @@
-import { OrganizationRegistration } from '@/types/organization.types';
+import { OrganizationRegistrationI } from '@/types';
 import axiosInstance from './axios.instance';
 import { API_ENDPOINTS } from '@/constants';
 
 export const organizationRegistrationApi = {
-  register: async (data: OrganizationRegistration) => {
+  register: async (data: OrganizationRegistrationI) => {
     const formData = new FormData();
 
     if (data.logo instanceof FileList && data.logo.length > 0) {

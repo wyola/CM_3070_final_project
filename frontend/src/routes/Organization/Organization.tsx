@@ -1,7 +1,7 @@
 import { CustomCard } from '@/components/CustomCard/CustomCard';
 import { OrganizationContact } from '@/components/OrganizationContact/OrganizationContact';
 import { OrganizationHeader } from '@/components/OrganizationHeader/OrganizationHeader';
-import { Organization as OrganizationI } from '@/types/organization.types';
+import { OrganizationI } from '@/types';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { axiosInstance } from '@/lib/axios';
