@@ -1,5 +1,5 @@
 import { Button, CustomFormField } from '@/components';
-import { OrganizationRegistration } from '@/types/organization.types';
+import { OrganizationRegistrationI } from '@/types';
 import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { SuccessMessage } from '@/components/SuccessMessage/SuccessMessage';
@@ -17,7 +17,7 @@ export const Register = () => {
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
   const [isKRSValid, setIsKRSValid] = useState(false);
 
-  const methods = useForm<OrganizationRegistration>({
+  const methods = useForm<OrganizationRegistrationI>({
     defaultValues: {
       name: '',
       email: '',
@@ -81,7 +81,7 @@ export const Register = () => {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async (data: OrganizationRegistration) => {
+  const onSubmit = async (data: OrganizationRegistrationI) => {
     setIsLoading(true);
     setError(null);
     setFormErrors([]);

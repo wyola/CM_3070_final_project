@@ -7,14 +7,14 @@ import {
   TableCell,
 } from '@/components';
 import { useEffect, useState } from 'react';
-import { Organization } from '@/types/organization.types';
+import { OrganizationI } from '@/types';
 import { useNavigate } from 'react-router';
 import { API_ENDPOINTS, ORGANIZATION } from '@/constants';
 import { axiosInstance } from '@/lib/axios';
 import './home.scss';
 
 export const Home = () => {
-  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [organizations, setOrganizations] = useState<OrganizationI[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -69,7 +69,7 @@ export const Home = () => {
             >
               {columns.map((column) => (
                 <TableCell key={`${organization.id}-${column.accessor}`}>
-                  {organization[column.accessor as keyof Organization]}
+                  {organization[column.accessor as keyof OrganizationI]}
                 </TableCell>
               ))}
             </TableRow>

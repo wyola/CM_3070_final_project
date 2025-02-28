@@ -2,10 +2,11 @@ import { Button, CustomFormField } from '@/components';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
 import { useState } from 'react';
-import { LoginFormData, LoginResponse } from '@/types/login.types';
+import { LoginFormDataI, LoginResponseI } from '@/types';
 import { API_ENDPOINTS, ORGANIZATION, REGISTER } from '@/constants';
 import { axiosInstance } from '@/lib/axios';
 import axios from 'axios';
+import { useUser } from '@/contexts';
 import './login.scss';
 
 export const Login = () => {
@@ -13,7 +14,9 @@ export const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
 
-  const methods = useForm<LoginFormData>({
+  const { setUser } = useUser();
+
+  const methods = useForm<LoginFormDataI>({
     defaultValues: {
       email: '',
       password: '',
@@ -22,16 +25,17 @@ export const Login = () => {
 
   const { handleSubmit } = methods;
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = async (data: LoginFormDataI) => {
     setIsLoading(true);
     setError(undefined);
 
     try {
-      const { data: result } = await axiosInstance.post<LoginResponse>(
+      const { data: result } = await axiosInstance.post<LoginResponseI>(
         API_ENDPOINTS.AUTH.LOGIN,
         data
       );
 
+      setUser(result.data.user);
       localStorage.setItem('token', result.data.accessToken);
       navigate(`${ORGANIZATION}/${result.data.user.id}`);
     } catch (error) {

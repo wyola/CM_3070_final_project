@@ -1,9 +1,9 @@
-export interface LoginFormData {
+export interface LoginFormDataI {
   email: string;
   password: string;
 }
 
-export interface LoginResponse {
+export interface LoginResponseI {
   message: string;
   data: {
     accessToken: string;
