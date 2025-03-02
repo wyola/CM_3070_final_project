@@ -43,7 +43,9 @@ export class OrganizationService {
         throw new Error('Organization KRS is not whitelisted');
       }
 
-      const voivodeship = this.whitelistService.getVoivodeshipForKrs(data.krs);
+      const voivodeship = this.whitelistService
+        .getVoivodeshipForKrs(data.krs)
+        .toLowerCase();
       const hashedPassword = await bcrypt.hash(data.password, 10);
 
       const result = await prisma.$transaction(async (tx) => {
@@ -52,8 +54,10 @@ export class OrganizationService {
         const organization = await tx.organization.create({
           data: {
             ...organizationData,
-            logo: logoPath,
+            name: organizationData.name.toLowerCase(),
+            city: organizationData.city.toLowerCase(),
             voivodeship,
+            logo: logoPath,
           },
           select: organizationSelect,
         });
@@ -88,14 +92,26 @@ export class OrganizationService {
   async getOrganizations(
     query: OrganizationQueryDto
   ): Promise<PaginatedOrganizationsResult> {
-    const { page, limit, search } = query;
+    const { page, limit, search, voivodeship, acceptsReports } = query;
     const skip = (page - 1) * limit;
 
-    const where = search
-      ? {
-          OR: [{ name: { contains: search } }, { krs: { contains: search } }],
-        }
-      : {};
+    let where: Prisma.OrganizationWhereInput = {};
+
+    if (search) {
+      const searchLower = search.toLowerCase();
+      where.OR = [
+        { name: { contains: searchLower } },
+        { city: { contains: searchLower } },
+      ];
+    }
+
+    if (voivodeship) {
+      where.voivodeship = { equals: voivodeship };
+    }
+
+    if (acceptsReports !== undefined) {
+      where.acceptsReports = acceptsReports;
+    }
 
     const [total, organizations] = await Promise.all([
       prisma.organization.count({ where }),

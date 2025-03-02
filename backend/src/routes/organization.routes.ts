@@ -217,7 +217,7 @@ const upload = multer({ storage });
  *                   type: string
  *                   example: "Internal server error"
  *   get:
- *     summary: Get organizations with pagination and optional search
+ *     summary: Get organizations with pagination and optional filters
  *     tags: [Organizations]
  *     parameters:
  *       - in: query
@@ -239,7 +239,17 @@ const upload = multer({ storage });
  *         name: search
  *         schema:
  *           type: string
- *         description: Search organizations by name or KRS number
+ *         description: Search organizations by name or city (case insensitive, partial match)
+ *       - in: query
+ *         name: voivodeship
+ *         schema:
+ *           type: string
+ *         description: Filter organizations by voivodeship (case insensitive, exact match)
+ *       - in: query
+ *         name: acceptsReports
+ *         schema:
+ *           type: boolean
+ *         description: Filter organizations by whether they accept reports (true/false)
  *     responses:
  *       200:
  *         description: Organizations retrieved successfully

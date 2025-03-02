@@ -85,6 +85,8 @@ export class OrganizationController {
         page: req.query.page,
         limit: req.query.limit,
         search: req.query.search,
+        voivodeship: req.query.voivodeship,
+        acceptsReports: req.query.acceptsReports,
       });
 
       const result = await organizationService.getOrganizations(query);
