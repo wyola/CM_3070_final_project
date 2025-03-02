@@ -88,14 +88,26 @@ export class OrganizationService {
   async getOrganizations(
     query: OrganizationQueryDto
   ): Promise<PaginatedOrganizationsResult> {
-    const { page, limit, search } = query;
+    const { page, limit, search, voivodeship, acceptsReports } = query;
     const skip = (page - 1) * limit;
 
-    const where = search
-      ? {
-          OR: [{ name: { contains: search } }, { krs: { contains: search } }],
-        }
-      : {};
+    let where: Prisma.OrganizationWhereInput = {};
+
+    if (search) {
+      const searchLower = search.toLowerCase();
+      where.OR = [
+        { name: { contains: searchLower } },
+        { city: { contains: searchLower } },
+      ];
+    }
+
+    if (voivodeship) {
+      where.voivodeship = { equals: voivodeship };
+    }
+
+    if (acceptsReports !== undefined) {
+      where.acceptsReports = acceptsReports;
+    }
 
     const [total, organizations] = await Promise.all([
       prisma.organization.count({ where }),
