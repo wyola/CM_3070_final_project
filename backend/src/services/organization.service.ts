@@ -43,7 +43,9 @@ export class OrganizationService {
         throw new Error('Organization KRS is not whitelisted');
       }
 
-      const voivodeship = this.whitelistService.getVoivodeshipForKrs(data.krs);
+      const voivodeship = this.whitelistService
+        .getVoivodeshipForKrs(data.krs)
+        .toLowerCase();
       const hashedPassword = await bcrypt.hash(data.password, 10);
 
       const result = await prisma.$transaction(async (tx) => {
@@ -52,8 +54,10 @@ export class OrganizationService {
         const organization = await tx.organization.create({
           data: {
             ...organizationData,
-            logo: logoPath,
+            name: organizationData.name.toLowerCase(),
+            city: organizationData.city.toLowerCase(),
             voivodeship,
+            logo: logoPath,
           },
           select: organizationSelect,
         });
