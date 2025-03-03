@@ -54,7 +54,10 @@ export const organizationQuerySchema = z.object({
   search: z.string().optional(),
   voivodeship: z.string().optional(),
   acceptsReports: z.preprocess(
-    (val) => val === 'true' || val === true,
+    (val) =>
+      'undefined' === typeof val || '' === val
+        ? undefined
+        : val === 'true' || val === true,
     z.boolean().optional()
   ),
 });

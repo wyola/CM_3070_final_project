@@ -28,3 +28,9 @@ export interface RegistrationResultI {
     email: string;
   };
 }
+
+export interface OrganizationSearchFilterFormDataI {
+  search?: string;
+  voivodeship?: string;
+  acceptsReports?: boolean;
+}

@@ -11,18 +11,18 @@ import { useFormContext } from 'react-hook-form';
 import './customFormField.scss';
 
 type CustomFormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
   name: string;
   id: string;
+  label?: string;
   className?: string;
   required?: boolean;
   errorMessage?: string;
 };
 
 export const CustomFormField = ({
-  label,
   name,
   id,
+  label,
   className,
   required,
   errorMessage,
@@ -36,10 +36,12 @@ export const CustomFormField = ({
       name={name}
       render={({ field: { onChange, value, ...fieldProps } }) => (
         <FormItem className={`${className} form-item`}>
-          <FormLabel htmlFor={id}>
-            {label}
-            {required && <span className="form-item__required"> *</span>}
-          </FormLabel>
+          {label && (
+            <FormLabel htmlFor={id}>
+              {label}
+              {required && <span className="form-item__required"> *</span>}
+            </FormLabel>
+          )}
           <FormControl>
             <Input
               id={id}

@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import {
   Table,
@@ -14,12 +13,7 @@ import { useOrganizationsList } from '@/contexts';
 import './organizationsTable.scss';
 
 export const OrganizationsTable = () => {
-  const { organizations, fetchOrganizations, isLoading, error } =
-    useOrganizationsList();
-
-  useEffect(() => {
-    fetchOrganizations();
-  }, []);
+  const { organizations } = useOrganizationsList();
 
   const navigate = useNavigate();
 
