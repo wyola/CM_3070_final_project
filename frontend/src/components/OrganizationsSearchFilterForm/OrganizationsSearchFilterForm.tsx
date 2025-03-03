@@ -5,6 +5,8 @@ import { VOIVODESHIPS } from '@/constants';
 import { OrganizationSearchFilterFormDataI } from '@/types';
 import { CustomSelect } from '../CustomSelect/CustomSelect';
 import { useSearchParams } from 'react-router';
+import { useCallback, useEffect } from 'react';
+import debounce from 'lodash.debounce';
 import './organizationsSearchFilterForm.scss';
 
 export const OrganizationsSearchFilterForm = () => {
@@ -18,25 +20,34 @@ export const OrganizationsSearchFilterForm = () => {
     },
   });
 
-  const { handleSubmit } = methods;
+  const { watch } = methods;
+  const { search, acceptsReports, voivodeship } = watch();
   const { fetchOrganizations } = useOrganizationsList();
 
-  const onFilterChange = handleSubmit((data) => {
-    const params = new URLSearchParams();
+  const onFilterChange = useCallback(
+    debounce(() => {
+      const params = new URLSearchParams();
 
-    if (data.search?.trim()) {
-      params.set('search', data.search.trim());
-    }
-    if (data.voivodeship && data.voivodeship !== 'all') {
-      params.set('voivodeship', data.voivodeship);
-    }
-    if (data.acceptsReports) {
-      params.set('acceptsReports', String(data.acceptsReports));
-    }
+      if (search?.trim()) {
+        params.set('search', search.trim());
+      }
+      if (voivodeship && voivodeship !== 'all') {
+        params.set('voivodeship', voivodeship);
+      }
+      if (acceptsReports) {
+        params.set('acceptsReports', String(acceptsReports));
+      }
 
-    setSearchParams(params);
-    fetchOrganizations(data);
-  });
+      setSearchParams(params);
+      fetchOrganizations({ search, voivodeship, acceptsReports });
+    }, 100),
+    [setSearchParams, fetchOrganizations, search, voivodeship, acceptsReports]
+  );
+
+  useEffect(() => {
+    onFilterChange();
+    return () => onFilterChange.cancel();
+  }, [search, voivodeship, acceptsReports]);
 
   const voivodeshipOptions = [
     { value: 'all', label: 'All voivodeships' },
@@ -48,7 +59,7 @@ export const OrganizationsSearchFilterForm = () => {
 
   return (
     <FormProvider {...methods}>
-      <form className="search-form" onChange={onFilterChange}>
+      <form className="search-form">
         <CustomFormField
           type="text"
           name="search"
