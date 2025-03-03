@@ -1,4 +1,9 @@
 .organizations-table {
+  thead tr {
+    &:hover {
+      background-color: transparent;
+    }
+  }
   tbody tr {
     &:hover {
       cursor: pointer;

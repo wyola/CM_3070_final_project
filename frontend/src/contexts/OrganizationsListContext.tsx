@@ -1,13 +1,15 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
-import { OrganizationI } from '@/types';
+import { OrganizationI, OrganizationSearchFilterFormDataI } from '@/types';
 import { axiosInstance } from '@/lib/axios';
 import { API_ENDPOINTS } from '@/constants';
 
 type OrganizationsListContextType = {
   organizations: OrganizationI[];
-  fetchOrganizations: () => Promise<void>;
+  fetchOrganizations: (
+    filters?: OrganizationSearchFilterFormDataI
+  ) => Promise<void>;
   isLoading: boolean;
-    error: string | null;
+  error: string | null;
 };
 
 const OrganizationsListContext = createContext<
@@ -23,14 +25,29 @@ export const OrganizationsListProvider = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchOrganizations = async () => {
+  const fetchOrganizations = async (
+    filters?: OrganizationSearchFilterFormDataI
+  ) => {
     setIsLoading(true);
     setError(null);
 
     try {
+      const params = new URLSearchParams();
+
+      if (filters?.search) {
+        params.append('search', filters.search);
+      }
+      if (filters?.voivodeship && filters.voivodeship !== 'all') {
+        params.append('voivodeship', filters.voivodeship);
+      }
+      if (filters?.acceptsReports) {
+        params.append('acceptsReports', String(filters.acceptsReports));
+      }
+
       const { data: response } = await axiosInstance.get(
-        API_ENDPOINTS.ORGANIZATIONS.ALL
+        `${API_ENDPOINTS.ORGANIZATIONS.ALL}?${params.toString()}`
       );
+
       setOrganizations(response.data.organizations);
     } catch (error) {
       console.error('Error fetching organizations:', error);
