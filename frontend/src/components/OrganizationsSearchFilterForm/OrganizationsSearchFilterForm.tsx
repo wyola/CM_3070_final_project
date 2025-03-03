@@ -41,7 +41,7 @@ export const OrganizationsSearchFilterForm = () => {
   const voivodeshipOptions = [
     { value: 'all', label: 'All voivodeships' },
     ...VOIVODESHIPS.map((voivodeship) => ({
-      value: voivodeship,
+      value: voivodeship.toLowerCase(),
       label: voivodeship,
     })),
   ];
