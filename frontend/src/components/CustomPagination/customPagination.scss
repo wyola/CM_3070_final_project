@@ -1,0 +1,12 @@
+.pagination {
+  margin-top: 1.5rem;
+
+  &__button {
+    cursor: pointer;
+  }
+
+  &__disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
