@@ -7,4 +7,5 @@ export interface UserContextI {
   user: UserI | null;
   setUser: (user: UserI | null) => void;
   isAuthenticated: boolean;
+  logout: () => void;
 }
