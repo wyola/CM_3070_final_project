@@ -12,8 +12,8 @@ import './sass/main.scss';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <UserProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <UserProvider>
         <Routes>
           <Route path={HOME} element={<MainPagesLayout />}>
             <Route index element={<Home />} />
@@ -28,7 +28,7 @@ createRoot(document.getElementById('root')!).render(
             <Route index element={<Organization />} />
           </Route>
         </Routes>
-      </BrowserRouter>
-    </UserProvider>
+      </UserProvider>
+    </BrowserRouter>
   </StrictMode>
 );

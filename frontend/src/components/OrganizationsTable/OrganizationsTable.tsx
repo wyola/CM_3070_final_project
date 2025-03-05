@@ -30,8 +30,6 @@ export const OrganizationsTable = () => {
     { header: 'Voivodeship', accessor: 'voivodeship' },
   ];
 
-  console.log(pagination);
-
   return (
     <>
       <Table className="organizations-table">
