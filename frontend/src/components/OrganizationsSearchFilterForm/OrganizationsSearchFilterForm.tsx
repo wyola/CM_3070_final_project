@@ -22,7 +22,8 @@ export const OrganizationsSearchFilterForm = () => {
 
   const { watch } = methods;
   const { search, acceptsReports, voivodeship } = watch();
-  const { fetchOrganizations } = useOrganizationsList();
+  const { fetchOrganizations, currentPage, updateCurrentPage } =
+    useOrganizationsList();
 
   const onFilterChange = useCallback(
     debounce(() => {
@@ -30,24 +31,43 @@ export const OrganizationsSearchFilterForm = () => {
 
       if (search?.trim()) {
         params.set('search', search.trim());
+      } else {
+        params.delete('search');
       }
       if (voivodeship && voivodeship !== 'all') {
         params.set('voivodeship', voivodeship);
+      } else {
+        params.delete('voivodeship');
       }
       if (acceptsReports) {
         params.set('acceptsReports', String(acceptsReports));
       }
 
+      if (currentPage) {
+        params.set('page', currentPage.toString());
+      }
+
       setSearchParams(params);
       fetchOrganizations({ search, voivodeship, acceptsReports });
     }, 100),
-    [setSearchParams, fetchOrganizations, search, voivodeship, acceptsReports]
+    [
+      setSearchParams,
+      fetchOrganizations,
+      search,
+      voivodeship,
+      acceptsReports,
+      currentPage,
+    ]
   );
+
+  useEffect(() => {
+    updateCurrentPage(1);
+  }, [search, voivodeship, acceptsReports]);
 
   useEffect(() => {
     onFilterChange();
     return () => onFilterChange.cancel();
-  }, [search, voivodeship, acceptsReports]);
+  }, [search, voivodeship, acceptsReports, currentPage]);
 
   const voivodeshipOptions = [
     { value: 'all', label: 'All voivodeships' },

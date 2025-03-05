@@ -10,11 +10,12 @@ import {
 import { OrganizationI } from '@/types';
 import { ORGANIZATION } from '@/constants';
 import { useOrganizationsList } from '@/contexts';
+import { CustomPagination } from '../CustomPagination/CustomPagination';
 import './organizationsTable.scss';
 
 export const OrganizationsTable = () => {
-  const { organizations } = useOrganizationsList();
-
+  const { organizations, pagination, updateCurrentPage } =
+    useOrganizationsList();
   const navigate = useNavigate();
 
   const handleRowClick = (organizationId: number) => {
@@ -27,32 +28,42 @@ export const OrganizationsTable = () => {
     { header: 'Phone', accessor: 'phone' },
     { header: 'City', accessor: 'city' },
     { header: 'Voivodeship', accessor: 'voivodeship' },
-    { header: 'Reports?', accessor: 'acceptsReports' },
   ];
 
+  console.log(pagination);
+
   return (
-    <Table className="organizations-table">
-      <TableHeader>
-        <TableRow>
-          {columns.map((column) => (
-            <TableHead key={column.accessor}>{column.header}</TableHead>
-          ))}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {organizations.map((organization) => (
-          <TableRow
-            key={organization.id}
-            onClick={() => handleRowClick(organization.id)}
-          >
+    <>
+      <Table className="organizations-table">
+        <TableHeader>
+          <TableRow>
             {columns.map((column) => (
-              <TableCell key={`${organization.id}-${column.accessor}`}>
-                {organization[column.accessor as keyof OrganizationI]}
-              </TableCell>
+              <TableHead key={column.accessor}>{column.header}</TableHead>
             ))}
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {organizations.map((organization) => (
+            <TableRow
+              key={organization.id}
+              onClick={() => handleRowClick(organization.id)}
+            >
+              {columns.map((column) => (
+                <TableCell key={`${organization.id}-${column.accessor}`}>
+                  {organization[column.accessor as keyof OrganizationI]}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      {pagination && (
+        <CustomPagination
+          currentPage={pagination.page}
+          totalPages={pagination.pages}
+          onPageChange={updateCurrentPage}
+        />
+      )}
+    </>
   );
 };

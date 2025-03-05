@@ -2,14 +2,23 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 import { OrganizationI, OrganizationSearchFilterFormDataI } from '@/types';
 import { axiosInstance } from '@/lib/axios';
 import { API_ENDPOINTS } from '@/constants';
+import { useSearchParams } from 'react-router';
 
 type OrganizationsListContextType = {
   organizations: OrganizationI[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    pages: number;
+  } | null;
   fetchOrganizations: (
     filters?: OrganizationSearchFilterFormDataI
   ) => Promise<void>;
   isLoading: boolean;
   error: string | null;
+  updateCurrentPage: (page: number) => void;
+  currentPage: number;
 };
 
 const OrganizationsListContext = createContext<
@@ -22,8 +31,15 @@ export const OrganizationsListProvider = ({
   children: ReactNode;
 }) => {
   const [organizations, setOrganizations] = useState<OrganizationI[]>([]);
+  const [pagination, setPagination] =
+    useState<OrganizationsListContextType['pagination']>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageFromSearchParams = searchParams.get('page')
+    ? Math.max(1, parseInt(searchParams.get('page') || '1'))
+    : 1;
+  const [currentPage, setCurrentPage] = useState(pageFromSearchParams);
 
   const fetchOrganizations = async (
     filters?: OrganizationSearchFilterFormDataI
@@ -44,11 +60,14 @@ export const OrganizationsListProvider = ({
         params.append('acceptsReports', String(filters.acceptsReports));
       }
 
+      params.append('page', currentPage.toString());
+
       const { data: response } = await axiosInstance.get(
         `${API_ENDPOINTS.ORGANIZATIONS.ALL}?${params.toString()}`
       );
 
       setOrganizations(response.data.organizations);
+      setPagination(response.data.pagination);
     } catch (error) {
       console.error('Error fetching organizations:', error);
       setError('Failed to load organizations');
@@ -57,11 +76,21 @@ export const OrganizationsListProvider = ({
     }
   };
 
+  const updateCurrentPage = (page: number) => {
+    setCurrentPage(page);
+    const params = new URLSearchParams(searchParams);
+    params.set('page', page.toString());
+    setSearchParams(params);
+  };
+
   const value = {
     organizations,
+    pagination,
     fetchOrganizations,
     isLoading,
     error,
+    updateCurrentPage,
+    currentPage,
   };
 
   return (
