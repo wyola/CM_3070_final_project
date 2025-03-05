@@ -1,8 +1,12 @@
 import { Link, NavLink } from 'react-router';
 import './header.scss';
-import { LOGIN, REPORT } from '@/constants';
+import { LOGIN, ORGANIZATION, REPORT } from '@/constants';
+import { useUser } from '@/contexts';
 
 export const Header = () => {
+  const { user, isAuthenticated } = useUser();
+  console.log(user);
+
   return (
     <header className="content header">
       <Link to="/" className="header__logo">
@@ -15,7 +19,16 @@ export const Header = () => {
             <NavLink to={REPORT}>Report</NavLink>
           </li>
           <li>
-            <NavLink to={LOGIN}>Login</NavLink>
+            {isAuthenticated ? (
+              <NavLink
+                className="header__username"
+                to={`${ORGANIZATION}/${user?.id}`}
+              >
+                Your profile &rarr;
+              </NavLink>
+            ) : (
+              <NavLink to={LOGIN}>Login</NavLink>
+            )}{' '}
           </li>
         </ul>
       </nav>
