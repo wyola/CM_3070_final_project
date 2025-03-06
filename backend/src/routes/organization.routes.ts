@@ -33,6 +33,7 @@ const upload = multer({ storage });
  *         - voivodeship
  *         - logo
  *         - acceptsReports
+ *         - animals
  *       properties:
  *         id:
  *           type: integer
@@ -68,6 +69,12 @@ const upload = multer({ storage });
  *           nullable: true
  *         acceptsReports:
  *           type: boolean
+ *         animals:
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum: [dogs, cats, farm animals, wild animals, exotic animals, birds, horses, other]
+ *           description: Types of animals the organization handles
  */
 
 /**
@@ -93,6 +100,8 @@ const upload = multer({ storage });
  *               - postalCode
  *               - address
  *               - logo
+ *               - voivodeship
+ *               - animals
  *             properties:
  *               name:
  *                 type: string
@@ -135,6 +144,10 @@ const upload = multer({ storage });
  *                 maxLength: 200
  *                 description: Street address
  *                 example: ""
+ *               voivodeship:
+ *                 type: string
+ *                 description: Voivodeship name
+ *                 example: "mazowieckie"
  *               geolocation:
  *                 type: string
  *                 description: Geolocation coordinates
@@ -156,6 +169,14 @@ const upload = multer({ storage });
  *                 type: boolean
  *                 description: Whether organization accepts abuse reports
  *                 default: false
+ *               animals:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   enum: [dogs, cats, farm animals, wild animals, exotic animals, birds, horses, other]
+ *                 minItems: 1
+ *                 description: Types of animals the organization handles
+ *                 example: ["dogs", "cats"]
  *     responses:
  *       201:
  *         description: Organization registered successfully. The voivodeship field in the response will be automatically filled based on the KRS.
