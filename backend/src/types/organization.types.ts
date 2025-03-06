@@ -1,5 +1,16 @@
 import { z } from 'zod';
 
+const VALID_ANIMALS = [
+  'dogs',
+  'cats',
+  'farm animals',
+  'wild animals',
+  'exotic animals',
+  'birds',
+  'horses',
+  'other',
+] as const;
+
 export const organizationSchema = z.object({
   name: z.string().min(2).max(100),
   voivodeship: z.string().min(2).max(100),
@@ -18,6 +29,16 @@ export const organizationSchema = z.object({
   acceptsReports: z
     .preprocess((val) => val === 'true' || val === true, z.boolean())
     .default(false),
+  animals: z.preprocess((val) => {
+    if (typeof val === 'string') {
+      try {
+        return JSON.parse(val);
+      } catch {
+        return val.split(',').map((s) => s.trim());
+      }
+    }
+    return val;
+  }, z.array(z.enum(VALID_ANIMALS)).min(1, 'At least one animal type must be selected')),
 });
 
 export type OrganizationRegistrationDto = z.infer<typeof organizationSchema>;

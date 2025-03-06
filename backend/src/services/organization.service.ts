@@ -25,6 +25,7 @@ const organizationSelect = {
   description: true,
   website: true,
   acceptsReports: true,
+  animals: true,
 } as const;
 
 export class OrganizationService {
@@ -58,6 +59,7 @@ export class OrganizationService {
             city: organizationData.city.toLowerCase(),
             voivodeship,
             logo: logoPath,
+            animals: JSON.stringify(data.animals),
           },
           select: organizationSelect,
         });
@@ -74,7 +76,7 @@ export class OrganizationService {
           },
         });
 
-        return { organization, user };
+        return { organization: this.transformOrganization(organization), user };
       });
 
       return result;
@@ -115,13 +117,15 @@ export class OrganizationService {
 
     const [total, organizations] = await Promise.all([
       prisma.organization.count({ where }),
-      prisma.organization.findMany({
-        where,
-        skip,
-        take: limit,
-        orderBy: { name: 'asc' },
-        select: organizationSelect,
-      }),
+      prisma.organization
+        .findMany({
+          where,
+          skip,
+          take: limit,
+          orderBy: { name: 'asc' },
+          select: organizationSelect,
+        })
+        .then((orgs) => orgs.map(this.transformOrganization)),
     ]);
 
     const pages = Math.ceil(total / limit);
@@ -142,7 +146,7 @@ export class OrganizationService {
       where: { id },
     });
 
-    return organization;
+    return organization ? this.transformOrganization(organization) : null;
   }
 
   async getOrganizationInfoByKrs(krs: string): Promise<any> {
@@ -168,6 +172,13 @@ export class OrganizationService {
       name: whitelistInfo.Name,
       voivodeship: whitelistInfo.Voivodeship,
       city: whitelistInfo.City || '',
+    };
+  }
+
+  private transformOrganization(org: any) {
+    return {
+      ...org,
+      animals: JSON.parse(org.animals),
     };
   }
 }
