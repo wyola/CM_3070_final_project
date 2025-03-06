@@ -5,6 +5,14 @@
     }
   }
   tbody tr {
+    text-transform: capitalize;
+
+    td {
+      &[data-column='email'] {
+        text-transform: none;
+      }
+    }
+
     &:hover {
       cursor: pointer;
     }
