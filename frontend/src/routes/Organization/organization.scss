@@ -14,11 +14,15 @@
     grid-area: contact;
   }
 
-  > :nth-child(3) { // TODO: change to class when component is ready
+  &__needs {
     grid-area: needs;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
-  > :nth-child(4) { // TODO: change to class when component is ready
+  > :nth-child(4) {
+    // TODO: change to class when component is ready
     grid-area: volunteer;
   }
 }

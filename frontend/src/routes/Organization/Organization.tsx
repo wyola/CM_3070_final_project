@@ -8,6 +8,9 @@ import { axiosInstance } from '@/lib/axios';
 import axios from 'axios';
 import './organization.scss';
 import { API_ENDPOINTS } from '@/constants';
+import { MOCKED_NEEDS } from '@/constants/mockedNeeds';
+import { OrganizationsNeed } from '@/components/OrganizationsNeed/OrganizationsNeed';
+import { KindsOfNeeds } from '@/types/needs.type';
 
 export const Organization = () => {
   const { id } = useParams();
@@ -68,7 +71,18 @@ export const Organization = () => {
         city={city}
         voivodeship={voivodeship}
       />
-      <CustomCard>current needs</CustomCard>
+      <div className="organization__needs">
+        <h2 className="heading-secondary">Current needs</h2>
+        {MOCKED_NEEDS.map((need) => (
+          <OrganizationsNeed
+            key={need.id}
+            id={need.id}
+            kind={need.kind as KindsOfNeeds}
+            priority={need.priority}
+            description={need.description}
+          />
+        ))}
+      </div>
       <CustomCard>volunteering options</CustomCard>
     </section>
   );
