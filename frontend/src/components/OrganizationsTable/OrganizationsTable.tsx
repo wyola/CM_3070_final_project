@@ -47,7 +47,10 @@ export const OrganizationsTable = () => {
               onClick={() => handleRowClick(organization.id)}
             >
               {columns.map((column) => (
-                <TableCell key={`${organization.id}-${column.accessor}`}>
+                <TableCell
+                  key={`${organization.id}-${column.accessor}`}
+                  data-column={column.accessor}
+                >
                   {organization[column.accessor as keyof OrganizationI]}
                 </TableCell>
               ))}
