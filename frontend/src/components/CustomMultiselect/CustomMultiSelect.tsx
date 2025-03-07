@@ -5,7 +5,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { FormField, FormItem, FormLabel } from '@/components/ui/form';
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { useFormContext } from 'react-hook-form';
 import { Checkbox } from '@/components/ui/checkbox';
 import './customMultiSelect.scss';
@@ -17,6 +22,7 @@ type CustomMultiSelectProps = {
   id: string;
   label?: string;
   required?: boolean;
+  errorMessage?: string;
 };
 
 export const CustomMultiSelect = ({
@@ -26,6 +32,7 @@ export const CustomMultiSelect = ({
   id,
   label,
   required,
+  errorMessage,
 }: CustomMultiSelectProps) => {
   const { control, setValue, watch } = useFormContext();
   const selectedValues = watch(name) || [];
@@ -95,6 +102,7 @@ export const CustomMultiSelect = ({
               ))}
             </SelectContent>
           </Select>
+          {errorMessage && <FormMessage>{errorMessage}</FormMessage>}
         </FormItem>
       )}
     />

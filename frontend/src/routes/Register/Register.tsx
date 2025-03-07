@@ -311,7 +311,7 @@ export const Register = () => {
                 }
                 errorMessage={
                   isKRSValid
-                    ? formErrors.find((error) => error.field === 'voivodeship')
+                    ? formErrors.find((error) => error.field === 'description')
                         ?.message
                     : ''
                 }
@@ -324,6 +324,12 @@ export const Register = () => {
                 options={ANIMAL_OPTIONS}
                 label="Animals you take care of"
                 required
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'animals.0')
+                        ?.message
+                    : ''
+                }
               />
 
               <CustomFormField
