@@ -1,3 +1,14 @@
+export enum OrganizationAnimals {
+  Dogs = 'dogs',
+  Cats = 'cats',
+  FarmAnimals = 'farm animals',
+  WildAnimals = 'wild animals',
+  ExoticAnimals = 'exotic animals',
+  Birds = 'birds',
+  Horses = 'horses',
+  Other = 'other',
+}
+
 export interface OrganizationI {
   id: number;
   name: string;
@@ -14,6 +25,7 @@ export interface OrganizationI {
   website: string | null;
   acceptsReports: boolean;
   password: string;
+  animals: OrganizationAnimals[];
 }
 
 export interface OrganizationRegistrationI

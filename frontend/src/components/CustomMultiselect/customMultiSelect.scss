@@ -1,0 +1,15 @@
+.multiselect {
+  &__content {
+    padding: 0.5rem;
+  }
+
+  &__option {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+
+    &:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
