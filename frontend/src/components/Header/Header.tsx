@@ -1,7 +1,7 @@
 import { Link, NavLink, useLocation } from 'react-router';
-import './header.scss';
 import { LOGIN, ORGANIZATION, REPORT } from '@/constants';
 import { useUser } from '@/contexts';
+import './header.scss';
 
 export const Header = () => {
   const { user, isAuthenticated, logout } = useUser();

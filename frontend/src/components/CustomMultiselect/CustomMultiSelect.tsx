@@ -4,15 +4,13 @@ import {
   SelectContent,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import {
+  Checkbox,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from '@/components';
 import { useFormContext } from 'react-hook-form';
-import { Checkbox } from '@/components/ui/checkbox';
 import './customMultiSelect.scss';
 
 type CustomMultiSelectProps = {

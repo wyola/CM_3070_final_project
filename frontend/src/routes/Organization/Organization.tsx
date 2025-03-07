@@ -1,13 +1,15 @@
-import { CustomCard } from '@/components/CustomCard/CustomCard';
-import { OrganizationContact } from '@/components/OrganizationContact/OrganizationContact';
-import { OrganizationHeader } from '@/components/OrganizationHeader/OrganizationHeader';
-import { OrganizationI } from '@/types';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import {
+  CustomCard,
+  OrganizationContact,
+  OrganizationHeader,
+} from '@/components';
+import { OrganizationI } from '@/types';
 import { axiosInstance } from '@/lib/axios';
 import axios from 'axios';
-import './organization.scss';
 import { API_ENDPOINTS } from '@/constants';
+import './organization.scss';
 
 export const Organization = () => {
   const { id } = useParams();

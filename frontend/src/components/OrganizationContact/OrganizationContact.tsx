@@ -1,5 +1,4 @@
-import { CustomCard } from '../CustomCard/CustomCard';
-import { IconLabel } from '../IconLabel/IconLabel';
+import { CustomCard, IconLabel } from '@/components';
 import './organizationContact.scss';
 
 type OrganizationContactProps = {

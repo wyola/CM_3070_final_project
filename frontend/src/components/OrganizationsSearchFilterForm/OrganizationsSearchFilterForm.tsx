@@ -1,11 +1,10 @@
+import { useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
-import { CustomFormField } from '../CustomFormField/CustomFormField';
 import { useOrganizationsList } from '@/contexts';
+import { CustomFormField, CustomSelect } from '@/components';
 import { VOIVODESHIPS } from '@/constants';
 import { OrganizationSearchFilterFormDataI } from '@/types';
-import { CustomSelect } from '../CustomSelect/CustomSelect';
-import { useSearchParams } from 'react-router';
-import { useCallback, useEffect } from 'react';
 import debounce from 'lodash.debounce';
 import './organizationsSearchFilterForm.scss';
 

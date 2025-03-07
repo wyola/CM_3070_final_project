@@ -6,11 +6,11 @@ import {
   TableHead,
   TableBody,
   TableCell,
+  CustomPagination,
 } from '@/components';
 import { OrganizationI } from '@/types';
 import { ORGANIZATION } from '@/constants';
 import { useOrganizationsList } from '@/contexts';
-import { CustomPagination } from '../CustomPagination/CustomPagination';
 import './organizationsTable.scss';
 
 export const OrganizationsTable = () => {
