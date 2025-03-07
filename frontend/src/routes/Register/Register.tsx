@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import axios from 'axios';
 import { axiosInstance, organizationRegistrationApi } from '@/lib/axios';
-import { OrganizationAnimals, OrganizationRegistrationI } from '@/types';
+import { OrganizationRegistrationI } from '@/types';
 import {
   Button,
   CustomFormField,
   CustomMultiSelect,
   SuccessMessage,
 } from '@/components';
-import { API_ENDPOINTS } from '@/constants';
+import { ANIMAL_OPTIONS, API_ENDPOINTS } from '@/constants';
 import './register.scss';
 
 export const Register = () => {
@@ -40,16 +40,6 @@ export const Register = () => {
       animals: [],
     },
   });
-
-  const ANIMAL_OPTIONS = Object.entries(OrganizationAnimals).map(
-    ([key, value]) => ({
-      value: value,
-      label: value
-        .split(' ')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' '),
-    })
-  );
 
   const { watch, setValue } = methods;
   const krsNumber = watch('krs');

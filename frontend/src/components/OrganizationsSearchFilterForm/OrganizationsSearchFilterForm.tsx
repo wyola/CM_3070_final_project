@@ -2,8 +2,8 @@ import { useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useOrganizationsList } from '@/contexts';
-import { CustomFormField, CustomSelect } from '@/components';
-import { VOIVODESHIPS } from '@/constants';
+import { CustomFormField, CustomMultiSelect, CustomSelect } from '@/components';
+import { ANIMAL_OPTIONS, VOIVODESHIPS } from '@/constants';
 import { OrganizationSearchFilterFormDataI } from '@/types';
 import debounce from 'lodash.debounce';
 import './organizationsSearchFilterForm.scss';
@@ -16,11 +16,12 @@ export const OrganizationsSearchFilterForm = () => {
       search: searchParams.get('search') || '',
       voivodeship: searchParams.get('voivodeship') || 'all',
       acceptsReports: searchParams.get('acceptsReports') === 'true',
+      animals: searchParams.get('animals')?.split(',') || [],
     },
   });
 
   const { watch } = methods;
-  const { search, acceptsReports, voivodeship } = watch();
+  const { search, acceptsReports, voivodeship, animals } = watch();
   const { fetchOrganizations, currentPage, updateCurrentPage } =
     useOrganizationsList();
 
@@ -42,12 +43,18 @@ export const OrganizationsSearchFilterForm = () => {
         params.set('acceptsReports', String(acceptsReports));
       }
 
+      if (animals && animals.length > 0) {
+        params.set('animals', animals.join(','));
+      } else {
+        params.delete('animals');
+      }
+
       if (currentPage) {
         params.set('page', currentPage.toString());
       }
 
       setSearchParams(params);
-      fetchOrganizations({ search, voivodeship, acceptsReports });
+      fetchOrganizations({ search, voivodeship, acceptsReports, animals });
     }, 100),
     [
       setSearchParams,
@@ -55,18 +62,19 @@ export const OrganizationsSearchFilterForm = () => {
       search,
       voivodeship,
       acceptsReports,
+      animals,
       currentPage,
     ]
   );
 
   useEffect(() => {
     updateCurrentPage(1);
-  }, [search, voivodeship, acceptsReports]);
+  }, [search, voivodeship, acceptsReports, animals]);
 
   useEffect(() => {
     onFilterChange();
     return () => onFilterChange.cancel();
-  }, [search, voivodeship, acceptsReports, currentPage]);
+  }, [search, voivodeship, acceptsReports, currentPage, animals]);
 
   const voivodeshipOptions = [
     { value: 'all', label: 'All voivodeships' },
@@ -91,6 +99,13 @@ export const OrganizationsSearchFilterForm = () => {
           id="voivodeship"
           placeholder="Select voivodeship"
           options={voivodeshipOptions}
+        />
+
+        <CustomMultiSelect
+          name="animals"
+          id="animals"
+          placeholder="Select animals"
+          options={ANIMAL_OPTIONS}
         />
 
         <CustomFormField
