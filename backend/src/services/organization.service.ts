@@ -94,7 +94,7 @@ export class OrganizationService {
   async getOrganizations(
     query: OrganizationQueryDto
   ): Promise<PaginatedOrganizationsResult> {
-    const { page, limit, search, voivodeship, acceptsReports } = query;
+    const { page, limit, search, voivodeship, acceptsReports, animals } = query;
     const skip = (page - 1) * limit;
 
     let where: Prisma.OrganizationWhereInput = {};
@@ -113,6 +113,14 @@ export class OrganizationService {
 
     if (acceptsReports !== undefined) {
       where.acceptsReports = acceptsReports;
+    }
+
+    if (animals && animals.length > 0) {
+      where.AND = animals.map((animal) => ({
+        animals: {
+          contains: animal,
+        },
+      }));
     }
 
     const [total, organizations] = await Promise.all([

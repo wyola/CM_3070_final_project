@@ -93,6 +93,12 @@ export const organizationQuerySchema = z.object({
         : val === 'true' || val === true,
     z.boolean().optional()
   ),
+  animals: z
+    .string()
+    .optional()
+    .transform((val) =>
+      val ? val.split(',').map((s) => s.trim()) : undefined
+    ),
 });
 
 export type OrganizationQueryDto = z.infer<typeof organizationQuerySchema>;

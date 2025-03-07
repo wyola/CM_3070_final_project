@@ -271,6 +271,12 @@ const upload = multer({ storage });
  *         schema:
  *           type: boolean
  *         description: Filter organizations by whether they accept reports (true/false)
+ *       - in: query
+ *         name: animals
+ *         schema:
+ *           type: string
+ *         description: Filter organizations by animal types (comma-separated values, e.g. 'dogs,cats')
+ *         example: "dogs,cats"
  *     responses:
  *       200:
  *         description: Organizations retrieved successfully
