@@ -3,6 +3,7 @@
   grid-template-columns: repeat(4, 1fr);
   grid-template-areas:
     'header header header contact'
+    'map map map map'
     'needs needs volunteer volunteer';
   gap: 1.5rem;
 
@@ -14,11 +15,13 @@
     grid-area: contact;
   }
 
-  > :nth-child(3) { // TODO: change to class when component is ready
+  > :nth-child(3) {
+    // TODO: change to class when component is ready
     grid-area: needs;
   }
 
-  > :nth-child(4) { // TODO: change to class when component is ready
+  > :nth-child(4) {
+    // TODO: change to class when component is ready
     grid-area: volunteer;
   }
 }

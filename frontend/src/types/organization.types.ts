@@ -19,7 +19,10 @@ export interface OrganizationI {
   postalCode: string;
   voivodeship: string;
   address: string;
-  geolocation: string | null;
+  geolocation: {
+    lat: number;
+    lon: number;
+  } | null;
   logo: string;
   description: string;
   website: string | null;
