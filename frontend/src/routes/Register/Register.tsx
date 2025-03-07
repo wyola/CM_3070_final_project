@@ -1,13 +1,16 @@
-import { Button, CustomFormField } from '@/components';
-import { OrganizationAnimals, OrganizationRegistrationI } from '@/types';
 import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
-import { SuccessMessage } from '@/components/SuccessMessage/SuccessMessage';
 import axios from 'axios';
 import { axiosInstance, organizationRegistrationApi } from '@/lib/axios';
+import { OrganizationAnimals, OrganizationRegistrationI } from '@/types';
+import {
+  Button,
+  CustomFormField,
+  CustomMultiSelect,
+  SuccessMessage,
+} from '@/components';
 import { API_ENDPOINTS } from '@/constants';
 import './register.scss';
-import { CustomMultiSelect } from '@/components/CustomMultiselect/CustomMultiselect';
 
 export const Register = () => {
   const [isLoading, setIsLoading] = useState(false);

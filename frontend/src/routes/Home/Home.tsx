@@ -1,6 +1,8 @@
 import { OrganizationsListProvider } from '@/contexts';
-import { OrganizationsTable } from '@/components/OrganizationsTable/OrganizationsTable';
-import { OrganizationsSearchFilterForm } from '@/components/OrganizationsSearchFilterForm/OrganizationsSearchFilterForm';
+import {
+  OrganizationsTable,
+  OrganizationsSearchFilterForm,
+} from '@/components';
 
 export const Home = () => {
   return (
