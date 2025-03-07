@@ -320,7 +320,9 @@ export const Register = () => {
               <CustomMultiSelect
                 name="animals"
                 id="animals"
-                placeholder="Select animals"
+                placeholder={
+                  isKRSValid ? 'Select at least one' : placeholderEnabled
+                }
                 options={ANIMAL_OPTIONS}
                 label="Animals you take care of"
                 required
@@ -330,6 +332,7 @@ export const Register = () => {
                         ?.message
                     : ''
                 }
+                disabled={!isKRSValid}
               />
 
               <CustomFormField

@@ -23,6 +23,7 @@ type CustomMultiSelectProps = {
   label?: string;
   required?: boolean;
   errorMessage?: string;
+  disabled?: boolean;
 };
 
 export const CustomMultiSelect = ({
@@ -33,6 +34,7 @@ export const CustomMultiSelect = ({
   label,
   required,
   errorMessage,
+  disabled,
 }: CustomMultiSelectProps) => {
   const { control, setValue, watch } = useFormContext();
   const selectedValues = watch(name) || [];
@@ -62,7 +64,7 @@ export const CustomMultiSelect = ({
             open={isOpen}
             onOpenChange={setIsOpen}
             value={field.value}
-            onValueChange={() => {}}
+            disabled={disabled}
           >
             <SelectTrigger>
               <SelectValue placeholder={placeholder}>
@@ -71,20 +73,11 @@ export const CustomMultiSelect = ({
                   : placeholder}
               </SelectValue>
             </SelectTrigger>
-            <SelectContent
-              onMouseDown={(e) => {
-                // Prevent select from closing
-                // e.preventDefault();
-              }}
-              className="multiselect__content"
-            >
+            <SelectContent className="multiselect__content">
               {options.map(({ value, label }) => (
                 <div
                   key={value}
-                  onClick={(e) => {
-                    // e.stopPropagation();
-                    handleValueChange(value);
-                  }}
+                  onClick={() => handleValueChange(value)}
                   className="multiselect__option"
                 >
                   <Checkbox
