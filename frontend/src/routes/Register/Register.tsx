@@ -1,5 +1,5 @@
 import { Button, CustomFormField } from '@/components';
-import { OrganizationRegistrationI } from '@/types';
+import { OrganizationAnimals, OrganizationRegistrationI } from '@/types';
 import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { SuccessMessage } from '@/components/SuccessMessage/SuccessMessage';
@@ -7,6 +7,7 @@ import axios from 'axios';
 import { axiosInstance, organizationRegistrationApi } from '@/lib/axios';
 import { API_ENDPOINTS } from '@/constants';
 import './register.scss';
+import { CustomMultiSelect } from '@/components/CustomMultiselect/CustomMultiselect';
 
 export const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,8 +34,19 @@ export const Register = () => {
       website: '',
       acceptsReports: false,
       password: '',
+      animals: [],
     },
   });
+
+  const ANIMAL_OPTIONS = Object.entries(OrganizationAnimals).map(
+    ([key, value]) => ({
+      value: value,
+      label: value
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' '),
+    })
+  );
 
   const { watch, setValue } = methods;
   const krsNumber = watch('krs');
@@ -299,10 +311,28 @@ export const Register = () => {
                 }
                 errorMessage={
                   isKRSValid
-                    ? formErrors.find((error) => error.field === 'voivodeship')
+                    ? formErrors.find((error) => error.field === 'description')
                         ?.message
                     : ''
                 }
+              />
+
+              <CustomMultiSelect
+                name="animals"
+                id="animals"
+                placeholder={
+                  isKRSValid ? 'Select at least one' : placeholderEnabled
+                }
+                options={ANIMAL_OPTIONS}
+                label="Animals you take care of"
+                required
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'animals.0')
+                        ?.message
+                    : ''
+                }
+                disabled={!isKRSValid}
               />
 
               <CustomFormField
