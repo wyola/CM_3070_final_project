@@ -60,6 +60,10 @@ export const OrganizationsListProvider = ({
         params.append('acceptsReports', String(filters.acceptsReports));
       }
 
+      if (filters?.animals && filters.animals.length > 0) {
+        params.append('animals', filters.animals.join(','));
+      }
+
       params.append('page', currentPage.toString());
 
       const { data: response } = await axiosInstance.get(
