@@ -57,8 +57,15 @@ const upload = multer({ storage });
  *         address:
  *           type: string
  *         geolocation:
- *           type: string
+ *           type: object
  *           nullable: true
+ *           properties:
+ *             lat:
+ *               type: number
+ *               description: Latitude coordinate
+ *             lon:
+ *               type: number
+ *               description: Longitude coordinate
  *         logo:
  *           type: string
  *         description:
@@ -148,10 +155,6 @@ const upload = multer({ storage });
  *                 type: string
  *                 description: Voivodeship name
  *                 example: "mazowieckie"
- *               geolocation:
- *                 type: string
- *                 description: Geolocation coordinates
- *                 example: ""
  *               logo:
  *                 type: string
  *                 format: binary

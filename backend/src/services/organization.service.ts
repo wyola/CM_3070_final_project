@@ -7,6 +7,7 @@ import {
   PaginatedOrganizationsResult,
 } from '../types/organization.types';
 import { WhitelistService } from './whitelist.service';
+import { GeolocationService } from './geolocation.service';
 
 const prisma = new PrismaClient();
 
@@ -30,9 +31,11 @@ const organizationSelect = {
 
 export class OrganizationService {
   private whitelistService: WhitelistService;
+  private geolocationService: GeolocationService;
 
   constructor() {
     this.whitelistService = new WhitelistService();
+    this.geolocationService = new GeolocationService();
   }
 
   async register(
@@ -49,6 +52,13 @@ export class OrganizationService {
         .toLowerCase();
       const hashedPassword = await bcrypt.hash(data.password, 10);
 
+      const geolocation =
+        await this.geolocationService.getCoordinatesFromAddress({
+          address: data.address,
+          city: data.city,
+          postalCode: data.postalCode,
+        });
+
       const result = await prisma.$transaction(async (tx) => {
         const { password, ...organizationData } = data;
 
@@ -60,6 +70,7 @@ export class OrganizationService {
             voivodeship,
             logo: logoPath,
             animals: JSON.stringify(data.animals),
+            geolocation: geolocation ? JSON.stringify(geolocation) : null,
           },
           select: organizationSelect,
         });
@@ -187,6 +198,7 @@ export class OrganizationService {
     return {
       ...org,
       animals: JSON.parse(org.animals),
+      geolocation: org.geolocation ? JSON.parse(org.geolocation) : null,
     };
   }
 }

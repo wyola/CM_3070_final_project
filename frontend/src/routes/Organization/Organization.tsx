@@ -9,6 +9,7 @@ import { OrganizationI } from '@/types';
 import { axiosInstance } from '@/lib/axios';
 import axios from 'axios';
 import { API_ENDPOINTS } from '@/constants';
+import { OrganizationMap } from '@/components/OrganizationMap/OrganizationMap';
 import './organization.scss';
 
 export const Organization = () => {
@@ -70,6 +71,13 @@ export const Organization = () => {
         city={city}
         voivodeship={voivodeship}
       />
+      {organization.geolocation && (
+        <OrganizationMap
+          geolocation={organization.geolocation}
+          name={name}
+          address={`${address}, ${postalCode} ${city}`}
+        />
+      )}
       <CustomCard>current needs</CustomCard>
       <CustomCard>volunteering options</CustomCard>
     </section>
