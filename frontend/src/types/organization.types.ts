@@ -1,3 +1,14 @@
+export enum OrganizationAnimals {
+  Dogs = 'dogs',
+  Cats = 'cats',
+  FarmAnimals = 'farm animals',
+  WildAnimals = 'wild animals',
+  ExoticAnimals = 'exotic animals',
+  Birds = 'birds',
+  Horses = 'horses',
+  Other = 'other',
+}
+
 export interface OrganizationI {
   id: number;
   name: string;
@@ -8,12 +19,16 @@ export interface OrganizationI {
   postalCode: string;
   voivodeship: string;
   address: string;
-  geolocation: string | null;
+  geolocation: {
+    lat: number;
+    lon: number;
+  } | null;
   logo: string;
   description: string;
   website: string | null;
   acceptsReports: boolean;
   password: string;
+  animals: OrganizationAnimals[];
 }
 
 export interface OrganizationRegistrationI
@@ -33,4 +48,5 @@ export interface OrganizationSearchFilterFormDataI {
   search?: string;
   voivodeship?: string;
   acceptsReports?: boolean;
+  animals?: string[];
 }

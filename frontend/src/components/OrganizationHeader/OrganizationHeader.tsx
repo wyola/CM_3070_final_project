@@ -1,4 +1,4 @@
-import { CustomCard } from '../CustomCard/CustomCard';
+import { CustomCard } from '@/components';
 import './organizationHeader.scss';
 
 type OrganizationHeaderProps = {

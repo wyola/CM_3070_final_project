@@ -4,8 +4,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { FormField } from '@/components';
+  FormField,
+} from '@/components';
 import { useFormContext } from 'react-hook-form';
 
 type CustomSelectProps = {

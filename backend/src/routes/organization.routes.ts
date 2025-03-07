@@ -33,6 +33,7 @@ const upload = multer({ storage });
  *         - voivodeship
  *         - logo
  *         - acceptsReports
+ *         - animals
  *       properties:
  *         id:
  *           type: integer
@@ -56,8 +57,15 @@ const upload = multer({ storage });
  *         address:
  *           type: string
  *         geolocation:
- *           type: string
+ *           type: object
  *           nullable: true
+ *           properties:
+ *             lat:
+ *               type: number
+ *               description: Latitude coordinate
+ *             lon:
+ *               type: number
+ *               description: Longitude coordinate
  *         logo:
  *           type: string
  *         description:
@@ -68,6 +76,12 @@ const upload = multer({ storage });
  *           nullable: true
  *         acceptsReports:
  *           type: boolean
+ *         animals:
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum: [dogs, cats, farm animals, wild animals, exotic animals, birds, horses, other]
+ *           description: Types of animals the organization handles
  */
 
 /**
@@ -93,6 +107,8 @@ const upload = multer({ storage });
  *               - postalCode
  *               - address
  *               - logo
+ *               - voivodeship
+ *               - animals
  *             properties:
  *               name:
  *                 type: string
@@ -135,10 +151,10 @@ const upload = multer({ storage });
  *                 maxLength: 200
  *                 description: Street address
  *                 example: ""
- *               geolocation:
+ *               voivodeship:
  *                 type: string
- *                 description: Geolocation coordinates
- *                 example: ""
+ *                 description: Voivodeship name
+ *                 example: "mazowieckie"
  *               logo:
  *                 type: string
  *                 format: binary
@@ -156,6 +172,14 @@ const upload = multer({ storage });
  *                 type: boolean
  *                 description: Whether organization accepts abuse reports
  *                 default: false
+ *               animals:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   enum: [dogs, cats, farm animals, wild animals, exotic animals, birds, horses, other]
+ *                 minItems: 1
+ *                 description: Types of animals the organization handles
+ *                 example: ["dogs", "cats"]
  *     responses:
  *       201:
  *         description: Organization registered successfully. The voivodeship field in the response will be automatically filled based on the KRS.
@@ -250,6 +274,12 @@ const upload = multer({ storage });
  *         schema:
  *           type: boolean
  *         description: Filter organizations by whether they accept reports (true/false)
+ *       - in: query
+ *         name: animals
+ *         schema:
+ *           type: string
+ *         description: Filter organizations by animal types (comma-separated values, e.g. 'dogs,cats')
+ *         example: "dogs,cats"
  *     responses:
  *       200:
  *         description: Organizations retrieved successfully

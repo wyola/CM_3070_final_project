@@ -3,6 +3,7 @@
   grid-template-columns: repeat(4, 1fr);
   grid-template-areas:
     'header header header contact'
+    'map map map map'
     'needs needs volunteer volunteer';
   gap: 1.5rem;
 

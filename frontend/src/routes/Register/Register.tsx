@@ -1,11 +1,15 @@
-import { Button, CustomFormField } from '@/components';
-import { OrganizationRegistrationI } from '@/types';
 import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
-import { SuccessMessage } from '@/components/SuccessMessage/SuccessMessage';
 import axios from 'axios';
 import { axiosInstance, organizationRegistrationApi } from '@/lib/axios';
-import { API_ENDPOINTS } from '@/constants';
+import { OrganizationRegistrationI } from '@/types';
+import {
+  Button,
+  CustomFormField,
+  CustomMultiSelect,
+  SuccessMessage,
+} from '@/components';
+import { ANIMAL_OPTIONS, API_ENDPOINTS } from '@/constants';
 import './register.scss';
 
 export const Register = () => {
@@ -33,6 +37,7 @@ export const Register = () => {
       website: '',
       acceptsReports: false,
       password: '',
+      animals: [],
     },
   });
 
@@ -299,10 +304,28 @@ export const Register = () => {
                 }
                 errorMessage={
                   isKRSValid
-                    ? formErrors.find((error) => error.field === 'voivodeship')
+                    ? formErrors.find((error) => error.field === 'description')
                         ?.message
                     : ''
                 }
+              />
+
+              <CustomMultiSelect
+                name="animals"
+                id="animals"
+                placeholder={
+                  isKRSValid ? 'Select at least one' : placeholderEnabled
+                }
+                options={ANIMAL_OPTIONS}
+                label="Animals you take care of"
+                required
+                errorMessage={
+                  isKRSValid
+                    ? formErrors.find((error) => error.field === 'animals.0')
+                        ?.message
+                    : ''
+                }
+                disabled={!isKRSValid}
               />
 
               <CustomFormField

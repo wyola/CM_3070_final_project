@@ -1,13 +1,16 @@
-import { CustomCard } from '@/components/CustomCard/CustomCard';
-import { OrganizationContact } from '@/components/OrganizationContact/OrganizationContact';
-import { OrganizationHeader } from '@/components/OrganizationHeader/OrganizationHeader';
-import { OrganizationI } from '@/types';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import {
+  CustomCard,
+  OrganizationContact,
+  OrganizationHeader,
+} from '@/components';
+import { OrganizationI } from '@/types';
 import { axiosInstance } from '@/lib/axios';
 import axios from 'axios';
-import './organization.scss';
 import { API_ENDPOINTS } from '@/constants';
+import { OrganizationMap } from '@/components/OrganizationMap/OrganizationMap';
+import './organization.scss';
 import { MOCKED_NEEDS } from '@/constants/mockedNeeds';
 import { OrganizationsNeed } from '@/components/OrganizationsNeed/OrganizationsNeed';
 import { KindsOfNeeds } from '@/types/needs.type';
@@ -71,6 +74,13 @@ export const Organization = () => {
         city={city}
         voivodeship={voivodeship}
       />
+      {organization.geolocation && (
+        <OrganizationMap
+          geolocation={organization.geolocation}
+          name={name}
+          address={`${address}, ${postalCode} ${city}`}
+        />
+      )}
       <div className="organization__needs">
         <h2 className="heading-secondary">Current needs</h2>
         {MOCKED_NEEDS.map((need) => (

@@ -7,6 +7,7 @@ import {
   PaginatedOrganizationsResult,
 } from '../types/organization.types';
 import { WhitelistService } from './whitelist.service';
+import { GeolocationService } from './geolocation.service';
 
 const prisma = new PrismaClient();
 
@@ -25,13 +26,16 @@ const organizationSelect = {
   description: true,
   website: true,
   acceptsReports: true,
+  animals: true,
 } as const;
 
 export class OrganizationService {
   private whitelistService: WhitelistService;
+  private geolocationService: GeolocationService;
 
   constructor() {
     this.whitelistService = new WhitelistService();
+    this.geolocationService = new GeolocationService();
   }
 
   async register(
@@ -48,6 +52,13 @@ export class OrganizationService {
         .toLowerCase();
       const hashedPassword = await bcrypt.hash(data.password, 10);
 
+      const geolocation =
+        await this.geolocationService.getCoordinatesFromAddress({
+          address: data.address,
+          city: data.city,
+          postalCode: data.postalCode,
+        });
+
       const result = await prisma.$transaction(async (tx) => {
         const { password, ...organizationData } = data;
 
@@ -58,6 +69,8 @@ export class OrganizationService {
             city: organizationData.city.toLowerCase(),
             voivodeship,
             logo: logoPath,
+            animals: JSON.stringify(data.animals),
+            geolocation: geolocation ? JSON.stringify(geolocation) : null,
           },
           select: organizationSelect,
         });
@@ -74,7 +87,7 @@ export class OrganizationService {
           },
         });
 
-        return { organization, user };
+        return { organization: this.transformOrganization(organization), user };
       });
 
       return result;
@@ -92,7 +105,7 @@ export class OrganizationService {
   async getOrganizations(
     query: OrganizationQueryDto
   ): Promise<PaginatedOrganizationsResult> {
-    const { page, limit, search, voivodeship, acceptsReports } = query;
+    const { page, limit, search, voivodeship, acceptsReports, animals } = query;
     const skip = (page - 1) * limit;
 
     let where: Prisma.OrganizationWhereInput = {};
@@ -113,15 +126,25 @@ export class OrganizationService {
       where.acceptsReports = acceptsReports;
     }
 
+    if (animals && animals.length > 0) {
+      where.AND = animals.map((animal) => ({
+        animals: {
+          contains: animal,
+        },
+      }));
+    }
+
     const [total, organizations] = await Promise.all([
       prisma.organization.count({ where }),
-      prisma.organization.findMany({
-        where,
-        skip,
-        take: limit,
-        orderBy: { name: 'asc' },
-        select: organizationSelect,
-      }),
+      prisma.organization
+        .findMany({
+          where,
+          skip,
+          take: limit,
+          orderBy: { name: 'asc' },
+          select: organizationSelect,
+        })
+        .then((orgs) => orgs.map(this.transformOrganization)),
     ]);
 
     const pages = Math.ceil(total / limit);
@@ -142,7 +165,7 @@ export class OrganizationService {
       where: { id },
     });
 
-    return organization;
+    return organization ? this.transformOrganization(organization) : null;
   }
 
   async getOrganizationInfoByKrs(krs: string): Promise<any> {
@@ -168,6 +191,14 @@ export class OrganizationService {
       name: whitelistInfo.Name,
       voivodeship: whitelistInfo.Voivodeship,
       city: whitelistInfo.City || '',
+    };
+  }
+
+  private transformOrganization(org: any) {
+    return {
+      ...org,
+      animals: JSON.parse(org.animals),
+      geolocation: org.geolocation ? JSON.parse(org.geolocation) : null,
     };
   }
 }
