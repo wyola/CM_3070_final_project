@@ -1,27 +1,12 @@
 .organization {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-areas:
-    'header header header contact'
-    'map map map map'
-    'needs needs volunteer volunteer';
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
 
-  .organization-header {
-    grid-area: header;
-  }
-
-  .organization-contact {
-    grid-area: contact;
-  }
-
-  > :nth-child(3) {
-    // TODO: change to class when component is ready
-    grid-area: needs;
-  }
-
-  > :nth-child(4) {
-    // TODO: change to class when component is ready
-    grid-area: volunteer;
+  &__needs,
+  &__volunteering {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 }

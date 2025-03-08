@@ -4,12 +4,14 @@ import {
   CustomCard,
   OrganizationContact,
   OrganizationHeader,
+  OrganizationMap,
+  OrganizationsNeed,
 } from '@/components';
-import { OrganizationI } from '@/types';
+import { OrganizationI, KindsOfNeeds } from '@/types';
 import { axiosInstance } from '@/lib/axios';
 import axios from 'axios';
 import { API_ENDPOINTS } from '@/constants';
-import { OrganizationMap } from '@/components/OrganizationMap/OrganizationMap';
+import { MOCKED_NEEDS } from '@/constants/mockedNeeds'; // TO BE REMOVED AFTER INTEGRATION
 import './organization.scss';
 
 export const Organization = () => {
@@ -62,6 +64,7 @@ export const Organization = () => {
   return (
     <section className="content organization">
       <OrganizationHeader logo={logo} name={name} description={description} />
+
       <OrganizationContact
         website={website}
         phone={phone}
@@ -71,6 +74,7 @@ export const Organization = () => {
         city={city}
         voivodeship={voivodeship}
       />
+
       {organization.geolocation && (
         <OrganizationMap
           geolocation={organization.geolocation}
@@ -78,8 +82,24 @@ export const Organization = () => {
           address={`${address}, ${postalCode} ${city}`}
         />
       )}
-      <CustomCard>current needs</CustomCard>
-      <CustomCard>volunteering options</CustomCard>
+
+      <div className="organization__needs">
+        <h2 className="heading-secondary">Current needs</h2>
+        {MOCKED_NEEDS.map((need) => (
+          <OrganizationsNeed
+            key={need.id}
+            id={need.id}
+            kind={need.kind as KindsOfNeeds}
+            priority={need.priority}
+            description={need.description}
+          />
+        ))}
+      </div>
+
+      <div className="organization__volunteering">
+        <h2 className="heading-secondary">Volunteering options</h2>
+        <CustomCard>volunteering options</CustomCard>
+      </div>
     </section>
   );
 };
