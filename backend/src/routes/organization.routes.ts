@@ -184,26 +184,7 @@ const upload = multer({ storage });
  *     responses:
  *       201:
  *         description: Organization registered successfully. The voivodeship field in the response will be automatically filled based on the KRS.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Organization registered successfully"
- *                 data:
- *                   type: object
- *                   properties:
- *                     organization:
- *                       $ref: '#/components/schemas/Organization'
- *                     user:
- *                       type: object
- *                       properties:
- *                         id:
- *                           type: integer
- *                         email:
- *                           type: string
+ type: array
  *       400:
  *         description: Validation error or missing logo
  *         content:
@@ -432,7 +413,6 @@ router.get('/', organizationController.getOrganizations);
 router.get('/:id', organizationController.getOrganizationById);
 router.get('/krs/:krs', organizationController.getOrganizationByKrs);
 
-// Mount the need routes under organizations
 router.use('/:organizationId/needs', needRoutes);
 
 export default router;

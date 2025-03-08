@@ -51,7 +51,7 @@ model RefreshToken {
 
 model Need {
   id           Int          @id @default(autoincrement())
-  kind         String       // Will store the enum value as string
+  kind         String
   priority     Boolean      @default(false)
   description  String
   createdAt    DateTime     @default(now())

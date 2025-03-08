@@ -138,6 +138,58 @@ export class NeedController {
     }
   }
 
+  public updateNeed = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const needId = this.validateNeedId(req.params.needId);
+      const organizationId = this.validateOrganizationId(req.params.organizationId);
+      
+      if (needId === null || organizationId === null) {
+        res.status(400).json({
+          message: 'Invalid ID format',
+        });
+        return;
+      }
+
+      const need = await this.validateNeedBelongsToOrganization(needId, organizationId, res);
+      if (!need) return;
+
+      const validatedData = needSchema.parse({
+        ...req.body,
+        organizationId,
+      });
+
+      const updatedNeed = await needService.updateNeed(needId, validatedData);
+
+      res.status(200).json({
+        message: 'Need updated successfully',
+        need: updatedNeed,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errors = error.errors.map((err) => ({
+          field: err.path.join('.'),
+          message: err.message,
+        }));
+
+        res.status(400).json({
+          message: 'Validation failed',
+          errors,
+        });
+        return;
+      }
+
+      if (error instanceof Error) {
+        res.status(400).json({ message: error.message });
+        return;
+      }
+
+      console.error('Error updating need:', error);
+      res.status(500).json({
+        message: 'Internal server error',
+      });
+    }
+  };
+
   private validateOrganizationId(organizationId: any): number | null {
     const parsedId = parseInt(organizationId);
     return isNaN(parsedId) ? null : parsedId;

@@ -52,6 +52,19 @@ export class NeedService {
     });
   }
 
+  async updateNeed(id: number, data: NeedDto): Promise<NeedResponse> {
+    const need = await prisma.need.update({
+      where: { id },
+      data: {
+        kind: data.kind.toString(),
+        priority: data.priority,
+        description: data.description,
+      },
+    });
+
+    return this.transformNeed(need);
+  }
+
   private transformNeed(need: any) {
     return {
       ...need,

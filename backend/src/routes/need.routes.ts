@@ -199,4 +199,72 @@ router.delete(
   needController.deleteNeed
 );
 
+/**
+ * @swagger
+ * /api/organizations/{organizationId}/needs/{needId}:
+ *   put:
+ *     tags: [Needs]
+ *     summary: Update a specific need by ID
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: organizationId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Organization ID
+ *       - in: path
+ *         name: needId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Need ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               kind:
+ *                 type: string
+ *                 enum: [accessories, bedding, cleaning, food, grooming, medication, other, toys, vet]
+ *                 description: Type of need
+ *               priority:
+ *                 type: boolean
+ *                 description: Whether this need is high priority
+ *               description:
+ *                 type: string
+ *                 minLength: 5
+ *                 description: Description of the need
+ *     responses:
+ *       200:
+ *         description: Need updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Need updated successfully"
+ *                 need:
+ *                   $ref: '#/components/schemas/Need'
+ *       400:
+ *         description: Validation error
+ *       404:
+ *         description: Need not found
+ *       403:
+ *         description: Forbidden - user does not own this organization
+ *       500:
+ *         description: Server error
+ */
+router.put(
+  '/:needId',
+  authenticateJWT,
+  isOrganizationOwner,
+  needController.updateNeed
+);
+
 export default router;
