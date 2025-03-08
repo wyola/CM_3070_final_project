@@ -25,7 +25,7 @@ export interface OrganizationI {
   } | null;
   logo: string;
   description: string;
-  website: string | null;
+  website: string;
   acceptsReports: boolean;
   password: string;
   animals: OrganizationAnimals[];

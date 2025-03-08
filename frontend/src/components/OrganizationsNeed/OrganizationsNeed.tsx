@@ -1,11 +1,10 @@
-import { KindsOfNeeds } from '@/types/needs.type';
-import { CustomCard } from '../CustomCard/CustomCard';
-import { IconLabel } from '../IconLabel/IconLabel';
+import { KindsOfNeeds } from '@/types';
+import { CustomCard, IconLabel } from '@/components';
 import { mapKindToLabel } from '@/utils';
 import './organizationsNeed.scss';
 
 type OrganizationsNeedProps = {
-  id: number;
+  id: number; // TODO: check if its needed, can be needed for editing/removing needs
   kind: KindsOfNeeds;
   priority: boolean;
   description: string;
@@ -23,7 +22,13 @@ export const OrganizationsNeed = ({
         <IconLabel iconSrc={`/needs/${kind}.svg`}>
           {mapKindToLabel(kind)}
         </IconLabel>
-        {priority && <img src="/megaphone.svg" alt="high priority" className='organizations-need__priority' />}
+        {priority && (
+          <img
+            src="/megaphone.svg"
+            alt="high priority"
+            className="organizations-need__priority"
+          />
+        )}
       </div>
       <p className="organizations-need__description">{description}</p>
     </CustomCard>

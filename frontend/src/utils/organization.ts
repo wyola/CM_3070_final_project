@@ -1,4 +1,4 @@
-import { KindsOfNeeds } from '@/types/needs.type';
+import { KindsOfNeeds } from '@/types';
 
 export const mapKindToLabel = (kind: KindsOfNeeds) => {
   switch (kind) {
