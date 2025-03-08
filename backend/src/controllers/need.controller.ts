@@ -12,9 +12,9 @@ export class NeedController {
     res: Response
   ): Promise<void> => {
     try {
-      const organizationId = parseInt(req.params.organizationId);
-
-      if (isNaN(organizationId)) {
+      const organizationId = this.validateOrganizationId(req.params.organizationId);
+      
+      if (organizationId === null) {
         res.status(400).json({
           message: 'Invalid organization ID format',
         });
@@ -60,9 +60,9 @@ export class NeedController {
     res: Response
   ): Promise<void> => {
     try {
-      const organizationId = parseInt(req.params.organizationId);
-
-      if (isNaN(organizationId)) {
+      const organizationId = this.validateOrganizationId(req.params.organizationId);
+      
+      if (organizationId === null) {
         res.status(400).json({
           message: 'Invalid organization ID format',
         });
@@ -85,32 +85,18 @@ export class NeedController {
 
   public getNeedById = async (req: Request, res: Response): Promise<void> => {
     try {
-      const needId = parseInt(req.params.needId);
-      const organizationId = parseInt(req.params.organizationId);
-
-      if (isNaN(needId) || isNaN(organizationId)) {
+      const needId = this.validateNeedId(req.params.needId);
+      const organizationId = this.validateOrganizationId(req.params.organizationId);
+      
+      if (needId === null || organizationId === null) {
         res.status(400).json({
           message: 'Invalid ID format',
         });
         return;
       }
 
-      const need = await needService.getNeedById(needId);
-
-      if (!need) {
-        res.status(404).json({
-          message: 'Need not found',
-        });
-        return;
-      }
-
-      // Verify that the need belongs to the specified organization
-      if (need.organizationId !== organizationId) {
-        res.status(404).json({
-          message: 'Need not found for this organization',
-        });
-        return;
-      }
+      const need = await this.validateNeedBelongsToOrganization(needId, organizationId, res);
+      if (!need) return;
 
       res.status(200).json({
         message: 'Need retrieved successfully',
@@ -123,4 +109,62 @@ export class NeedController {
       });
     }
   };
+
+  public deleteNeed = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const needId = this.validateNeedId(req.params.needId);
+      const organizationId = this.validateOrganizationId(req.params.organizationId);
+      
+      if (needId === null || organizationId === null) {
+        res.status(400).json({
+          message: 'Invalid ID format',
+        });
+        return;
+      }
+
+      const need = await this.validateNeedBelongsToOrganization(needId, organizationId, res);
+      if (!need) return;
+
+      await needService.deleteNeed(needId);
+
+      res.status(200).json({
+        message: 'Need deleted successfully',
+      });
+    } catch (error) {
+      console.error('Error deleting need:', error);
+      res.status(500).json({
+        message: 'Internal server error',
+      });
+    }
+  }
+
+  private validateOrganizationId(organizationId: any): number | null {
+    const parsedId = parseInt(organizationId);
+    return isNaN(parsedId) ? null : parsedId;
+  }
+
+  private validateNeedId(needId: any): number | null {
+    const parsedId = parseInt(needId);
+    return isNaN(parsedId) ? null : parsedId;
+  }
+
+  private async validateNeedBelongsToOrganization(needId: number, organizationId: number, res: Response): Promise<any | null> {
+    const need = await needService.getNeedById(needId);
+    
+    if (!need) {
+      res.status(404).json({
+        message: 'Need not found',
+      });
+      return null;
+    }
+
+    if (need.organizationId !== organizationId) {
+      res.status(404).json({
+        message: 'Need not found for this organization',
+      });
+      return null;
+    }
+
+    return need;
+  }
 }

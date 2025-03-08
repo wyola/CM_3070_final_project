@@ -46,6 +46,12 @@ export class NeedService {
     return need ? this.transformNeed(need) : null;
   }
 
+  async deleteNeed(id: number): Promise<void> {
+    await prisma.need.delete({
+      where: { id },
+    });
+  }
+
   private transformNeed(need: any) {
     return {
       ...need,

@@ -161,4 +161,42 @@ router.get('/', needController.getNeedsByOrganizationId);
  */
 router.get('/:needId', needController.getNeedById);
 
+/**
+ * @swagger
+ * /api/organizations/{organizationId}/needs/{needId}:
+ *   delete:
+ *     tags: [Needs]
+ *     summary: Delete a specific need by ID
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: organizationId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Organization ID
+ *       - in: path
+ *         name: needId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Need ID
+ *     responses:
+ *       200:
+ *         description: Need deleted successfully
+ *       404:
+ *         description: Need not found
+ *       403:
+ *         description: Forbidden - user does not own this organization
+ *       500:
+ *         description: Server error
+ */
+router.delete(
+  '/:needId',
+  authenticateJWT,
+  isOrganizationOwner,
+  needController.deleteNeed
+);
+
 export default router;
