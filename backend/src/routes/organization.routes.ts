@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import { OrganizationController } from '../controllers/organization.controller';
+import needRoutes from './need.routes';
 
 const router = Router();
 const organizationController = new OrganizationController();
@@ -430,5 +431,8 @@ router.post('/', upload.single('logo'), organizationController.register);
 router.get('/', organizationController.getOrganizations);
 router.get('/:id', organizationController.getOrganizationById);
 router.get('/krs/:krs', organizationController.getOrganizationByKrs);
+
+// Mount the need routes under organizations
+router.use('/:organizationId/needs', needRoutes);
 
 export default router;
