@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import { OrganizationController } from '../controllers/organization.controller';
+import needRoutes from './need.routes';
 
 const router = Router();
 const organizationController = new OrganizationController();
@@ -183,26 +184,7 @@ const upload = multer({ storage });
  *     responses:
  *       201:
  *         description: Organization registered successfully. The voivodeship field in the response will be automatically filled based on the KRS.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Organization registered successfully"
- *                 data:
- *                   type: object
- *                   properties:
- *                     organization:
- *                       $ref: '#/components/schemas/Organization'
- *                     user:
- *                       type: object
- *                       properties:
- *                         id:
- *                           type: integer
- *                         email:
- *                           type: string
+ type: array
  *       400:
  *         description: Validation error or missing logo
  *         content:
@@ -430,5 +412,7 @@ router.post('/', upload.single('logo'), organizationController.register);
 router.get('/', organizationController.getOrganizations);
 router.get('/:id', organizationController.getOrganizationById);
 router.get('/krs/:krs', organizationController.getOrganizationByKrs);
+
+router.use('/:organizationId/needs', needRoutes);
 
 export default router;
