@@ -9,6 +9,7 @@ const testDbPath = path.join(__dirname, 'test.db');
 process.env.DATABASE_URL = `file:${testDbPath}`;
 
 const prisma = new PrismaClient();
+global.prisma = prisma;
 
 beforeAll(async () => {
   if (fs.existsSync(testDbPath)) {

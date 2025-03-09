@@ -1,10 +1,7 @@
 import request from 'supertest';
-import { PrismaClient } from '@prisma/client';
 import app from '../../app';
 import path from 'path';
 import fs from 'fs';
-
-const prisma = new PrismaClient();
 
 const validKRS = '0000000963'; 
 const invalidKRS = '123';

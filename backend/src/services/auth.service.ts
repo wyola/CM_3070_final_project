@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt, { JwtPayload, SignOptions } from 'jsonwebtoken';
 import { jwtConfig } from '../config/jwt.config';
-
-const prisma = new PrismaClient();
+import { prisma } from '../lib/prisma-client';
 
 export class AuthService {
   async validateUser(email: string, password: string) {
