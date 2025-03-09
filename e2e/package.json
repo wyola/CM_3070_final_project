@@ -7,6 +7,7 @@
   "main": "index.js",
   "scripts": {},
   "dependencies": {
+    "path": "^0.12.7",
     "playwright": "^1.51.0"
   },
   "devDependencies": {
