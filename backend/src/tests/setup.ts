@@ -12,7 +12,13 @@ const prisma = new PrismaClient();
 
 beforeAll(async () => {
   if (fs.existsSync(testDbPath)) {
-    fs.unlinkSync(testDbPath);
+    try {
+      fs.unlinkSync(testDbPath);
+      console.log(`Deleted existing test database at ${testDbPath}`);
+    } catch (error) {
+      console.error(`Error deleting file at ${testDbPath}:`, error);
+      throw error;
+    }
   }
   
   try {
@@ -26,7 +32,10 @@ beforeAll(async () => {
 afterAll(async () => {
   await prisma.$disconnect();
   
-  if (fs.existsSync(testDbPath)) {
+  try {
     fs.unlinkSync(testDbPath);
+    console.log(`Deleted test database at ${testDbPath}`);
+  } catch (error) {
+    console.error(`Error deleting file at ${testDbPath}:`, error);
   }
 });
