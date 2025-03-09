@@ -184,7 +184,26 @@ const upload = multer({ storage });
  *     responses:
  *       201:
  *         description: Organization registered successfully. The voivodeship field in the response will be automatically filled based on the KRS.
- type: array
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Organization registered successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     organization:
+ *                       $ref: '#/components/schemas/Organization'
+ *                     user:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: integer
+ *                         email:
+ *                           type: string
  *       400:
  *         description: Validation error or missing logo
  *         content:
