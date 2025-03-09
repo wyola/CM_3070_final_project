@@ -48,3 +48,20 @@ export default tseslint.config({
   },
 });
 ```
+
+## Testing
+
+The project uses Vitest with React Testing Library for unit testing.
+
+### Running Tests
+
+- Run all tests: `npm test`
+- Run tests in watch mode: `npm run test:watch`
+
+### Test Files Structure
+
+Tests are located next to the components they test with the `.test.tsx` extension.
+
+For example:
+- `src/components/CustomSelect/CustomSelect.tsx` - Component
+- `src/components/CustomSelect/CustomSelect.test.tsx` - Component tests

@@ -1,10 +1,13 @@
 node_modules
 # Keep environment variables out of version control
-.env
 uploads/*
 !uploads/.gitkeep
 dist
 
+src/tests/integration/test-logo.png
+
 # SQLite files
 prisma/src/database/sqlite.db
 prisma/src/database/sqlite.db-journal
+prisma/e2e_test.db
+prisma/e2e_test.db-journal

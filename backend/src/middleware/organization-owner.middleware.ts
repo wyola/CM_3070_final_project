@@ -1,8 +1,6 @@
 import { Response, NextFunction } from 'express';
-import { PrismaClient } from '@prisma/client';
 import { RequestWithUser } from './auth.middleware';
-
-const prisma = new PrismaClient();
+import { prisma } from '../lib/prisma-client';
 
 export const isOrganizationOwner = async (
   req: RequestWithUser,

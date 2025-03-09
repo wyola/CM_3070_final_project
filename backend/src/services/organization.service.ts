@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, Organization } from '@prisma/client';
+import { Prisma, Organization } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import {
   OrganizationRegistrationDto,
@@ -6,10 +6,9 @@ import {
   OrganizationQueryDto,
   PaginatedOrganizationsResult,
 } from '../types/organization.types';
+import { prisma } from '../lib/prisma-client';
 import { WhitelistService } from './whitelist.service';
 import { GeolocationService } from './geolocation.service';
-
-const prisma = new PrismaClient();
 
 const organizationSelect = {
   id: true,
