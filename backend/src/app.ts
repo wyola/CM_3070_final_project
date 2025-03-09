@@ -1,3 +1,7 @@
+if (!process.env.DATABASE_URL) {
+  process.env.DATABASE_URL = "file:./src/database/sqlite.db";
+}
+
 import express, { Application } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
