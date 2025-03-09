@@ -1,5 +1,5 @@
 if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = "file:./src/database/sqlite.db";
+  process.env.DATABASE_URL = 'file:./src/database/sqlite.db';
 }
 
 import express, { Application } from 'express';
