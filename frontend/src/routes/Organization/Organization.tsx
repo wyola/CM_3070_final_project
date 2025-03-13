@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import {
+  Button,
   CustomCard,
   OrganizationContact,
   OrganizationHeader,
@@ -15,10 +16,13 @@ import { MOCKED_NEEDS } from '@/constants/mockedNeeds'; // TO BE REMOVED AFTER I
 import './organization.scss';
 
 export const Organization = () => {
-  const { id } = useParams();
   const [organization, setOrganization] = useState<OrganizationI | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const { id } = useParams();
+
+  const isOwner = true; // TODO: add to organization ownerId and check if user is owner
 
   useEffect(() => {
     const fetchOrganization = async () => {
@@ -84,7 +88,12 @@ export const Organization = () => {
       )}
 
       <div className="organization__needs">
-        <h2 className="heading-secondary">Current needs</h2>
+        <div className="organization__needs--header">
+          <h2 className="heading-secondary">Current needs</h2>
+          <Button variant="link" className="organization__needs--add-button">
+            <img src="/add.svg" alt="add new need" />
+          </Button>
+        </div>
         {MOCKED_NEEDS.map((need) => (
           <OrganizationsNeed
             key={need.id}
