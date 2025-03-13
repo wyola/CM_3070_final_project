@@ -11,17 +11,24 @@
   }
 
   &__needs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     &--header {
       display: flex;
       align-items: center;
       gap: 1rem;
     }
-    &--add-button {
-      padding: 0 !important; // TODO: not use important
+
+    &--add-button:is(button) {
+      padding: 0;
 
       img {
         width: 1.5rem;
       }
+    }
+
+    > :first-child {
+      grid-column: span 2;
     }
   }
 }

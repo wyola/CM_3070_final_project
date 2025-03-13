@@ -12,12 +12,14 @@ type AddNeedModalProps = {
   isOpen: boolean;
   onClose: () => void;
   organizationId: number;
+  onSuccess: () => void;
 };
 
 export const AddNeedModal = ({
   isOpen,
   onClose,
   organizationId,
+  onSuccess
 }: AddNeedModalProps) => {
   const [error, setError] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<
@@ -49,6 +51,7 @@ export const AddNeedModal = ({
         priority: data.priority,
       });
       reset();
+      onSuccess();
       onClose();
     } catch (error) {
       if (axios.isAxiosError(error)) {

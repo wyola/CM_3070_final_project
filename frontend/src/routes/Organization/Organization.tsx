@@ -27,6 +27,21 @@ export const Organization = () => {
   // Needed to display add/edit buttons only for owner
   // const isOwner = true; // TODO: add to organization ownerId and check if user is owner
 
+  const fetchNeeds = async () => {
+    try {
+      const { data } = await axiosInstance.get(
+        API_ENDPOINTS.NEEDS.ALL(Number(id))
+      );
+      setNeeds(data.needs);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'Failed to load needs');
+      } else {
+        setError('An unexpected error occurred');
+      }
+    }
+  };
+
   useEffect(() => {
     const fetchOrganization = async () => {
       try {
@@ -123,6 +138,7 @@ export const Organization = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         organizationId={Number(id)}
+        onSuccess={fetchNeeds}
       />
     </section>
   );
