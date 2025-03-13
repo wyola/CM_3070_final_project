@@ -75,7 +75,6 @@ export const Login = () => {
           <Button
             type="submit"
             className="submit-button"
-            // disabled={isSubmitting}
           >
             Login
           </Button>

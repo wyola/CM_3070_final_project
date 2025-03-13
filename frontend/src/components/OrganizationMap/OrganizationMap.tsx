@@ -20,7 +20,7 @@ export const OrganizationMap = ({
         // @ts-ignore - issue with types in library
         center={[geolocation.lat, geolocation.lon]}
         zoom={15}
-        style={{ height: '200px', width: '100%' }}
+        style={{ height: '200px', width: '100%', zIndex: 0 }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
