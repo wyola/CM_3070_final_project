@@ -90,7 +90,11 @@ export const Organization = () => {
       <div className="organization__needs">
         <div className="organization__needs--header">
           <h2 className="heading-secondary">Current needs</h2>
-          <Button variant="link" className="organization__needs--add-button">
+          <Button
+            variant="link"
+            className="organization__needs--add-button"
+            onClick={() => {}}
+          >
             <img src="/add.svg" alt="add new need" />
           </Button>
         </div>
