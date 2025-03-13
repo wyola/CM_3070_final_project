@@ -7,7 +7,7 @@ import {
   OrganizationHeader,
   OrganizationMap,
   OrganizationsNeed,
-  CustomModal,
+  AddNeedModal,
 } from '@/components';
 import { OrganizationI, KindsOfNeeds } from '@/types';
 import { axiosInstance } from '@/lib/axios';
@@ -116,18 +116,11 @@ export const Organization = () => {
         <CustomCard>volunteering options</CustomCard>
       </div>
 
-      <CustomModal
+      <AddNeedModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Add new need"
-        description="Fill in the form to add a new need"
-        buttonLabel="Add need"
-        onConfirm={() => {
-          console.log('Need added'), setIsModalOpen(false);
-        }}
-      >
-        <p>FORM</p>
-      </CustomModal>
+        organizationId={Number(id)}
+      />
     </section>
   );
 };

@@ -17,6 +17,7 @@ type CustomModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  className?: string;
 };
 
 export const CustomModal = ({
@@ -27,6 +28,7 @@ export const CustomModal = ({
   isOpen,
   onClose,
   onConfirm,
+  className,
 }: CustomModalProps) => {
   return (
     <Dialog
@@ -37,13 +39,13 @@ export const CustomModal = ({
         }
       }}
     >
-      <DialogContent>
+      <DialogContent className={className}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         {children}
-        <DialogFooter className="sm:justify-start">
+        <DialogFooter>
           <DialogClose asChild>
             <Button
               type="button"
