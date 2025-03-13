@@ -7,6 +7,7 @@ import {
   OrganizationHeader,
   OrganizationMap,
   OrganizationsNeed,
+  CustomModal,
 } from '@/components';
 import { OrganizationI, KindsOfNeeds } from '@/types';
 import { axiosInstance } from '@/lib/axios';
@@ -19,6 +20,7 @@ export const Organization = () => {
   const [organization, setOrganization] = useState<OrganizationI | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { id } = useParams();
 
@@ -93,7 +95,7 @@ export const Organization = () => {
           <Button
             variant="link"
             className="organization__needs--add-button"
-            onClick={() => {}}
+            onClick={() => setIsModalOpen(true)}
           >
             <img src="/add.svg" alt="add new need" />
           </Button>
@@ -113,6 +115,19 @@ export const Organization = () => {
         <h2 className="heading-secondary">Volunteering options</h2>
         <CustomCard>volunteering options</CustomCard>
       </div>
+
+      <CustomModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Add new need"
+        description="Fill in the form to add a new need"
+        buttonLabel="Add need"
+        onConfirm={() => {
+          console.log('Need added'), setIsModalOpen(false);
+        }}
+      >
+        <p>FORM</p>
+      </CustomModal>
     </section>
   );
 };

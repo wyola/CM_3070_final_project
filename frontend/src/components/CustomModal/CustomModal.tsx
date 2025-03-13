@@ -29,19 +29,30 @@ export const CustomModal = ({
   onConfirm,
 }: CustomModalProps) => {
   return (
-    <Dialog open={isOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={() => {
+        if (isOpen) {
+          onClose();
+        }
+      }}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
-          <Button type="button" variant="link" onClick={onClose}>
-            x
-          </Button>
         </DialogHeader>
         {children}
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
-            <Button type="button" variant="secondary" onClick={onConfirm}>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => {
+                onConfirm();
+                onClose();
+              }}
+            >
               {buttonLabel}
             </Button>
           </DialogClose>
