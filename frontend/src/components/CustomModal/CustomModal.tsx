@@ -18,6 +18,7 @@ type CustomModalProps = {
   onClose: () => void;
   onConfirm: () => void;
   className?: string;
+  buttonDisabled?: boolean;
 };
 
 export const CustomModal = ({
@@ -29,6 +30,7 @@ export const CustomModal = ({
   onClose,
   onConfirm,
   className,
+  buttonDisabled,
 }: CustomModalProps) => {
   return (
     <Dialog
@@ -54,6 +56,7 @@ export const CustomModal = ({
                 onConfirm();
                 onClose();
               }}
+              disabled={buttonDisabled}
             >
               {buttonLabel}
             </Button>

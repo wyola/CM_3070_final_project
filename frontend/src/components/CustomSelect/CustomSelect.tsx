@@ -7,6 +7,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components';
 import { useFormContext } from 'react-hook-form';
 
@@ -17,6 +18,7 @@ type CustomSelectProps = {
   id: string;
   required?: boolean;
   label?: string;
+  errorMessage?: string;
 };
 
 export const CustomSelect = ({
@@ -26,6 +28,7 @@ export const CustomSelect = ({
   id,
   required,
   label,
+  errorMessage,
 }: CustomSelectProps) => {
   const { control } = useFormContext();
 
@@ -57,6 +60,7 @@ export const CustomSelect = ({
               ))}
             </SelectContent>
           </Select>
+          {errorMessage && <FormMessage>{errorMessage}</FormMessage>}
         </FormItem>
       )}
     />

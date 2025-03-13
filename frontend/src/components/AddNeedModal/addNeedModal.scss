@@ -2,6 +2,10 @@
 
 .add-need {
   &__form {
+    display: flex;
+    gap: 1.5rem;
+    flex-direction: column;
+
     &--checkbox {
       display: flex;
       flex-direction: row-reverse;

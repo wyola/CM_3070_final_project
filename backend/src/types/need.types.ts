@@ -13,11 +13,11 @@ export enum KindsOfNeeds {
 }
 
 export const needSchema = z.object({
-  kind: z.nativeEnum(KindsOfNeeds),
+  kind: z.nativeEnum(KindsOfNeeds, {
+    errorMap: () => ({ message: 'Select kind of need' }),
+  }),
   priority: z.boolean().default(false),
-  description: z
-    .string()
-    .min(5, 'Description must be at least 5 characters long'),
+  description: z.string().min(5, 'Must be at least 5 characters long'),
   organizationId: z.number().int().positive(),
 });
 

@@ -10,4 +10,8 @@ export const API_ENDPOINTS = {
     LOGIN: `/api/auth/login`,
     REFRESH: `/api/auth/refresh`,
   },
+  NEEDS: {
+    CREATE: (organizationId: number) =>
+      `/api/organizations/${organizationId}/needs`,
+  },
 };
