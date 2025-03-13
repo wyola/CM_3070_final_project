@@ -13,5 +13,7 @@ export const API_ENDPOINTS = {
   NEEDS: {
     CREATE: (organizationId: number) =>
       `/api/organizations/${organizationId}/needs`,
+    ALL: (organizationId: number) =>
+      `/api/organizations/${organizationId}/needs`,
   },
 };

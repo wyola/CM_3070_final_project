@@ -9,30 +9,33 @@ import {
   OrganizationsNeed,
   AddNeedModal,
 } from '@/components';
-import { OrganizationI, KindsOfNeeds } from '@/types';
+import { OrganizationI, KindsOfNeeds, NeedI } from '@/types';
 import { axiosInstance } from '@/lib/axios';
 import axios from 'axios';
 import { API_ENDPOINTS } from '@/constants';
-import { MOCKED_NEEDS } from '@/constants/mockedNeeds'; // TO BE REMOVED AFTER INTEGRATION
 import './organization.scss';
 
 export const Organization = () => {
   const [organization, setOrganization] = useState<OrganizationI | null>(null);
+  const [needs, setNeeds] = useState<NeedI[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { id } = useParams();
 
-  const isOwner = true; // TODO: add to organization ownerId and check if user is owner
+  // Needed to display add/edit buttons only for owner
+  // const isOwner = true; // TODO: add to organization ownerId and check if user is owner
 
   useEffect(() => {
     const fetchOrganization = async () => {
       try {
-        const { data: response } = await axiosInstance.get(
-          API_ENDPOINTS.ORGANIZATIONS.BY_ID(Number(id))
-        );
-        setOrganization(response.organization);
+        const [orgResponse, needsResponse] = await Promise.all([
+          axiosInstance.get(API_ENDPOINTS.ORGANIZATIONS.BY_ID(Number(id))),
+          axiosInstance.get(API_ENDPOINTS.NEEDS.ALL(Number(id))),
+        ]);
+        setOrganization(orgResponse.data.organization);
+        setNeeds(needsResponse.data.needs);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setError(
@@ -100,7 +103,7 @@ export const Organization = () => {
             <img src="/add.svg" alt="add new need" />
           </Button>
         </div>
-        {MOCKED_NEEDS.map((need) => (
+        {needs.map((need) => (
           <OrganizationsNeed
             key={need.id}
             id={need.id}
