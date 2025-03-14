@@ -1,10 +1,10 @@
 .organization-header {
-
   &__title {
     display: flex;
     gap: 1.5rem;
     align-items: center;
     text-transform: capitalize;
+    font-weight: 500;
 
     img {
       width: 5rem;
@@ -14,5 +14,10 @@
 
   &__description {
     margin-top: 1.5rem;
+  }
+
+  &__animals {
+    margin-top: 1rem;
+    font-weight: 500;
   }
 }
