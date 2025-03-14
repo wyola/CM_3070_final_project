@@ -81,7 +81,7 @@ export const OrganizationsNeeds = ({
         ))
       ) : (
         <CustomCard className="needs__empty">
-          <p>No needs posted yet. Add first need using add button above!</p>
+          <p>No needs were posted for now!</p>
         </CustomCard>
       )}
 

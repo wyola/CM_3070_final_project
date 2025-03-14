@@ -88,6 +88,7 @@ export class OrganizationController {
         voivodeship: req.query.voivodeship,
         acceptsReports: req.query.acceptsReports,
         animals: req.query.animals,
+        needs: req.query.needs
       });
 
       const result = await organizationService.getOrganizations(query);

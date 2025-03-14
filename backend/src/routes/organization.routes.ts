@@ -83,6 +83,33 @@ const upload = multer({ storage });
  *             type: string
  *             enum: [dogs, cats, farm animals, wild animals, exotic animals, birds, horses, other]
  *           description: Types of animals the organization handles
+ *         needs:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer
+ *               kind:
+ *                 type: string
+ *                 enum: [accessories, bedding, cleaning, food, grooming, medication, other, toys, vet]
+ *               description:
+ *                 type: string
+ *               priority:
+ *                 type: boolean
+ *               createdAt:
+ *                 type: string
+ *                 format: date-time
+ *           description: Organization's current needs
+ *           example: [
+ *             {
+ *               "id": 1,
+ *               "kind": "food",
+ *               "description": "Need dry dog food",
+ *               "priority": true,
+ *               "createdAt": "2024-03-14T12:00:00Z"
+ *             }
+ *           ]
  */
 
 /**
@@ -281,6 +308,13 @@ const upload = multer({ storage });
  *           type: string
  *         description: Filter organizations by animal types (comma-separated values, e.g. 'dogs,cats')
  *         example: "dogs,cats"
+ *       - in: query
+ *         name: needs
+ *         schema:
+ *           type: string
+ *           enum: [accessories, bedding, cleaning, food, grooming, medication, other, toys, vet]
+ *         description: Filter organizations by need type
+ *         example: "food"
  *     responses:
  *       200:
  *         description: Organizations retrieved successfully
