@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AddNeedModal, Button, CustomCard, Need } from '@/components';
+import { AddEditNeedModal, Button, CustomCard, Need } from '@/components';
 import { API_ENDPOINTS } from '@/constants';
 import axios from 'axios';
 import { axiosInstance } from '@/lib/axios';
@@ -76,7 +76,7 @@ export const OrganizationsNeeds = ({
             kind={need.kind as KindsOfNeeds}
             priority={need.priority}
             description={need.description}
-            onDelete={fetchNeeds}
+            onActionCompleted={fetchNeeds}
           />
         ))
       ) : (
@@ -85,7 +85,7 @@ export const OrganizationsNeeds = ({
         </CustomCard>
       )}
 
-      <AddNeedModal
+      <AddEditNeedModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         organizationId={organizationId}

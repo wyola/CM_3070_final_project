@@ -6,50 +6,72 @@ import { KindsOfNeeds, NeedI } from '@/types';
 import { mapKindToLabel } from '@/utils';
 import { axiosInstance } from '@/lib/axios';
 import { API_ENDPOINTS } from '@/constants';
-import './addNeedModal.scss';
+import './addEditNeedModal.scss';
 
-type AddNeedModalProps = {
+type AddEditNeedModalProps = {
   isOpen: boolean;
   onClose: () => void;
   organizationId: number;
   onSuccess: () => void;
+  defaultValues?: {
+    kind: KindsOfNeeds;
+    description: string;
+    priority: boolean;
+  };
+  isEditing?: boolean;
+  needId?: number;
 };
 
-export const AddNeedModal = ({
+export const AddEditNeedModal = ({
   isOpen,
   onClose,
   organizationId,
-  onSuccess
-}: AddNeedModalProps) => {
+  onSuccess,
+  defaultValues,
+  isEditing,
+  needId,
+}: AddEditNeedModalProps) => {
   const [error, setError] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<
     { field: string; message: string }[]
   >([]);
 
   const methods = useForm<NeedI>({
-    defaultValues: {
+    defaultValues: defaultValues || {
       kind: '' as KindsOfNeeds,
       description: '',
       priority: false,
     },
   });
 
-  const { handleSubmit, reset, watch } = methods;
+  const {
+    handleSubmit,
+    reset,
+    watch,
+    formState: { isDirty },
+  } = methods;
 
   const kind = watch('kind');
   const description = watch('description');
 
   const isFormValid = Boolean(kind) && Boolean(description?.trim());
+  const isButtonDisabled = !isFormValid || (isEditing && !isDirty);
 
   const onSubmit = async (data: NeedI) => {
     setError(null);
     setFormErrors([]);
     try {
-      await axiosInstance.post(API_ENDPOINTS.NEEDS.CREATE(organizationId), {
-        kind: data.kind,
-        description: data.description,
-        priority: data.priority,
-      });
+      if (isEditing && needId) {
+        await axiosInstance.put(
+          API_ENDPOINTS.NEEDS.UPDATE(organizationId, needId),
+          data
+        );
+      } else {
+        await axiosInstance.post(
+          API_ENDPOINTS.NEEDS.CREATE(organizationId),
+          data
+        );
+      }
       reset();
       onSuccess();
       onClose();
@@ -78,12 +100,16 @@ export const AddNeedModal = ({
     <CustomModal
       isOpen={isOpen}
       onClose={onClose}
-      title="Add new need"
-      description="Fill in the form to add a new need"
-      buttonLabel="Add need"
+      title={isEditing ? 'Edit need' : 'Add new need'}
+      description={
+        isEditing
+          ? 'Edit the form to update the need'
+          : 'Fill in the form to add a new need'
+      }
+      buttonLabel={isEditing ? 'Save changes' : 'Add need'}
       onConfirm={handleSubmit(onSubmit)}
       className="add-need"
-      buttonDisabled={!isFormValid}
+      buttonDisabled={isButtonDisabled}
     >
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="add-need__form">
