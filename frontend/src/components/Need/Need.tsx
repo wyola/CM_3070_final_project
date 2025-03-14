@@ -31,7 +31,6 @@ export const Need = ({
   onActionCompleted,
 }: NeedProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -77,7 +76,6 @@ export const Need = ({
             variant="ghost"
             aria-label="Edit need"
             onClick={() => {
-              setIsEditing(true);
               setIsModalOpen(true);
             }}
           >
@@ -114,8 +112,7 @@ export const Need = ({
       <AddEditNeedModal
         isOpen={isModalOpen}
         onClose={() => {
-          setIsModalOpen(false); 
-          setIsEditing(false);
+          setIsModalOpen(false);
         }}
         organizationId={organizationId}
         onSuccess={onActionCompleted}
@@ -124,7 +121,7 @@ export const Need = ({
           description,
           priority,
         }}
-        isEditing={isEditing}
+        isEditing={true}
         needId={needId}
       />
     </>
