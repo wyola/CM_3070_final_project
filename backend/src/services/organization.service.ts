@@ -26,6 +26,11 @@ const organizationSelect = {
   website: true,
   acceptsReports: true,
   animals: true,
+  user: {
+    select: {
+      id: true,
+    },
+  },
 } as const;
 
 export class OrganizationService {
@@ -152,7 +157,7 @@ export class OrganizationService {
           skip,
           take: limit,
           orderBy: { name: 'asc' },
-          select: { ...organizationSelect, needs: true },
+          select: organizationSelect,
         })
         .then((orgs) => orgs.map(this.transformOrganization)),
     ]);
@@ -204,11 +209,76 @@ export class OrganizationService {
     };
   }
 
+  async updateOrganization(
+    id: number,
+    data: Partial<OrganizationRegistrationDto>,
+    logoPath?: string
+  ): Promise<Organization> {
+    try {
+      const organization = await prisma.organization.findUnique({
+        where: { id },
+      });
+
+      if (!organization) {
+        throw new Error('Organization not found');
+      }
+
+      let geolocation = organization.geolocation;
+      const addressChanged = 
+        (data.address && data.address !== organization.address) || 
+        (data.city && data.city !== organization.city) || 
+        (data.postalCode && data.postalCode !== organization.postalCode);
+        
+      if (addressChanged) {
+        const geoData = await this.geolocationService.getCoordinatesFromAddress({
+          address: data.address || organization.address,
+          city: data.city || organization.city,
+          postalCode: data.postalCode || organization.postalCode,
+        });
+        
+        geolocation = geoData ? JSON.stringify(geoData) : null;
+      }
+
+      const updateData: Prisma.OrganizationUpdateInput = {
+        ...data,
+        geolocation,
+        animals: JSON.stringify(data.animals),
+      };
+      
+      if (logoPath) {
+        updateData.logo = logoPath;
+      }
+
+      // Don't allow KRS to be updated
+      delete updateData.krs;
+
+      const updatedOrganization = await prisma.organization.update({
+        where: { id },
+        data: updateData,
+        select: organizationSelect,
+      });
+
+      return this.transformOrganization(updatedOrganization);
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          const field = error.meta?.target as string[];
+          throw new Error(`Organization with this ${field[0]} already exists`);
+        }
+      }
+      throw error;
+    }
+  }
+
   private transformOrganization(org: any) {
+    const { user, ...orgData } = org;
+    const ownerId = user ? user.id : null;
+    
     return {
-      ...org,
-      animals: JSON.parse(org.animals),
-      geolocation: org.geolocation ? JSON.parse(org.geolocation) : null,
+      ...orgData,
+      ownerId,
+      animals: JSON.parse(orgData.animals),
+      geolocation: orgData.geolocation ? JSON.parse(orgData.geolocation) : null,
     };
   }
 }

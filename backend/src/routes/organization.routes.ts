@@ -2,6 +2,8 @@ import { Router } from 'express';
 import multer from 'multer';
 import { OrganizationController } from '../controllers/organization.controller';
 import needRoutes from './need.routes';
+import { authenticateJWT } from '../middleware/auth.middleware';
+import { isOrganizationOwner } from '../middleware/organization-owner.middleware';
 
 const router = Router();
 const organizationController = new OrganizationController();
@@ -83,33 +85,10 @@ const upload = multer({ storage });
  *             type: string
  *             enum: [dogs, cats, farm animals, wild animals, exotic animals, birds, horses, other]
  *           description: Types of animals the organization handles
- *         needs:
- *           type: array
- *           items:
- *             type: object
- *             properties:
- *               id:
- *                 type: integer
- *               kind:
- *                 type: string
- *                 enum: [accessories, bedding, cleaning, food, grooming, medication, other, toys, vet]
- *               description:
- *                 type: string
- *               priority:
- *                 type: boolean
- *               createdAt:
- *                 type: string
- *                 format: date-time
- *           description: Organization's current needs
- *           example: [
- *             {
- *               "id": 1,
- *               "kind": "food",
- *               "description": "Need dry dog food",
- *               "priority": true,
- *               "createdAt": "2024-03-14T12:00:00Z"
- *             }
- *           ]
+ *         ownerId:
+ *           type: integer
+ *           description: ID of the user who owns this organization
+ *           nullable: true
  */
 
 /**
@@ -461,10 +440,103 @@ const upload = multer({ storage });
  *         description: Server error
  */
 
+/**
+ * @swagger
+ * /api/organizations/{id}:
+ *   put:
+ *     tags: [Organizations]
+ *     summary: Update an organization
+ *     description: Update organization information. KRS cannot be modified.
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Organization ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 minLength: 2
+ *                 maxLength: 100
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               phone:
+ *                 type: string
+ *                 pattern: '^\+?[0-9\s-]{9,}$'
+ *               city:
+ *                 type: string
+ *                 minLength: 2
+ *                 maxLength: 100
+ *               postalCode:
+ *                 type: string
+ *                 pattern: '^[0-9]{2}-[0-9]{3}$'
+ *               address:
+ *                 type: string
+ *                 minLength: 5
+ *                 maxLength: 200
+ *               voivodeship:
+ *                 type: string
+ *               logo:
+ *                 type: string
+ *                 format: binary
+ *               description:
+ *                 type: string
+ *               website:
+ *                 type: string
+ *                 format: uri
+ *               acceptsReports:
+ *                 type: boolean
+ *               animals:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   enum: [dogs, cats, farm animals, wild animals, exotic animals, birds, horses, other]
+ *     responses:
+ *       200:
+ *         description: Organization updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Organization updated successfully"
+ *                 organization:
+ *                   $ref: '#/components/schemas/Organization'
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - user does not own this organization
+ *       404:
+ *         description: Organization not found
+ *       500:
+ *         description: Server error
+ */
+
 router.post('/', upload.single('logo'), organizationController.register);
 router.get('/', organizationController.getOrganizations);
 router.get('/:id', organizationController.getOrganizationById);
 router.get('/krs/:krs', organizationController.getOrganizationByKrs);
+router.put(
+  '/:organizationId', 
+  authenticateJWT,
+  isOrganizationOwner,
+  upload.single('logo'), 
+  organizationController.updateOrganization
+);
 
 router.use('/:organizationId/needs', needRoutes);
 
