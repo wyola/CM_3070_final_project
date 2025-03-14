@@ -1,7 +1,7 @@
 import { KindsOfNeeds } from '@/types';
 import { CustomCard, IconLabel } from '@/components';
 import { mapKindToLabel } from '@/utils';
-import './organizationsNeed.scss';
+import './need.scss';
 
 type OrganizationsNeedProps = {
   id: number; // TODO: check if its needed, can be needed for editing/removing needs
@@ -10,7 +10,7 @@ type OrganizationsNeedProps = {
   description: string;
 };
 
-export const OrganizationsNeed = ({
+export const Need = ({
   id,
   kind,
   priority,
