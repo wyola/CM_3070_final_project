@@ -1,5 +1,5 @@
 import { KindsOfNeeds } from '@/types';
-import { CustomCard, IconLabel } from '@/components';
+import { Button, CustomCard, IconLabel } from '@/components';
 import { mapKindToLabel } from '@/utils';
 import './need.scss';
 
@@ -17,8 +17,8 @@ export const Need = ({
   description,
 }: OrganizationsNeedProps) => {
   return (
-    <CustomCard className="organizations-need">
-      <div className="organizations-need__header">
+    <CustomCard className="need">
+      <div className="need__header">
         <IconLabel iconSrc={`/needs/${kind}.svg`}>
           {mapKindToLabel(kind)}
         </IconLabel>
@@ -26,11 +26,19 @@ export const Need = ({
           <img
             src="/megaphone.svg"
             alt="high priority"
-            className="organizations-need__priority"
+            className="need__priority"
           />
         )}
       </div>
-      <p className="organizations-need__description">{description}</p>
+      <p className="need__description">{description}</p>
+      <div className="need__actions">
+        <Button className="need__actions--button" variant="ghost">
+          <img src="/edit.svg" />
+        </Button>
+        <Button className="need__actions--button" variant="ghost">
+          <img src="/bin.svg" />
+        </Button>
+      </div>
     </CustomCard>
   );
 };

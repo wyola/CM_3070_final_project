@@ -11,6 +11,8 @@
 
   &__add-button:is(button) {
     padding: 0;
+    border-radius: 50%;
+    height: unset;
 
     img {
       width: 1.5rem;

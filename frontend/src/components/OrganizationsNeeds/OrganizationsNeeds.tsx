@@ -59,7 +59,7 @@ export const OrganizationsNeeds = ({
       <div className="needs__header">
         <h2 className="heading-secondary">Current needs</h2>
         <Button
-          variant="link"
+          variant="ghost"
           className="needs__add-button"
           onClick={() => setIsModalOpen(true)}
         >
