@@ -4,6 +4,7 @@ import { API_ENDPOINTS } from '@/constants';
 import axios from 'axios';
 import { axiosInstance } from '@/lib/axios';
 import { KindsOfNeeds, NeedI } from '@/types';
+import './organizationNeeds.scss';
 
 type OrganizationNeedsProps = {
   organizationId: number;
@@ -54,12 +55,12 @@ export const OrganizationsNeeds = ({
   }, [organizationId]);
 
   return (
-    <div className="organization__needs">
-      <div className="organization__needs--header">
+    <div className="needs">
+      <div className="needs__header">
         <h2 className="heading-secondary">Current needs</h2>
         <Button
           variant="link"
-          className="organization__needs--add-button"
+          className="needs__add-button"
           onClick={() => setIsModalOpen(true)}
         >
           <img src="/add.svg" alt="add new need" />

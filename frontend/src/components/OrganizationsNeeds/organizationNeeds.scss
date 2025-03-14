@@ -1,0 +1,25 @@
+.needs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__add-button:is(button) {
+    padding: 0;
+
+    img {
+      width: 1.5rem;
+    }
+  }
+
+  > :first-child {
+    grid-column: span 2;
+  }
+}
