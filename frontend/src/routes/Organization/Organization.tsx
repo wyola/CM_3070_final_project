@@ -59,11 +59,17 @@ export const Organization = () => {
     voivodeship,
     postalCode,
     city,
+    animals,
   } = organization;
 
   return (
     <section className="content organization">
-      <OrganizationHeader logo={logo} name={name} description={description} />
+      <OrganizationHeader
+        logo={logo}
+        name={name}
+        description={description}
+        animals={animals}
+      />
 
       <OrganizationContact
         website={website}
