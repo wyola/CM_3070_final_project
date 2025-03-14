@@ -1,21 +1,51 @@
+import { useState } from 'react';
 import { KindsOfNeeds } from '@/types';
 import { Button, CustomCard, IconLabel } from '@/components';
 import { mapKindToLabel } from '@/utils';
+import axios from 'axios';
+import { axiosInstance } from '@/lib/axios';
+import { API_ENDPOINTS } from '@/constants';
 import './need.scss';
 
 type OrganizationsNeedProps = {
-  id: number; // TODO: check if its needed, can be needed for editing/removing needs
+  needId: number;
+  organizationId: number;
   kind: KindsOfNeeds;
   priority: boolean;
   description: string;
+  onDelete: () => void;
 };
 
 export const Need = ({
-  id,
+  needId,
+  organizationId,
   kind,
   priority,
   description,
+  onDelete,
 }: OrganizationsNeedProps) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true);
+      setError(null);
+      await axiosInstance.delete(
+        API_ENDPOINTS.NEEDS.DELETE(organizationId, needId)
+      );
+      onDelete?.();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'Failed to delete need');
+      } else {
+        setError('An unexpected error occurred');
+      }
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <CustomCard className="need">
       <div className="need__header">
@@ -35,7 +65,12 @@ export const Need = ({
         <Button className="need__actions--button" variant="ghost">
           <img src="/edit.svg" />
         </Button>
-        <Button className="need__actions--button" variant="ghost">
+        <Button
+          className="need__actions--button"
+          variant="ghost"
+          onClick={handleDelete}
+          disabled={isDeleting}
+        >
           <img src="/bin.svg" />
         </Button>
       </div>

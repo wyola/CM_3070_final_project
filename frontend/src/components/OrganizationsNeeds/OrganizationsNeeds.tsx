@@ -70,10 +70,12 @@ export const OrganizationsNeeds = ({
         needs.map((need) => (
           <Need
             key={need.id}
-            id={need.id}
+            needId={need.id}
+            organizationId={organizationId}
             kind={need.kind as KindsOfNeeds}
             priority={need.priority}
             description={need.description}
+            onDelete={fetchNeeds}
           />
         ))
       ) : (
