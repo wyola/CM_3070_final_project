@@ -1,6 +1,6 @@
 export * from './ui/index';
 
-export { AddNeedModal } from './AddNeedModal/AddNeedModal';
+export { AddEditNeedModal } from './AddEditNeedModal/AddEditNeedModal';
 export { CustomAlertDialog } from './CustomAlertDialog/CustomAlertDialog';
 export { CustomCard } from './CustomCard/CustomCard';
 export { CustomFormField } from './CustomFormField/CustomFormField';

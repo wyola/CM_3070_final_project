@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { KindsOfNeeds } from '@/types';
-import { Button, CustomAlertDialog, CustomCard, IconLabel } from '@/components';
+import {
+  AddEditNeedModal,
+  Button,
+  CustomAlertDialog,
+  CustomCard,
+  IconLabel,
+} from '@/components';
 import { mapKindToLabel } from '@/utils';
 import axios from 'axios';
 import { axiosInstance } from '@/lib/axios';
@@ -13,7 +19,7 @@ type NeedProps = {
   kind: KindsOfNeeds;
   priority: boolean;
   description: string;
-  onDelete: () => void;
+  onActionCompleted: () => void;
 };
 
 export const Need = ({
@@ -22,11 +28,12 @@ export const Need = ({
   kind,
   priority,
   description,
-  onDelete,
+  onActionCompleted,
 }: NeedProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleDelete = async () => {
     try {
@@ -35,7 +42,7 @@ export const Need = ({
       await axiosInstance.delete(
         API_ENDPOINTS.NEEDS.DELETE(organizationId, needId)
       );
-      onDelete?.();
+      onActionCompleted?.();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setError(error.response?.data?.message || 'Failed to delete need');
@@ -68,6 +75,9 @@ export const Need = ({
             className="need__actions--button"
             variant="ghost"
             aria-label="Edit need"
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
           >
             <img src="/edit.svg" alt="" />
           </Button>
@@ -97,6 +107,22 @@ export const Need = ({
           setIsDeleting(false);
         }}
         onConfirm={handleDelete}
+      />
+
+      <AddEditNeedModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+        }}
+        organizationId={organizationId}
+        onSuccess={onActionCompleted}
+        defaultValues={{
+          kind,
+          description,
+          priority,
+        }}
+        isEditing={true}
+        needId={needId}
       />
     </>
   );
