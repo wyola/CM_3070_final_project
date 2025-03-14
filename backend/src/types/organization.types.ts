@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { KindsOfNeeds } from './need.types';
 
 const VALID_ANIMALS = [
   'dogs',
@@ -99,6 +100,16 @@ export const organizationQuerySchema = z.object({
     .transform((val) =>
       val ? val.split(',').map((s) => s.trim()) : undefined
     ),
+  needs: z
+    .string()
+    .optional()
+    .transform((val) => {
+      if (!val) return undefined;
+      const needs = val.split(',').map((s) => s.trim());
+      return needs.filter((need) =>
+        Object.values(KindsOfNeeds).includes(need as KindsOfNeeds)
+      );
+    }),
 });
 
 export type OrganizationQueryDto = z.infer<typeof organizationQuerySchema>;

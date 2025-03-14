@@ -49,4 +49,5 @@ export interface OrganizationSearchFilterFormDataI {
   voivodeship?: string;
   acceptsReports?: boolean;
   animals?: string[];
+  needs?: string;
 }
