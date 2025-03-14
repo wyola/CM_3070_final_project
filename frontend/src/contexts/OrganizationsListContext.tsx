@@ -53,15 +53,21 @@ export const OrganizationsListProvider = ({
       if (filters?.search) {
         params.append('search', filters.search);
       }
+
       if (filters?.voivodeship && filters.voivodeship !== 'all') {
         params.append('voivodeship', filters.voivodeship);
       }
+
       if (filters?.acceptsReports) {
         params.append('acceptsReports', String(filters.acceptsReports));
       }
 
       if (filters?.animals && filters.animals.length > 0) {
         params.append('animals', filters.animals.join(','));
+      }
+
+      if (filters?.needs) {
+        params.append('needs', filters.needs);
       }
 
       params.append('page', currentPage.toString());

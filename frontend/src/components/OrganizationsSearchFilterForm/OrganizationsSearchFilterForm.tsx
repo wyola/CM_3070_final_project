@@ -4,9 +4,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useOrganizationsList } from '@/contexts';
 import { CustomFormField, CustomMultiSelect, CustomSelect } from '@/components';
 import { ANIMAL_OPTIONS, VOIVODESHIPS } from '@/constants';
-import { OrganizationSearchFilterFormDataI } from '@/types';
+import { KindsOfNeeds, OrganizationSearchFilterFormDataI } from '@/types';
 import debounce from 'lodash.debounce';
 import './organizationsSearchFilterForm.scss';
+import { mapKindToLabel } from '@/utils';
 
 export const OrganizationsSearchFilterForm = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,11 +18,12 @@ export const OrganizationsSearchFilterForm = () => {
       voivodeship: searchParams.get('voivodeship') || 'all',
       acceptsReports: searchParams.get('acceptsReports') === 'true',
       animals: searchParams.get('animals')?.split(',') || [],
+      needs: searchParams.get('needs') || 'all',
     },
   });
 
   const { watch } = methods;
-  const { search, acceptsReports, voivodeship, animals } = watch();
+  const { search, acceptsReports, voivodeship, animals, needs } = watch();
   const { fetchOrganizations, currentPage, updateCurrentPage } =
     useOrganizationsList();
 
@@ -49,12 +51,24 @@ export const OrganizationsSearchFilterForm = () => {
         params.delete('animals');
       }
 
+      if (needs && needs !== 'all') {
+        params.set('needs', needs);
+      } else {
+        params.delete('needs');
+      }
+
       if (currentPage) {
         params.set('page', currentPage.toString());
       }
 
       setSearchParams(params);
-      fetchOrganizations({ search, voivodeship, acceptsReports, animals });
+      fetchOrganizations({
+        search,
+        voivodeship,
+        acceptsReports,
+        animals,
+        needs,
+      });
     }, 100),
     [
       setSearchParams,
@@ -63,24 +77,33 @@ export const OrganizationsSearchFilterForm = () => {
       voivodeship,
       acceptsReports,
       animals,
+      needs,
       currentPage,
     ]
   );
 
   useEffect(() => {
     updateCurrentPage(1);
-  }, [search, voivodeship, acceptsReports, animals]);
+  }, [search, voivodeship, acceptsReports, animals, needs]);
 
   useEffect(() => {
     onFilterChange();
     return () => onFilterChange.cancel();
-  }, [search, voivodeship, acceptsReports, currentPage, animals]);
+  }, [search, voivodeship, acceptsReports, currentPage, animals, needs]);
 
   const voivodeshipOptions = [
     { value: 'all', label: 'All voivodeships' },
     ...VOIVODESHIPS.map((voivodeship) => ({
       value: voivodeship.toLowerCase(),
       label: voivodeship,
+    })),
+  ];
+
+  const needsOptions = [
+    { value: 'all', label: 'All needs' },
+    ...Object.values(KindsOfNeeds).map((need) => ({
+      value: need,
+      label: mapKindToLabel(need),
     })),
   ];
 
@@ -106,6 +129,13 @@ export const OrganizationsSearchFilterForm = () => {
           id="animals"
           placeholder="Select animals"
           options={ANIMAL_OPTIONS}
+        />
+
+        <CustomSelect
+          name="needs"
+          id="needs"
+          placeholder="Filter by need"
+          options={needsOptions}
         />
 
         <CustomFormField
