@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AddNeedModal, Button, Need } from '@/components';
+import { AddNeedModal, Button, CustomCard, Need } from '@/components';
 import { API_ENDPOINTS } from '@/constants';
 import axios from 'axios';
 import { axiosInstance } from '@/lib/axios';
@@ -66,15 +66,21 @@ export const OrganizationsNeeds = ({
           <img src="/add.svg" alt="add new need" />
         </Button>
       </div>
-      {needs.map((need) => (
-        <Need
-          key={need.id}
-          id={need.id}
-          kind={need.kind as KindsOfNeeds}
-          priority={need.priority}
-          description={need.description}
-        />
-      ))}
+      {needs.length > 0 ? (
+        needs.map((need) => (
+          <Need
+            key={need.id}
+            id={need.id}
+            kind={need.kind as KindsOfNeeds}
+            priority={need.priority}
+            description={need.description}
+          />
+        ))
+      ) : (
+        <CustomCard className="needs__empty">
+          <p>No needs posted yet. Add first need using add button above!</p>
+        </CustomCard>
+      )}
 
       <AddNeedModal
         isOpen={isModalOpen}
