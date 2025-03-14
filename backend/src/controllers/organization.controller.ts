@@ -166,4 +166,81 @@ export class OrganizationController {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
+
+  public updateOrganization = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const id = parseInt(req.params.organizationId);
+      
+      if (isNaN(id)) {
+        res.status(400).json({
+          message: 'Invalid ID format',
+        });
+        return;
+      }
+
+      const updateOrganizationSchema = organizationSchema.omit({ 
+        krs: true, 
+        password: true 
+      }).partial();
+      
+      const validatedData = updateOrganizationSchema.parse(req.body);
+      const logoPath = req.file?.path;
+      
+      let oldLogoPath: string | null = null;
+      
+      if (logoPath) {
+        const organization = await organizationService.getOrganizationById(id);
+        if (organization && organization.logo) {
+          oldLogoPath = organization.logo;
+        }
+      }
+
+      const updatedOrganization = await organizationService.updateOrganization(
+        id,
+        validatedData,
+        logoPath
+      );
+
+      // Delete old logo from the disk, it's no longer needed
+      if (oldLogoPath && logoPath) {
+        await fs.unlink(oldLogoPath).catch(() => {
+          // Ignore error if file deletion fails
+        });
+      }
+
+      res.status(200).json({
+        message: 'Organization updated successfully',
+        organization: updatedOrganization,
+      });
+    } catch (error) {
+      if (req.file) {
+        await fs.unlink(req.file.path).catch(() => {
+          // Ignore error if file deletion fails
+        });
+      }
+
+      if (error instanceof z.ZodError) {
+        const errors = error.errors.map((err) => ({
+          field: err.path.join('.'),
+          message: err.message,
+        }));
+        
+        res.status(400).json({
+          message: 'Validation failed',
+          errors,
+        });
+        return;
+      }
+      
+      if (error instanceof Error) {
+        res.status(400).json({ message: error.message });
+        return;
+      }
+      
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
 }
