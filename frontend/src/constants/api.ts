@@ -15,5 +15,7 @@ export const API_ENDPOINTS = {
       `/api/organizations/${organizationId}/needs`,
     ALL: (organizationId: number) =>
       `/api/organizations/${organizationId}/needs`,
+    DELETE: (organizationId: number, needId: number) =>
+      `/api/organizations/${organizationId}/needs/${needId}`,
   },
 };

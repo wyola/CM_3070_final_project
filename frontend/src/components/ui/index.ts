@@ -8,3 +8,4 @@ export * from './pagination';
 export * from './select';
 export * from './table';
 export * from './dialog';
+export * from './alert-dialog';

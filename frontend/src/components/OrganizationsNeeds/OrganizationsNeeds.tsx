@@ -59,21 +59,24 @@ export const OrganizationsNeeds = ({
       <div className="needs__header">
         <h2 className="heading-secondary">Current needs</h2>
         <Button
-          variant="link"
+          variant="ghost"
           className="needs__add-button"
           onClick={() => setIsModalOpen(true)}
+          aria-label="Add new need"
         >
-          <img src="/add.svg" alt="add new need" />
+          <img src="/add.svg" alt="" />
         </Button>
       </div>
       {needs.length > 0 ? (
         needs.map((need) => (
           <Need
             key={need.id}
-            id={need.id}
+            needId={need.id}
+            organizationId={organizationId}
             kind={need.kind as KindsOfNeeds}
             priority={need.priority}
             description={need.description}
+            onDelete={fetchNeeds}
           />
         ))
       ) : (
