@@ -62,8 +62,9 @@ export const OrganizationsNeeds = ({
           variant="ghost"
           className="needs__add-button"
           onClick={() => setIsModalOpen(true)}
+          aria-label="Add new need"
         >
-          <img src="/add.svg" alt="add new need" />
+          <img src="/add.svg" alt="" />
         </Button>
       </div>
       {needs.length > 0 ? (

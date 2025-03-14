@@ -7,7 +7,7 @@ import { axiosInstance } from '@/lib/axios';
 import { API_ENDPOINTS } from '@/constants';
 import './need.scss';
 
-type OrganizationsNeedProps = {
+type NeedProps = {
   needId: number;
   organizationId: number;
   kind: KindsOfNeeds;
@@ -23,7 +23,7 @@ export const Need = ({
   priority,
   description,
   onDelete,
-}: OrganizationsNeedProps) => {
+}: NeedProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -64,18 +64,24 @@ export const Need = ({
         </div>
         <p className="need__description">{description}</p>
         <div className="need__actions">
-          <Button className="need__actions--button" variant="ghost">
-            <img src="/edit.svg" />
+          <Button
+            className="need__actions--button"
+            variant="ghost"
+            aria-label="Edit need"
+          >
+            <img src="/edit.svg" alt="" />
           </Button>
           <Button
             className="need__actions--button"
             variant="ghost"
             onClick={() => {
-              setIsDeleting(true), setIsAlertOpen(true);
+              setIsDeleting(true);
+              setIsAlertOpen(true);
             }}
             disabled={isDeleting}
+            aria-label="Delete need"
           >
-            <img src="/bin.svg" />
+            <img src="/bin.svg" alt="" />
           </Button>
         </div>
       </CustomCard>
@@ -87,7 +93,8 @@ export const Need = ({
         confirmButtonLabel="Remove"
         isOpen={isAlertOpen}
         onCancel={() => {
-          setIsAlertOpen(false), setIsDeleting(false);
+          setIsAlertOpen(false);
+          setIsDeleting(false);
         }}
         onConfirm={handleDelete}
       />
