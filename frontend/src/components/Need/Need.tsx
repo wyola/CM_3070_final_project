@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { KindsOfNeeds } from '@/types';
-import { Button, CustomCard, IconLabel } from '@/components';
+import { Button, CustomAlertDialog, CustomCard, IconLabel } from '@/components';
 import { mapKindToLabel } from '@/utils';
 import axios from 'axios';
 import { axiosInstance } from '@/lib/axios';
@@ -26,6 +26,7 @@ export const Need = ({
 }: OrganizationsNeedProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const handleDelete = async () => {
     try {
@@ -47,33 +48,49 @@ export const Need = ({
   };
 
   return (
-    <CustomCard className="need">
-      <div className="need__header">
-        <IconLabel iconSrc={`/needs/${kind}.svg`}>
-          {mapKindToLabel(kind)}
-        </IconLabel>
-        {priority && (
-          <img
-            src="/megaphone.svg"
-            alt="high priority"
-            className="need__priority"
-          />
-        )}
-      </div>
-      <p className="need__description">{description}</p>
-      <div className="need__actions">
-        <Button className="need__actions--button" variant="ghost">
-          <img src="/edit.svg" />
-        </Button>
-        <Button
-          className="need__actions--button"
-          variant="ghost"
-          onClick={handleDelete}
-          disabled={isDeleting}
-        >
-          <img src="/bin.svg" />
-        </Button>
-      </div>
-    </CustomCard>
+    <>
+      <CustomCard className="need">
+        <div className="need__header">
+          <IconLabel iconSrc={`/needs/${kind}.svg`}>
+            {mapKindToLabel(kind)}
+          </IconLabel>
+          {priority && (
+            <img
+              src="/megaphone.svg"
+              alt="high priority"
+              className="need__priority"
+            />
+          )}
+        </div>
+        <p className="need__description">{description}</p>
+        <div className="need__actions">
+          <Button className="need__actions--button" variant="ghost">
+            <img src="/edit.svg" />
+          </Button>
+          <Button
+            className="need__actions--button"
+            variant="ghost"
+            onClick={() => {
+              setIsDeleting(true), setIsAlertOpen(true);
+            }}
+            disabled={isDeleting}
+          >
+            <img src="/bin.svg" />
+          </Button>
+        </div>
+      </CustomCard>
+
+      <CustomAlertDialog
+        title="Are you sure you want to delete this need?"
+        description="This action cannot be undone, it will permanently delete need."
+        cancelButtonLabel="Cancel"
+        confirmButtonLabel="Remove"
+        isOpen={isAlertOpen}
+        onCancel={() => {
+          setIsAlertOpen(false), setIsDeleting(false);
+        }}
+        onConfirm={handleDelete}
+      />
+    </>
   );
 };
