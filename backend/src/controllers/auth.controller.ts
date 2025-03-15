@@ -35,6 +35,7 @@ export class AuthController {
           user: {
             id: user.id,
             email: user.email,
+            organizationId: user.organizationId,
           },
         },
       });

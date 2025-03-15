@@ -4,6 +4,7 @@ import { API_ENDPOINTS } from '@/constants';
 import axios from 'axios';
 import { axiosInstance } from '@/lib/axios';
 import { KindsOfNeeds, NeedI } from '@/types';
+import { useOwnership } from '@/hooks';
 import './organizationNeeds.scss';
 
 type OrganizationNeedsProps = {
@@ -17,6 +18,8 @@ export const OrganizationsNeeds = ({
   const [needs, setNeeds] = useState<NeedI[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const isOwner = useOwnership();
 
   const fetchNeeds = async () => {
     try {
@@ -58,14 +61,16 @@ export const OrganizationsNeeds = ({
     <div className="needs">
       <div className="needs__header">
         <h2 className="heading-secondary">Current needs</h2>
-        <Button
-          variant="ghost"
-          className="needs__add-button"
-          onClick={() => setIsModalOpen(true)}
-          aria-label="Add new need"
-        >
-          <img src="/add.svg" alt="" />
-        </Button>
+        {isOwner && (
+          <Button
+            variant="ghost"
+            className="needs__add-button"
+            onClick={() => setIsModalOpen(true)}
+            aria-label="Add new need"
+          >
+            <img src="/add.svg" alt="" />
+          </Button>
+        )}
       </div>
       {needs.length > 0 ? (
         needs.map((need) => (
@@ -85,12 +90,14 @@ export const OrganizationsNeeds = ({
         </CustomCard>
       )}
 
-      <AddEditNeedModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        organizationId={organizationId}
-        onSuccess={fetchNeeds}
-      />
+      {isOwner && (
+        <AddEditNeedModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          organizationId={organizationId}
+          onSuccess={fetchNeeds}
+        />
+      )}
     </div>
   );
 };

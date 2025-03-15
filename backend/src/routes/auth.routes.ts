@@ -50,6 +50,8 @@ const authController = new AuthController();
  *                           type: integer
  *                         email:
  *                           type: string
+ *                         organizationId:
+ *                           type: integer
  *       400:
  *         description: Invalid credentials
  */

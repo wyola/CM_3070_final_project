@@ -1,6 +1,7 @@
 export interface UserI {
   id: number;
   email: string;
+  organizationId: number;
 }
 
 export interface UserContextI {
