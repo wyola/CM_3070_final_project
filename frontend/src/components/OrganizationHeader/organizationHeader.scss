@@ -10,6 +10,19 @@
       width: 5rem;
       height: 5rem;
     }
+
+    button {
+      img {
+        width: 2rem;
+        height: 2rem;
+      }
+
+      &:is(button) {
+        padding: 0;
+        border-radius: 50%;
+        height: unset;
+      }
+    }
   }
 
   &__description {
