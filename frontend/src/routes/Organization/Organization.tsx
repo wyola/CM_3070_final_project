@@ -18,13 +18,13 @@ export const Organization = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const { id } = useParams();
+  const { id: idFromParams } = useParams();
 
   useEffect(() => {
     const fetchOrganization = async () => {
       try {
         const orgResponse = await axiosInstance.get(
-          API_ENDPOINTS.ORGANIZATIONS.BY_ID(Number(id))
+          API_ENDPOINTS.ORGANIZATIONS.BY_ID(Number(idFromParams))
         );
         setOrganization(orgResponse.data.organization);
       } catch (error) {
@@ -41,7 +41,7 @@ export const Organization = () => {
     };
 
     fetchOrganization();
-  }, [id]);
+  }, [idFromParams]);
 
   // TODO success / fail screens
   if (isLoading) return <div>Loading...</div>;
@@ -49,6 +49,7 @@ export const Organization = () => {
   if (!organization) return <div>Organization not found</div>;
 
   const {
+    id,
     logo,
     name,
     description,
@@ -65,10 +66,11 @@ export const Organization = () => {
   return (
     <section className="content organization">
       <OrganizationHeader
-        logo={logo}
-        name={name}
-        description={description}
-        animals={animals}
+        // logo={logo}
+        // name={name}
+        // description={description}
+        // animals={animals}
+        organization={organization}
       />
 
       <OrganizationContact

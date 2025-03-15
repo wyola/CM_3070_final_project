@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { ANIMAL_OPTIONS, API_ENDPOINTS } from '@/constants';
 import axios from 'axios';
 import { axiosInstance, organizationRegistrationApi } from '@/lib/axios';
-import { OrganizationRegistrationI } from '@/types';
+import { OrganizationI, OrganizationRegistrationI } from '@/types';
 import {
   SuccessMessage,
   CustomFormField,
@@ -12,32 +12,42 @@ import {
 } from '@/components';
 import './registerEditOrganizationForm.scss';
 
-export const RegisterEditOrganizationForm = () => {
+interface RegisterEditOrganizationFormProps {
+  isEditing?: boolean;
+  defaultData?: OrganizationI;
+  organizationId?: number;
+}
+
+export const RegisterEditOrganizationForm = ({
+  isEditing,
+  defaultData,
+  organizationId,
+}: RegisterEditOrganizationFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<
     { field: string; message: string }[]
   >([]);
-  const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [isKRSValid, setIsKRSValid] = useState(false);
 
   const methods = useForm<OrganizationRegistrationI>({
     defaultValues: {
-      name: '',
-      email: '',
-      krs: '',
-      phone: '',
-      city: '',
-      postalCode: '',
-      voivodeship: '',
-      address: '',
+      name: defaultData?.name || '',
+      email: defaultData?.email || '',
+      krs: defaultData?.krs || '',
+      phone: defaultData?.phone || '',
+      city: defaultData?.city || '',
+      postalCode: defaultData?.postalCode || '',
+      voivodeship: defaultData?.voivodeship || '',
+      address: defaultData?.address || '',
       geolocation: null,
       logo: '',
-      description: '',
-      website: '',
-      acceptsReports: false,
+      description: defaultData?.description || '',
+      website: defaultData?.website || '',
+      acceptsReports: defaultData?.acceptsReports || false,
       password: '',
-      animals: [],
+      animals: defaultData?.animals || [],
     },
   });
 
@@ -45,6 +55,8 @@ export const RegisterEditOrganizationForm = () => {
   const krsNumber = watch('krs');
 
   useEffect(() => {
+    if (isEditing) return; // KRS can't be edited
+
     const validateKRS = async () => {
       setValue('name', '');
       setValue('city', '');
@@ -76,7 +88,7 @@ export const RegisterEditOrganizationForm = () => {
     };
 
     validateKRS();
-  }, [krsNumber, setValue]);
+  }, [krsNumber, setValue, isEditing]);
 
   const placeholderDisabled = 'This field will be filled automatically';
   const placeholderEnabled = 'Validate KRS to enable this field';
@@ -92,14 +104,25 @@ export const RegisterEditOrganizationForm = () => {
     setFormErrors([]);
 
     try {
-      await organizationRegistrationApi.register(data);
-      setRegistrationSuccessful(true);
+      if (isEditing && organizationId) {
+        await axiosInstance.put(
+          API_ENDPOINTS.ORGANIZATIONS.EDIT(organizationId),
+          data
+        );
+        setIsSuccess(true);
+      } else {
+        await organizationRegistrationApi.register(data);
+        setIsSuccess(true);
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.data?.errors) {
           setFormErrors(error.response.data.errors);
         } else {
-          setError(error.response?.data?.message || 'Registration failed');
+          setError(
+            error.response?.data?.message ||
+              `${isEditing ? 'Update' : 'Registration'} failed`
+          );
         }
       } else {
         setError('An unexpected error occurred');
@@ -111,15 +134,13 @@ export const RegisterEditOrganizationForm = () => {
 
   return (
     <>
-      {registrationSuccessful ? (
+      {isSuccess ? (
         <SuccessMessage
           message="Registration was successful!"
           imageSrc="./success_dog.png"
         />
       ) : (
         <>
-          <h1 className="heading-primary">Register Organization</h1>
-
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)} className="register-form">
               <CustomFormField
@@ -128,11 +149,12 @@ export const RegisterEditOrganizationForm = () => {
                 name="krs"
                 id="krs"
                 required
-                placeholder="Enter KRS number to validate it"
+                placeholder={isEditing ? '' : 'Enter KRS number to validate it'}
                 errorMessage={
                   error ||
                   formErrors.find((error) => error.field === 'krs')?.message
                 }
+                disabled={isEditing}
               />
 
               <CustomFormField
@@ -360,7 +382,7 @@ export const RegisterEditOrganizationForm = () => {
                 className="submit-button"
                 disabled={isSubmitting}
               >
-                Register
+                {isEditing ? 'Save changes' : 'Register'}
               </Button>
             </form>
           </FormProvider>

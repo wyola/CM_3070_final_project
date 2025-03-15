@@ -1,21 +1,25 @@
 import { useState } from 'react';
-import { Button, CustomCard, CustomModal } from '@/components';
-import { OrganizationAnimals } from '@/types';
+import {
+  Button,
+  CustomCard,
+  CustomModal,
+  RegisterEditOrganizationForm,
+} from '@/components';
+import { OrganizationAnimals, OrganizationI } from '@/types';
 import { useOwnership } from '@/hooks';
 import './organizationHeader.scss';
+import { O } from 'vitest/dist/chunks/reporters.66aFHiyX.js';
 
 type OrganizationHeaderProps = {
-  logo: string;
-  name: string;
-  description: string;
-  animals: OrganizationAnimals[];
+  // logo: string;
+  // name: string;
+  // description: string;
+  // animals: OrganizationAnimals[];
+  organization: OrganizationI;
 };
 
 export const OrganizationHeader = ({
-  logo,
-  name,
-  description,
-  animals,
+  organization,
 }: OrganizationHeaderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isOwner = useOwnership();
@@ -24,8 +28,11 @@ export const OrganizationHeader = ({
     <>
       <CustomCard className="organization-header">
         <div className="organization-header__title">
-          <img src={`http://localhost:3000/${logo}`} alt={`logo of ${name}`} />
-          <h1 className="heading-primary">{name}</h1>
+          <img
+            src={`http://localhost:3000/${organization.logo}`}
+            alt={`logo of ${organization.name}`}
+          />
+          <h1 className="heading-primary">{organization.name}</h1>
           {isOwner && (
             <Button
               variant="ghost"
@@ -39,9 +46,11 @@ export const OrganizationHeader = ({
           )}
         </div>
         <div className="organization-header__animals">
-          We take care of: {animals.join(', ')}
+          We take care of: {organization.animals.join(', ')}
         </div>
-        <p className="organization-header__description">{description}</p>
+        <p className="organization-header__description">
+          {organization.description}
+        </p>
       </CustomCard>
 
       {isOwner && (
@@ -53,7 +62,11 @@ export const OrganizationHeader = ({
           onClose={() => setIsModalOpen(false)}
           onConfirm={() => {}} // TODO
         >
-          <div>Form</div>
+          <RegisterEditOrganizationForm
+            isEditing={true}
+            defaultData={organization}
+            organizationId={organization.id}
+          />
         </CustomModal>
       )}
     </>
