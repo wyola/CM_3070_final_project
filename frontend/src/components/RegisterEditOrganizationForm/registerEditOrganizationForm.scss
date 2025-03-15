@@ -1,0 +1,22 @@
+@use '../../sass/abstract/variables' as *;
+
+.register-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+
+  &__checkbox {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    &#{&} input[type='checkbox'] {
+      margin-top: 0;
+      width: 1.5rem;
+      height: 1.5rem;
+      accent-color: $color-primary-yellow;
+    }
+  }
+}
