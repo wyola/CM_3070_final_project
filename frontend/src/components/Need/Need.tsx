@@ -11,6 +11,7 @@ import { mapKindToLabel } from '@/utils';
 import axios from 'axios';
 import { axiosInstance } from '@/lib/axios';
 import { API_ENDPOINTS } from '@/constants';
+import { useOwnership } from '@/hooks';
 import './need.scss';
 
 type NeedProps = {
@@ -34,6 +35,8 @@ export const Need = ({
   const [error, setError] = useState<string | null>(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const isOwner = useOwnership();
 
   const handleDelete = async () => {
     try {
@@ -70,60 +73,67 @@ export const Need = ({
           )}
         </div>
         <p className="need__description">{description}</p>
-        <div className="need__actions">
-          <Button
-            className="need__actions--button"
-            variant="ghost"
-            aria-label="Edit need"
-            onClick={() => {
-              setIsModalOpen(true);
-            }}
-          >
-            <img src="/edit.svg" alt="" />
-          </Button>
-          <Button
-            className="need__actions--button"
-            variant="ghost"
-            onClick={() => {
-              setIsDeleting(true);
-              setIsAlertOpen(true);
-            }}
-            disabled={isDeleting}
-            aria-label="Delete need"
-          >
-            <img src="/bin.svg" alt="" />
-          </Button>
-        </div>
+
+        {isOwner && (
+          <div className="need__actions">
+            <Button
+              className="need__actions--button"
+              variant="ghost"
+              aria-label="Edit need"
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
+            >
+              <img src="/edit.svg" alt="" />
+            </Button>
+            <Button
+              className="need__actions--button"
+              variant="ghost"
+              onClick={() => {
+                setIsDeleting(true);
+                setIsAlertOpen(true);
+              }}
+              disabled={isDeleting}
+              aria-label="Delete need"
+            >
+              <img src="/bin.svg" alt="" />
+            </Button>
+          </div>
+        )}
       </CustomCard>
 
-      <CustomAlertDialog
-        title="Are you sure you want to delete this need?"
-        description="This action cannot be undone, it will permanently delete need."
-        cancelButtonLabel="Cancel"
-        confirmButtonLabel="Remove"
-        isOpen={isAlertOpen}
-        onCancel={() => {
-          setIsAlertOpen(false);
-          setIsDeleting(false);
-        }}
-        onConfirm={handleDelete}
-      />
+      {isOwner && (
+        <>
+          <CustomAlertDialog
+            title="Are you sure you want to delete this need?"
+            description="This action cannot be undone, it will permanently delete need."
+            cancelButtonLabel="Cancel"
+            confirmButtonLabel="Remove"
+            isOpen={isAlertOpen}
+            onCancel={() => {
+              setIsAlertOpen(false);
+              setIsDeleting(false);
+            }}
+            onConfirm={handleDelete}
+          />
 
-      <AddEditNeedModal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-        }}
-        organizationId={organizationId}
-        onSuccess={onActionCompleted}
-        defaultValues={{
-          kind,
-          description,
-          priority,
-        }}
-        isEditing={true}
-        needId={needId}
-      />
+          <AddEditNeedModal
+            isOpen={isModalOpen}
+            onClose={() => {
+              setIsModalOpen(false);
+            }}
+            organizationId={organizationId}
+            onSuccess={onActionCompleted}
+            defaultValues={{
+              kind,
+              description,
+              priority,
+            }}
+            isEditing={true}
+            needId={needId}
+          />
+        </>
+      )}
     </>
   );
 };
