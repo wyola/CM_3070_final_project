@@ -11,6 +11,7 @@ export interface LoginResponseI {
     user: {
       id: number;
       email: string;
+      organizationId: number;
     };
   };
 }
