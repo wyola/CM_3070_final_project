@@ -107,6 +107,12 @@ const upload = multer({
  *               createdAt:
  *                 type: string
  *                 format: date-time
+ *         animals:
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum: [dogs, cats, farm animals, wild animals, exotic animals, birds, horses, other]
+ *           description: Types of animals involved in the report
  */
 
 /**
@@ -125,6 +131,7 @@ const upload = multer({
  *             required:
  *               - title
  *               - description
+ *               - animals
  *             properties:
  *               title:
  *                 type: string
@@ -164,6 +171,14 @@ const upload = multer({
  *                 type: string
  *                 format: binary
  *                 description: Image showing the situation (optional, max 5MB)
+ *               animals:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   enum: [dogs, cats, farm animals, wild animals, exotic animals, birds, horses, other]
+ *                 minItems: 1
+ *                 description: Types of animals involved in the report
+ *                 example: ["dogs", "cats"]
  *     responses:
  *       201:
  *         description: Report created successfully

@@ -76,6 +76,7 @@ model Report {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   assignments    ReportAssignment[]
+  animals        String
 }
 
 model ReportAssignment {

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { KindsOfNeeds } from './need.types';
 
-const VALID_ANIMALS = [
+export const VALID_ANIMALS = [
   'dogs',
   'cats',
   'farm animals',
