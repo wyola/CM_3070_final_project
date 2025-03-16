@@ -58,6 +58,9 @@ export const CustomFormField = ({
               }
               {...(inputProps.type === 'file' ? {} : { value })}
               {...inputProps}
+              {...(inputProps.type === 'checkbox'
+                ? { defaultChecked: value }
+                : {})}
             />
           </FormControl>
           <FormMessage className="form-item__message">

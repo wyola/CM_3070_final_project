@@ -1,10 +1,10 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import { RegisterEditOrganizationForm } from '@/components';
 import { API_ENDPOINTS } from '@/constants';
 import { axiosInstance } from '@/lib/axios';
 import { OrganizationI } from '@/types';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
 
 export const OrganizationEdit = () => {
   const [organization, setOrganization] = useState<OrganizationI | null>(null);

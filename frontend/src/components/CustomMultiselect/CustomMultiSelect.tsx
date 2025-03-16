@@ -34,16 +34,20 @@ export const CustomMultiSelect = ({
   errorMessage,
   disabled,
 }: CustomMultiSelectProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const { control, setValue, watch } = useFormContext();
   const selectedValues = watch(name) || [];
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleValueChange = (value: string) => {
     const newValues = selectedValues.includes(value)
       ? selectedValues.filter((v: string) => v !== value)
       : [...selectedValues, value];
 
-    setValue(name, newValues, { shouldValidate: true });
+    setValue(name, newValues, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
   };
 
   return (

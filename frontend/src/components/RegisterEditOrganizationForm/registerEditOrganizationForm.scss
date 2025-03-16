@@ -5,9 +5,11 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 
-  // input {
-  //   // text-transform: capitalize;
-  // }
+  input[name='name'],
+  input[name='city'],
+  input[name='voivodeship'] {
+    text-transform: capitalize;
+  }
 
   &__checkbox {
     display: flex;

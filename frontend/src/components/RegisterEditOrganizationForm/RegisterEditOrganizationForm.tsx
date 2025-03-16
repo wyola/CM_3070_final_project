@@ -29,7 +29,7 @@ export const RegisterEditOrganizationForm = ({
     { field: string; message: string }[]
   >([]);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isKRSValid, setIsKRSValid] = useState(false);
+  const [isKRSValid, setIsKRSValid] = useState(isEditing || false);
 
   const methods = useForm<OrganizationRegistrationI>({
     defaultValues: {
@@ -41,7 +41,6 @@ export const RegisterEditOrganizationForm = ({
       postalCode: defaultData?.postalCode || '',
       voivodeship: defaultData?.voivodeship || '',
       address: defaultData?.address || '',
-      geolocation: null,
       logo: '',
       description: defaultData?.description || '',
       website: defaultData?.website || '',
@@ -106,9 +105,9 @@ export const RegisterEditOrganizationForm = ({
 
     try {
       if (isEditing && organizationId) {
-        await axiosInstance.put(
-          API_ENDPOINTS.ORGANIZATIONS.EDIT(organizationId),
-          data
+        await organizationRegistrationApi.editOrganization(
+          data,
+          organizationId
         );
         setIsSuccess(true);
       } else {
@@ -165,7 +164,9 @@ export const RegisterEditOrganizationForm = ({
                 id="name"
                 required
                 disabled={!isEditing}
-                placeholder={placeholderDisabled}
+                placeholder={
+                  isEditing ? 'Organization name' : placeholderDisabled
+                }
                 errorMessage={
                   isKRSValid
                     ? formErrors.find((error) => error.field === 'name')
@@ -181,7 +182,7 @@ export const RegisterEditOrganizationForm = ({
                 id="city"
                 required
                 disabled={!isEditing}
-                placeholder={placeholderDisabled}
+                placeholder={isEditing ? 'City' : placeholderDisabled}
                 errorMessage={
                   isKRSValid
                     ? formErrors.find((error) => error.field === 'city')
@@ -197,7 +198,7 @@ export const RegisterEditOrganizationForm = ({
                 id="voivodeship"
                 required
                 disabled={!isEditing}
-                placeholder={placeholderDisabled}
+                placeholder={isEditing ? 'Voivodeship' : placeholderDisabled}
                 errorMessage={
                   isKRSValid
                     ? formErrors.find((error) => error.field === 'voivodeship')

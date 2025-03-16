@@ -1,14 +1,8 @@
-import { useState } from 'react';
-import {
-  Button,
-  CustomCard,
-  CustomModal,
-  RegisterEditOrganizationForm,
-} from '@/components';
-import { OrganizationAnimals, OrganizationI } from '@/types';
+import { Link } from 'react-router';
+import { CustomCard } from '@/components';
+import { OrganizationAnimals } from '@/types';
 import { useOwnership } from '@/hooks';
 import './organizationHeader.scss';
-import { Link } from 'react-router';
 
 type OrganizationHeaderProps = {
   logo: string;
