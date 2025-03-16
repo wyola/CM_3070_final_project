@@ -11,16 +11,10 @@
       height: 5rem;
     }
 
-    button {
+    a {
       img {
         width: 2rem;
         height: 2rem;
-      }
-
-      &:is(button) {
-        padding: 0;
-        border-radius: 50%;
-        height: unset;
       }
     }
   }

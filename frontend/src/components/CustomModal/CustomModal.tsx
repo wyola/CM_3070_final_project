@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components';
+import './customModal.scss';
 
 type CustomModalProps = {
   title: string;
@@ -41,28 +42,28 @@ export const CustomModal = ({
         }
       }}
     >
-      <DialogContent className={className}>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
-        </DialogHeader>
-        {children}
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => {
-                onConfirm();
-                onClose();
-              }}
-              disabled={buttonDisabled}
-            >
-              {buttonLabel}
-            </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
+        <DialogContent className={`dialog ${className}`}>
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{description}</DialogDescription>
+          </DialogHeader>
+          {children}
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  onConfirm();
+                  onClose();
+                }}
+                disabled={buttonDisabled}
+              >
+                {buttonLabel}
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
     </Dialog>
   );
 };

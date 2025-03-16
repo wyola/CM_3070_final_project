@@ -8,67 +8,43 @@ import {
 import { OrganizationAnimals, OrganizationI } from '@/types';
 import { useOwnership } from '@/hooks';
 import './organizationHeader.scss';
-import { O } from 'vitest/dist/chunks/reporters.66aFHiyX.js';
+import { Link } from 'react-router';
 
 type OrganizationHeaderProps = {
-  // logo: string;
-  // name: string;
-  // description: string;
-  // animals: OrganizationAnimals[];
-  organization: OrganizationI;
+  logo: string;
+  name: string;
+  description: string;
+  animals: OrganizationAnimals[];
+  organizationId: number;
 };
 
 export const OrganizationHeader = ({
-  organization,
+  logo,
+  name,
+  description,
+  animals,
+  organizationId,
 }: OrganizationHeaderProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const isOwner = useOwnership();
 
   return (
-    <>
-      <CustomCard className="organization-header">
-        <div className="organization-header__title">
-          <img
-            src={`http://localhost:3000/${organization.logo}`}
-            alt={`logo of ${organization.name}`}
-          />
-          <h1 className="heading-primary">{organization.name}</h1>
-          {isOwner && (
-            <Button
-              variant="ghost"
-              aria-label="Edit need"
-              onClick={() => {
-                setIsModalOpen(true);
-              }}
-            >
-              <img src="/edit.svg" alt="" />
-            </Button>
-          )}
-        </div>
-        <div className="organization-header__animals">
-          We take care of: {organization.animals.join(', ')}
-        </div>
-        <p className="organization-header__description">
-          {organization.description}
-        </p>
-      </CustomCard>
-
-      {isOwner && (
-        <CustomModal
-          title="Edit organization"
-          description="Edit your organization details. KRS number can't be changed."
-          buttonLabel="Save changes"
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onConfirm={() => {}} // TODO
-        >
-          <RegisterEditOrganizationForm
-            isEditing={true}
-            defaultData={organization}
-            organizationId={organization.id}
-          />
-        </CustomModal>
-      )}
-    </>
+    <CustomCard className="organization-header">
+      <div className="organization-header__title">
+        <img src={`http://localhost:3000/${logo}`} alt={`logo of ${name}`} />
+        <h1 className="heading-primary">{name}</h1>
+        {isOwner && (
+          <Link
+            to={`/organizations/${organizationId}/edit`}
+            aria-label="Go to edit organization form"
+          >
+            <img src="/edit.svg" alt="" />
+          </Link>
+        )}
+      </div>
+      <div className="organization-header__animals">
+        We take care of: {animals.join(', ')}
+      </div>
+      <p className="organization-header__description">{description}</p>
+    </CustomCard>
   );
 };

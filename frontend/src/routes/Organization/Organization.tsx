@@ -66,11 +66,11 @@ export const Organization = () => {
   return (
     <section className="content organization">
       <OrganizationHeader
-        // logo={logo}
-        // name={name}
-        // description={description}
-        // animals={animals}
-        organization={organization}
+        logo={logo}
+        name={name}
+        description={description}
+        animals={animals}
+        organizationId={id}
       />
 
       <OrganizationContact
