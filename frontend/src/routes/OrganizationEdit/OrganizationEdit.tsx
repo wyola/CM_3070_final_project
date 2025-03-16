@@ -5,6 +5,7 @@ import { API_ENDPOINTS } from '@/constants';
 import { axiosInstance } from '@/lib/axios';
 import { OrganizationI } from '@/types';
 import axios from 'axios';
+import './organizationEdit.scss';
 
 export const OrganizationEdit = () => {
   const [organization, setOrganization] = useState<OrganizationI | null>(null);
