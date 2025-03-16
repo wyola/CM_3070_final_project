@@ -1,12 +1,21 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router';
-import { Home } from './routes/Home/Home.tsx';
-import { Login } from './routes/Login/Login.tsx';
+import {
+  Home,
+  Login,
+  Register,
+  Organization,
+  OrganizationEdit,
+} from '@/routes';
 import { MainPagesLayout } from './layouts/MainPagesLayout.tsx';
-import { Register } from './routes/Register/Register.tsx';
-import { Organization } from './routes/Organization/Organization.tsx';
-import { HOME, LOGIN, REGISTER, ORGANIZATION_ID } from '@/constants';
+import {
+  HOME,
+  LOGIN,
+  REGISTER,
+  ORGANIZATION_ID,
+  ORGANIZATION_EDIT,
+} from '@/constants';
 import { UserProvider } from '@/contexts';
 import './sass/main.scss';
 
@@ -26,6 +35,9 @@ createRoot(document.getElementById('root')!).render(
           </Route>
           <Route path={ORGANIZATION_ID} element={<MainPagesLayout />}>
             <Route index element={<Organization />} />
+          </Route>
+          <Route path={ORGANIZATION_EDIT} element={<MainPagesLayout />}>
+            <Route index element={<OrganizationEdit />} />
           </Route>
         </Routes>
       </UserProvider>

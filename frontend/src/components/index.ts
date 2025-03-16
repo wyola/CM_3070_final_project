@@ -17,4 +17,5 @@ export { OrganizationContact } from './OrganizationContact/OrganizationContact';
 export { OrganizationHeader } from './OrganizationHeader/OrganizationHeader';
 export { OrganizationsSearchFilterForm } from './OrganizationsSearchFilterForm/OrganizationsSearchFilterForm';
 export { OrganizationsTable } from './OrganizationsTable/OrganizationsTable';
+export { RegisterEditOrganizationForm } from './RegisterEditOrganizationForm/RegisterEditOrganizationForm';
 export { SuccessMessage } from './SuccessMessage/SuccessMessage';

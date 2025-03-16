@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components';
+import './customModal.scss';
 
 type CustomModalProps = {
   title: string;
@@ -41,7 +42,7 @@ export const CustomModal = ({
         }
       }}
     >
-      <DialogContent className={className}>
+      <DialogContent className={`dialog ${className}`}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

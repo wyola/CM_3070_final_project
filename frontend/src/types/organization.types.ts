@@ -29,6 +29,7 @@ export interface OrganizationI {
   acceptsReports: boolean;
   password: string;
   animals: OrganizationAnimals[];
+  ownerId: number;
 }
 
 export interface OrganizationRegistrationI

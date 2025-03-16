@@ -5,6 +5,7 @@ export const API_ENDPOINTS = {
     ALL: '/api/organizations',
     BY_ID: (id: number) => `/api/organizations/${id}`,
     BY_KRS: (krs: string) => `/api/organizations/krs/${krs}`,
+    EDIT: (id: number) => `/api/organizations/${id}`,
   },
   AUTH: {
     LOGIN: `/api/auth/login`,
