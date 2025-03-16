@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/auth.service';
 import { z } from 'zod';
+import { RequestWithUser } from '../middleware/auth.middleware';
+import { prisma } from '../lib/prisma-client';
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -64,6 +66,40 @@ export class AuthController {
         return;
       }
       res.status(401).json({ message: 'Invalid refresh token' });
+    }
+  };
+
+  public getCurrentUser = async (
+    req: RequestWithUser,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        res.status(401).json({ message: 'Unauthorized' });
+        return;
+      }
+
+      const user = await prisma.user.findUnique({
+        where: { id: parseInt(userId) },
+        select: {
+          id: true,
+          email: true,
+          organizationId: true,
+        },
+      });
+
+      if (!user) {
+        res.status(404).json({ message: 'User not found' });
+        return;
+      }
+
+      res.json({
+        user,
+      });
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error' });
     }
   };
 }

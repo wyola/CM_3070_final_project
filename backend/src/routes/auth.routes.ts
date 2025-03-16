@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { AuthController } from '../controllers/auth.controller';
+import { authenticateJWT } from '../middleware/auth.middleware';
 
 const router = Router();
 const authController = new AuthController();
@@ -96,5 +97,44 @@ router.post('/login', authController.login);
  *         description: Invalid refresh token
  */
 router.post('/refresh', authController.refresh);
+
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     tags: [Auth]
+ *     summary: Get current authenticated user information
+ *     description: Returns the current user's information based on the JWT token
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User information retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     email:
+ *                       type: string
+ *                       format: email
+ *                       example: "user@example.com"
+ *                     organizationId:
+ *                       type: integer
+ *                       example: 5
+ *       401:
+ *         description: Unauthorized - Invalid or missing token
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/me', authenticateJWT, authController.getCurrentUser);
 
 export default router;

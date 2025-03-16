@@ -37,6 +37,7 @@ export const Login = () => {
 
       setUser(result.data.user);
       localStorage.setItem('token', result.data.accessToken);
+      localStorage.setItem('refreshToken', result.data.refreshToken);
       navigate(`${ORGANIZATION}/${result.data.user.id}`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -72,10 +73,7 @@ export const Login = () => {
             errorMessage={error}
           />
 
-          <Button
-            type="submit"
-            className="submit-button"
-          >
+          <Button type="submit" className="submit-button">
             Login
           </Button>
         </form>
