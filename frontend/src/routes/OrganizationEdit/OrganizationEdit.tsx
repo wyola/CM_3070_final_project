@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { RegisterEditOrganizationForm } from '@/components';
-import { API_ENDPOINTS } from '@/constants';
+import { API_ENDPOINTS, ORGANIZATION } from '@/constants';
+import axios from 'axios';
 import { axiosInstance } from '@/lib/axios';
 import { OrganizationI } from '@/types';
-import axios from 'axios';
+import { useOwnership } from '@/hooks';
 import './organizationEdit.scss';
 
 export const OrganizationEdit = () => {
@@ -13,8 +14,15 @@ export const OrganizationEdit = () => {
   const [error, setError] = useState<string | null>(null);
 
   const { id: idFromParams } = useParams();
+  const isOwner = useOwnership();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!isOwner) {
+      navigate(`${ORGANIZATION}/${idFromParams}`);
+      return;
+    }
+
     const fetchOrganization = async () => {
       try {
         const orgResponse = await axiosInstance.get(
@@ -33,8 +41,6 @@ export const OrganizationEdit = () => {
         setIsLoading(false);
       }
     };
-
-    // TODO current user is not owner, redirect to organization page
 
     fetchOrganization();
   }, [idFromParams]);
