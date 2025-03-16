@@ -1,7 +1,17 @@
 node_modules
-# Keep environment variables out of version control
+
 uploads/*
 !uploads/.gitkeep
+!uploads/temp/
+!uploads/reports/
+!uploads/logos/
+uploads/temp/*
+uploads/reports/*
+uploads/logos/*
+!uploads/temp/.gitkeep
+!uploads/reports/.gitkeep
+!uploads/logos/.gitkeep
+
 dist
 
 src/tests/integration/test-logo.png

@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import { KindsOfNeeds, NeedDto, NeedResponse } from '../types/need.types';
-
-const prisma = new PrismaClient();
+import { prisma } from '../lib/prisma-client';
 
 export class NeedService {
   async createNeed(data: NeedDto): Promise<NeedResponse> {

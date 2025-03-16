@@ -54,4 +54,37 @@ export class GeolocationService {
       return null;
     }
   }
+
+  // Haversine formula to calculate distance between two points on Earth
+  // https://en.wikipedia.org/wiki/Haversine_formula
+  calculateDistance(
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number
+  ): number {
+    const earthRadiusKm = 6371;
+    const deltaLat = this.deg2rad(lat2 - lat1);
+    const deltaLon = this.deg2rad(lon2 - lon1);
+
+    const halfChordLengthSquared =
+      Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+      Math.cos(this.deg2rad(lat1)) *
+        Math.cos(this.deg2rad(lat2)) *
+        Math.sin(deltaLon / 2) *
+        Math.sin(deltaLon / 2);
+    const angularDistance =
+      2 *
+      Math.atan2(
+        Math.sqrt(halfChordLengthSquared),
+        Math.sqrt(1 - halfChordLengthSquared)
+      );
+    const distanceKm = earthRadiusKm * angularDistance;
+
+    return distanceKm;
+  }
+
+  private deg2rad(deg: number): number {
+    return deg * (Math.PI / 180);
+  }
 }
