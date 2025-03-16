@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { ANIMAL_OPTIONS, API_ENDPOINTS } from '@/constants';
+import { useNavigate } from 'react-router';
+import { ANIMAL_OPTIONS, API_ENDPOINTS, ORGANIZATION } from '@/constants';
 import axios from 'axios';
 import { axiosInstance, organizationRegistrationApi } from '@/lib/axios';
 import { OrganizationI, OrganizationRegistrationI } from '@/types';
@@ -30,6 +31,8 @@ export const RegisterEditOrganizationForm = ({
   >([]);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isKRSValid, setIsKRSValid] = useState(isEditing || false);
+
+  const navigate = useNavigate();
 
   const methods = useForm<OrganizationRegistrationI>({
     defaultValues: {
@@ -110,6 +113,7 @@ export const RegisterEditOrganizationForm = ({
           organizationId
         );
         setIsSuccess(true);
+        navigate(`${ORGANIZATION}/${organizationId}`);
       } else {
         await organizationRegistrationApi.register(data);
         setIsSuccess(true);
@@ -134,7 +138,7 @@ export const RegisterEditOrganizationForm = ({
 
   return (
     <>
-      {isSuccess ? (
+      {isSuccess && !isEditing ? (
         <SuccessMessage
           message="Registration was successful!"
           imageSrc="./success_dog.png"
