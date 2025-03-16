@@ -27,6 +27,7 @@ model Organization {
   updatedAt      DateTime @updatedAt
   user           User?
   needs          Need[]
+  reportAssignments ReportAssignment[]
 }
 
 model User {
@@ -57,4 +58,37 @@ model Need {
   createdAt    DateTime     @default(now())
   organization Organization @relation(fields: [organizationId], references: [id])
   organizationId Int
+}
+
+model Report {
+  id             Int              @id @default(autoincrement())
+  title          String
+  description    String
+  address        String?
+  city           String?
+  postalCode     String?
+  geolocation    String
+  image          String?
+  contactName    String?
+  contactEmail   String?
+  contactPhone   String?
+  status         String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  assignments    ReportAssignment[]
+  animals        String
+}
+
+model ReportAssignment {
+  id             Int              @id @default(autoincrement())
+  reportId       Int
+  organizationId Int
+  viewedAt       DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  
+  report         Report           @relation(fields: [reportId], references: [id])
+  organization   Organization     @relation(fields: [organizationId], references: [id])
+
+  @@unique([reportId, organizationId])
 }
