@@ -51,7 +51,13 @@ export const RegisterEditOrganizationForm = ({
     },
   });
 
-  const { watch, setValue } = methods;
+  const {
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting, isDirty },
+  } = methods;
+
   const krsNumber = watch('krs');
 
   useEffect(() => {
@@ -92,11 +98,6 @@ export const RegisterEditOrganizationForm = ({
 
   const placeholderDisabled = 'This field will be filled automatically';
   const placeholderEnabled = 'Validate KRS to enable this field';
-
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
 
   const onSubmit = async (data: OrganizationRegistrationI) => {
     setIsLoading(true);
@@ -163,7 +164,7 @@ export const RegisterEditOrganizationForm = ({
                 name="name"
                 id="name"
                 required
-                disabled
+                disabled={!isEditing}
                 placeholder={placeholderDisabled}
                 errorMessage={
                   isKRSValid
@@ -179,7 +180,7 @@ export const RegisterEditOrganizationForm = ({
                 name="city"
                 id="city"
                 required
-                disabled
+                disabled={!isEditing}
                 placeholder={placeholderDisabled}
                 errorMessage={
                   isKRSValid
@@ -195,7 +196,7 @@ export const RegisterEditOrganizationForm = ({
                 name="voivodeship"
                 id="voivodeship"
                 required
-                disabled
+                disabled={!isEditing}
                 placeholder={placeholderDisabled}
                 errorMessage={
                   isKRSValid
@@ -204,39 +205,46 @@ export const RegisterEditOrganizationForm = ({
                     : ''
                 }
               />
-              <CustomFormField
-                label="Email"
-                type="email"
-                name="email"
-                id="email"
-                required
-                disabled={!isKRSValid}
-                placeholder={isKRSValid ? 'Email address' : placeholderEnabled}
-                errorMessage={
-                  isKRSValid
-                    ? formErrors.find((error) => error.field === 'email')
-                        ?.message
-                    : ''
-                }
-              />
 
-              <CustomFormField
-                label="Password"
-                type="password"
-                name="password"
-                id="password"
-                required
-                disabled={!isKRSValid}
-                placeholder={
-                  isKRSValid ? 'Minimum 8 characters' : placeholderEnabled
-                }
-                errorMessage={
-                  isKRSValid
-                    ? formErrors.find((error) => error.field === 'password')
-                        ?.message
-                    : ''
-                }
-              />
+              {!isEditing && (
+                <>
+                  <CustomFormField
+                    label="Email"
+                    type="email"
+                    name="email"
+                    id="email"
+                    required
+                    disabled={!isKRSValid || isEditing}
+                    placeholder={
+                      isKRSValid ? 'Email address' : placeholderEnabled
+                    }
+                    errorMessage={
+                      isKRSValid
+                        ? formErrors.find((error) => error.field === 'email')
+                            ?.message
+                        : ''
+                    }
+                  />
+
+                  <CustomFormField
+                    label="Password"
+                    type="password"
+                    name="password"
+                    id="password"
+                    required
+                    disabled={!isKRSValid}
+                    placeholder={
+                      isKRSValid ? 'Minimum 8 characters' : placeholderEnabled
+                    }
+                    errorMessage={
+                      isKRSValid
+                        ? formErrors.find((error) => error.field === 'password')
+                            ?.message
+                        : ''
+                    }
+                  />
+                </>
+              )}
 
               <CustomFormField
                 label="Phone Number"
@@ -244,7 +252,7 @@ export const RegisterEditOrganizationForm = ({
                 name="phone"
                 id="phone"
                 required
-                disabled={!isKRSValid}
+                disabled={!isKRSValid && !isEditing}
                 placeholder={
                   isKRSValid ? 'Phone number 9 digits' : placeholderEnabled
                 }
@@ -263,7 +271,7 @@ export const RegisterEditOrganizationForm = ({
                 id="postalCode"
                 pattern="[0-9]{2}-[0-9]{3}"
                 required
-                disabled={!isKRSValid}
+                disabled={!isKRSValid && !isEditing}
                 placeholder={
                   isKRSValid
                     ? 'Postal code in format 00-000'
@@ -283,7 +291,7 @@ export const RegisterEditOrganizationForm = ({
                 name="address"
                 id="address"
                 required
-                disabled={!isKRSValid}
+                disabled={!isKRSValid && !isEditing}
                 placeholder={
                   isKRSValid
                     ? 'Street, building number, apartment number'
@@ -303,7 +311,7 @@ export const RegisterEditOrganizationForm = ({
                 name="logo"
                 id="logo"
                 required
-                disabled={!isKRSValid}
+                disabled={!isKRSValid && !isEditing}
                 errorMessage={
                   isKRSValid
                     ? formErrors.find((error) => error.field === 'logo')
@@ -318,7 +326,7 @@ export const RegisterEditOrganizationForm = ({
                 name="description"
                 id="description"
                 required
-                disabled={!isKRSValid}
+                disabled={!isKRSValid && !isEditing}
                 placeholder={
                   isKRSValid
                     ? 'Short description of your organization'
@@ -347,7 +355,7 @@ export const RegisterEditOrganizationForm = ({
                         ?.message
                     : ''
                 }
-                disabled={!isKRSValid}
+                disabled={!isKRSValid && !isEditing}
               />
 
               <CustomFormField
@@ -355,7 +363,7 @@ export const RegisterEditOrganizationForm = ({
                 type="url"
                 name="website"
                 id="website"
-                disabled={!isKRSValid}
+                disabled={!isKRSValid && !isEditing}
                 placeholder={
                   isKRSValid ? 'Address of your website' : placeholderEnabled
                 }
@@ -373,14 +381,14 @@ export const RegisterEditOrganizationForm = ({
                 name="acceptsReports"
                 id="acceptsReports"
                 className="register-form__checkbox"
-                disabled={!isKRSValid}
+                disabled={!isKRSValid && !isEditing}
                 placeholder={placeholderEnabled}
               />
 
               <Button
                 type="submit"
                 className="submit-button"
-                disabled={isSubmitting}
+                disabled={isSubmitting || (isEditing && !isDirty)}
               >
                 {isEditing ? 'Save changes' : 'Register'}
               </Button>
