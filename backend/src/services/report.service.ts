@@ -56,6 +56,7 @@ export class ReportService {
         contactEmail: data.contactEmail || null,
         contactPhone: data.contactPhone || null,
         status: ReportStatus.OPEN,
+        animals: JSON.stringify(data.animals),
       },
     });
 
@@ -70,10 +71,16 @@ export class ReportService {
     }
 
     const reportLocation = JSON.parse(report.geolocation);
+    const reportAnimals: string[] = JSON.parse(report.animals);
 
     const organizations = await prisma.organization.findMany({
       where: {
         acceptsReports: true,
+        OR: reportAnimals.map((animal) => ({
+          animals: {
+            contains: animal,
+          },
+        })),
       },
       select: {
         id: true,
@@ -109,13 +116,11 @@ export class ReportService {
         prisma.reportAssignment.create({
           data: {
             reportId: report.id,
-            organizationId: org!.id,
+            organizationId: org.id,
           },
         })
       )
     );
-
-    return;
   }
 
   async getReportById(id: number): Promise<ReportResponse> {
@@ -153,6 +158,7 @@ export class ReportService {
       contactPhone: report.contactPhone,
       status: report.status as ReportStatus,
       createdAt: report.createdAt.toISOString(),
+      animals: report.animals ? JSON.parse(report.animals) : [],
       assignments: report.assignments.map((assignment) => ({
         id: assignment.id,
         organizationId: assignment.organizationId,
