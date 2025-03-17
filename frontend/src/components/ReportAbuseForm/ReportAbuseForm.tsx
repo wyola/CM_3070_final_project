@@ -88,11 +88,7 @@ export const ReportAbuseForm = () => {
       },
     });
 
-    return (
-      <div className="map-center-marker">
-        <img className="map-pin" src="/pin-color.svg" />
-      </div>
-    );
+    return <img className="map-pin" src="/pin-color.svg" />;
   };
 
   const methods = useForm<ReportFormDataI>({
@@ -216,7 +212,7 @@ export const ReportAbuseForm = () => {
                       <MapContainer
                         center={position}
                         zoom={13}
-                        style={{ height: '400px', width: '100%' }}
+                        style={{ height: '400px', width: '100%', zIndex: 0 }}
                         ref={mapRef}
                       >
                         <TileLayer
