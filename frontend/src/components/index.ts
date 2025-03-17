@@ -22,3 +22,4 @@ export { SuccessMessage } from './SuccessMessage/SuccessMessage';
 export { CustomSwitch } from './CustomSwitch/CustomSwitch';
 export { ReportSummary } from './ReportSummary/ReportSummary';
 export { UserMenu } from './UserMenu/UserMenu';
+export { ReportsTable } from './ReportsTable/ReportsTable';

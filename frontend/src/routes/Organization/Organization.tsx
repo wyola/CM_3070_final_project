@@ -6,6 +6,7 @@ import {
   OrganizationHeader,
   OrganizationMap,
   OrganizationsNeeds,
+  ReportsTable,
 } from '@/components';
 import { OrganizationI } from '@/types';
 import { axiosInstance } from '@/lib/axios';
@@ -92,6 +93,8 @@ export const Organization = () => {
       )}
 
       <OrganizationsNeeds organizationId={Number(id)} />
+
+      <ReportsTable />
 
       <div className="organization__volunteering">
         <h2 className="heading-secondary">Volunteering options</h2>
