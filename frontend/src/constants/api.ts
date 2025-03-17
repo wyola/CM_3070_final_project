@@ -22,4 +22,7 @@ export const API_ENDPOINTS = {
     UPDATE: (organizationId: number, needId: number) =>
       `/api/organizations/${organizationId}/needs/${needId}`,
   },
+  REPORT: {
+    CREATE: `/api/reports`,
+  },
 };
