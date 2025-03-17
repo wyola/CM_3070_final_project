@@ -17,14 +17,12 @@ export const OrganizationMap = ({
   return (
     <CustomCard className="organization-map">
       <MapContainer
-        // @ts-ignore - issue with types in library
         center={[geolocation.lat, geolocation.lon]}
         zoom={15}
         style={{ height: '200px', width: '100%', zIndex: 0 }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          // @ts-ignore - issue with types in library
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         <Marker position={[geolocation.lat, geolocation.lon]}>

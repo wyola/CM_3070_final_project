@@ -56,8 +56,7 @@ export const reportSchema = z
     ),
   })
   .refine((data) => (data.address && data.city) || data.geolocation, {
-    message:
-      'Either complete address (street and city) or geolocation must be provided',
+    message: 'Either complete address or geolocation must be provided',
     path: ['address'],
   });
 

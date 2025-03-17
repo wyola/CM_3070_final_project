@@ -7,6 +7,7 @@ import {
   Register,
   Organization,
   OrganizationEdit,
+  Report,
 } from '@/routes';
 import { MainPagesLayout } from './layouts/MainPagesLayout.tsx';
 import {
@@ -15,6 +16,7 @@ import {
   REGISTER,
   ORGANIZATION_ID,
   ORGANIZATION_EDIT,
+  REPORT,
 } from '@/constants';
 import { UserProvider } from '@/contexts';
 import './sass/main.scss';
@@ -38,6 +40,9 @@ createRoot(document.getElementById('root')!).render(
           </Route>
           <Route path={ORGANIZATION_EDIT} element={<MainPagesLayout />}>
             <Route index element={<OrganizationEdit />} />
+          </Route>
+          <Route path={REPORT} element={<MainPagesLayout />}>
+            <Route index element={<Report />} />
           </Route>
         </Routes>
       </UserProvider>
