@@ -25,4 +25,7 @@ export const API_ENDPOINTS = {
   REPORT: {
     CREATE: `/api/reports`,
   },
+  NOTIFICATIONS: {
+    COUNT: `/api/notifications/count`,
+  },
 };

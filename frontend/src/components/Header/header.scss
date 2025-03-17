@@ -16,8 +16,9 @@
   }
 
   &__nav {
-    ul {
+    ul, li {
       display: inline-flex;
+      align-items: center;
       gap: 2rem;
     }
   }

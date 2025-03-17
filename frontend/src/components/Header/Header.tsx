@@ -1,12 +1,11 @@
-import { Link, NavLink, useLocation } from 'react-router';
-import { LOGIN, ORGANIZATION, REPORT } from '@/constants';
+import { Link, NavLink } from 'react-router';
+import { UserMenu } from '@/components';
+import { LOGIN, REPORT } from '@/constants';
 import { useUser } from '@/contexts';
 import './header.scss';
 
 export const Header = () => {
-  const { user, isAuthenticated, logout } = useUser();
-  const location = useLocation();
-  const isOwnProfile = location.pathname === `${ORGANIZATION}/${user?.id}`;
+  const { user, isAuthenticated } = useUser();
 
   return (
     <header className="content header">
@@ -20,23 +19,9 @@ export const Header = () => {
             <NavLink to={REPORT}>Report</NavLink>
           </li>
           {isAuthenticated ? (
-            <>
-              {!isOwnProfile && (
-                <li>
-                  <NavLink
-                    className="header__username"
-                    to={`${ORGANIZATION}/${user?.id}`}
-                  >
-                    Your profile →
-                  </NavLink>
-                </li>
-              )}
-              <li>
-                <NavLink to={LOGIN} onClick={logout} className="header__logout">
-                  Logout
-                </NavLink>
-              </li>
-            </>
+            <li>
+              <UserMenu organizationId={user!.organizationId} />
+            </li>
           ) : (
             <li>
               <NavLink to={LOGIN}>Login</NavLink>

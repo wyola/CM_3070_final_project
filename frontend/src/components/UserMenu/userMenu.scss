@@ -1,0 +1,16 @@
+.user-menu {
+  &__trigger {
+    position: relative;
+
+    &--badge {
+      position: absolute;
+      top: -5px;
+    }
+  }
+
+  &__content {
+    a {
+      width: 100%;
+    }
+  }
+}

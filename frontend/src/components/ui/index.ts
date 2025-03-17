@@ -11,3 +11,5 @@ export * from './dialog';
 export * from './alert-dialog';
 export * from './tabs';
 export * from './switch';
+export * from './dropdown-menu';
+export * from './badge';
