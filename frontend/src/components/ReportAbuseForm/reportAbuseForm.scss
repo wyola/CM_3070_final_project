@@ -68,36 +68,8 @@
     }
 
     .map-pin {
-      width: 30px;
-      height: 30px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: -30px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 20px;
-        height: 30px;
-        background-color: #e53935;
-        border-radius: 50% 50% 0 50%;
-        transform: translateX(-50%) rotate(45deg);
-      }
-
-      &::after {
-        content: '';
-        position: absolute;
-        top: -22px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 8px;
-        height: 8px;
-        background-color: white;
-        border-radius: 50%;
-      }
+      width: 2.5rem;
+      height: 2.5rem;
     }
   }
 }

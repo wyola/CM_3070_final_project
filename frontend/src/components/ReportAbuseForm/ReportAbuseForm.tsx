@@ -12,13 +12,9 @@ import {
   CustomMultiSelect,
   FormMessage,
 } from '@/components';
-import {
-  ReportFormDataI,
-  ReportWithAddressFormDataI,
-  ReportWithGeolocationFormDataI,
-} from '@/types';
-import { axiosInstance } from '@/lib/axios';
-import { ANIMAL_OPTIONS, API_ENDPOINTS } from '@/constants';
+import { ReportFormDataI } from '@/types';
+import { createReportApi } from '@/lib/axios';
+import { ANIMAL_OPTIONS } from '@/constants';
 import axios from 'axios';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import * as L from 'leaflet';
@@ -94,7 +90,7 @@ export const ReportAbuseForm = () => {
 
     return (
       <div className="map-center-marker">
-        <div className="map-pin"></div>
+        <img className="map-pin" src="/pin-color.svg" />
       </div>
     );
   };
@@ -126,40 +122,7 @@ export const ReportAbuseForm = () => {
     setFormErrors([]);
 
     try {
-      const formData = new FormData();
-
-      formData.append('title', data.title);
-      formData.append('description', data.description);
-      formData.append('animals', JSON.stringify(data.animals));
-      if (addressType === 'address') {
-        formData.append(
-          'address',
-          (data as ReportWithAddressFormDataI).address
-        );
-        formData.append('city', (data as ReportWithAddressFormDataI).city);
-        formData.append(
-          'postalCode',
-          (data as ReportWithAddressFormDataI).postalCode
-        );
-      } else {
-        const geolocation = (data as ReportWithGeolocationFormDataI)
-          .geolocation;
-        formData.append('geolocation', geolocation);
-      }
-
-      if (data.contactName) formData.append('contactName', data.contactName);
-      if (data.contactEmail) formData.append('contactEmail', data.contactEmail);
-      if (data.contactPhone) formData.append('contactPhone', data.contactPhone);
-
-      if (data.image && data.image[0]) {
-        formData.append('image', data.image[0]);
-      }
-
-      await axiosInstance.post(API_ENDPOINTS.REPORT.CREATE, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      await createReportApi.createReport(data, addressType);
       setIsSuccess(true);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -247,7 +210,8 @@ export const ReportAbuseForm = () => {
                     <div className="report__form--map">
                       <p className="report__form--helper-text">
                         Click on the map to set a location or drag the map to
-                        adjust pin position
+                        adjust pin position. Zoom-in to give the most accurate
+                        location.
                       </p>
                       <MapContainer
                         center={position}
