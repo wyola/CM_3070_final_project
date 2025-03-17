@@ -5,6 +5,8 @@ import { reportSchema } from '../types/report.types';
 import fs from 'fs/promises';
 import path from 'path';
 import sharp from 'sharp';
+import { prisma } from '../lib/prisma-client';
+import { RequestWithUser } from '../middleware/auth.middleware';
 
 const reportService = new ReportService();
 
@@ -68,6 +70,48 @@ export class ReportController {
       }
 
       res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+
+  public getOrganizationReports = async (
+    req: RequestWithUser,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        res.status(401).json({
+          message: 'Unauthorized',
+        });
+        return;
+      }
+
+      const user = await prisma.user.findUnique({
+        where: { id: parseInt(userId) },
+        select: { organizationId: true },
+      });
+
+      if (!user) {
+        res.status(404).json({
+          message: 'User not found',
+        });
+        return;
+      }
+
+      const reports = await reportService.getReportsByOrganizationId(
+        user.organizationId
+      );
+
+      res.status(200).json({
+        message: 'Reports retrieved successfully',
+        data: reports,
+      });
+    } catch (error) {
+      console.error('Error getting organization reports:', error);
+      res.status(500).json({
+        message: 'Internal server error',
+      });
     }
   };
 }

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import { ReportController } from '../controllers/report.controller';
+import { authenticateJWT } from '../middleware/auth.middleware';
 
 const router = Router();
 const reportController = new ReportController();
@@ -217,5 +218,42 @@ const upload = multer({
  *         description: Server error
  */
 router.post('/', upload.single('image'), reportController.createReport);
+
+/**
+ * @swagger
+ * /api/reports/organization:
+ *   get:
+ *     tags: [Reports]
+ *     summary: Get all reports assigned to the user's organization
+ *     description: Returns all reports that have been assigned to the current user's organization
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Reports retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Reports retrieved successfully"
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Report'
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+router.get(
+  '/organization',
+  authenticateJWT,
+  reportController.getOrganizationReports
+);
 
 export default router;

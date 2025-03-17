@@ -168,4 +168,63 @@ export class ReportService {
       })),
     };
   }
+
+  async getReportsByOrganizationId(
+    organizationId: number
+  ): Promise<ReportResponse[]> {
+    const reportAssignments = await prisma.reportAssignment.findMany({
+      where: {
+        organizationId,
+      },
+      include: {
+        report: {
+          include: {
+            assignments: {
+              include: {
+                organization: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        report: {
+          createdAt: 'desc',
+        },
+      },
+    });
+
+    return reportAssignments.map((assignment) => ({
+      id: assignment.report.id,
+      title: assignment.report.title,
+      description: assignment.report.description,
+      address: assignment.report.address,
+      city: assignment.report.city,
+      postalCode: assignment.report.postalCode,
+      geolocation: assignment.report.geolocation
+        ? JSON.parse(assignment.report.geolocation)
+        : null,
+      image: assignment.report.image,
+      contactName: assignment.report.contactName,
+      contactEmail: assignment.report.contactEmail,
+      contactPhone: assignment.report.contactPhone,
+      status: assignment.report.status as ReportStatus,
+      createdAt: assignment.report.createdAt.toISOString(),
+      animals: assignment.report.animals
+        ? JSON.parse(assignment.report.animals)
+        : [],
+      assignments: assignment.report.assignments.map((a) => ({
+        id: a.id,
+        organizationId: a.organizationId,
+        organizationName: a.organization.name,
+        viewedAt: a.viewedAt?.toISOString() || null,
+        createdAt: a.createdAt.toISOString(),
+      })),
+    }));
+  }
 }
