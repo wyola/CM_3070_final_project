@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
+  Badge,
   Table,
   TableBody,
   TableCell,
@@ -10,7 +11,7 @@ import {
 import { API_ENDPOINTS } from '@/constants';
 import { axiosInstance } from '@/lib/axios';
 import { ReportI } from '@/types';
-import { formatDate, mapStatusToLabel } from '@/utils';
+import { formatDate, mapStatusToLabel, mapStatusToVariant } from '@/utils';
 import './reportsTable.scss';
 
 export const ReportsTable = () => {
@@ -49,11 +50,9 @@ export const ReportsTable = () => {
 
       case 'status':
         return (
-          <span
-            className={`status-badge status-${report.status.toLowerCase()}`}
-          >
+          <Badge variant={mapStatusToVariant(report.status)}>
             {mapStatusToLabel(report.status)}
-          </span>
+          </Badge>
         );
 
       case 'title':
@@ -73,7 +72,9 @@ export const ReportsTable = () => {
     return <div className="no-reports">No reports found.</div>;
   }
 
-  const handleRowClick = (reportId: number) => {};
+  const handleRowClick = (reportId: number) => {
+    console.log(reportId);
+  };
 
   return (
     <div className="reports">
