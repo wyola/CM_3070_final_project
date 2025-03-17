@@ -20,3 +20,4 @@ export { OrganizationsTable } from './OrganizationsTable/OrganizationsTable';
 export { RegisterEditOrganizationForm } from './RegisterEditOrganizationForm/RegisterEditOrganizationForm';
 export { SuccessMessage } from './SuccessMessage/SuccessMessage';
 export { CustomSwitch } from './CustomSwitch/CustomSwitch';
+export { ReportSummary } from './ReportSummary/ReportSummary';

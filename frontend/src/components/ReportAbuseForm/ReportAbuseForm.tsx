@@ -3,7 +3,6 @@ import { useForm, FormProvider } from 'react-hook-form';
 import {
   CustomFormField,
   Button,
-  SuccessMessage,
   Tabs,
   TabsList,
   TabsTrigger,
@@ -11,6 +10,7 @@ import {
   CustomSwitch,
   CustomMultiSelect,
   FormMessage,
+  ReportSummary,
 } from '@/components';
 import { ReportFormDataI } from '@/types';
 import { createReportApi } from '@/lib/axios';
@@ -30,6 +30,9 @@ export const ReportAbuseForm = () => {
   >([]);
   const [isContactInfoVisible, setIsContactInfoVisible] = useState(true);
   const [position, setPosition] = useState<[number, number] | null>(null);
+  const [assignedOrganizations, setAssignedOrganizations] = useState<
+    { organizationName: string; organizationId: number }[]
+  >([]);
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -118,7 +121,13 @@ export const ReportAbuseForm = () => {
     setFormErrors([]);
 
     try {
-      await createReportApi.createReport(data, addressType);
+      const response = await createReportApi.createReport(data, addressType);
+
+      console.log(response.data.assignments);
+
+      if (response && response.data.assignments) {
+        setAssignedOrganizations(response.data.assignments);
+      }
       setIsSuccess(true);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -141,10 +150,7 @@ export const ReportAbuseForm = () => {
   return (
     <div className="report">
       {isSuccess ? (
-        <SuccessMessage
-          message="Your report has been submitted successfully!"
-          imageSrc="./success_dog.png"
-        />
+        <ReportSummary assignedOrganizations={assignedOrganizations} />
       ) : (
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)} className="report__form">
