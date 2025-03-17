@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
-import jwt, { JwtPayload, SignOptions } from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { jwtConfig } from '../config/jwt.config';
 import { prisma } from '../lib/prisma-client';
+import { generateAccessToken, generateRefreshToken } from '../lib/jwt';
 
 export class AuthService {
   async validateUser(email: string, password: string) {
@@ -14,21 +15,8 @@ export class AuthService {
   }
 
   generateTokens(userId: number) {
-    const accessToken = jwt.sign(
-      { sub: userId },
-      jwtConfig.accessToken.secret,
-      {
-        expiresIn: jwtConfig.accessToken.expiresIn,
-      } as SignOptions
-    );
-
-    const refreshToken = jwt.sign(
-      { sub: userId },
-      jwtConfig.refreshToken.secret,
-      {
-        expiresIn: jwtConfig.refreshToken.expiresIn,
-      } as SignOptions
-    );
+    const accessToken = generateAccessToken(userId);
+    const refreshToken = generateRefreshToken(userId);
 
     return { accessToken, refreshToken };
   }

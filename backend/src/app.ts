@@ -9,6 +9,7 @@ import { swaggerSpec } from './config/swagger.config';
 import organizationRoutes from './routes/organization.routes';
 import authRoutes from './routes/auth.routes';
 import reportRoutes from './routes/report.routes';
+import notificationRoutes from './routes/notification.routes';
 
 const app: Application = express();
 
@@ -30,5 +31,6 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/organizations', organizationRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 export default app;
