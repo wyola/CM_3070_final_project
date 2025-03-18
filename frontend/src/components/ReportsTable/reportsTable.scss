@@ -6,6 +6,7 @@
 
 .report-modal {
   width: 90vw;
+  max-width: unset;
 }
 
 .report-details {
@@ -33,6 +34,28 @@
     button {
       display: flex;
       gap: 1rem;
+    }
+  }
+
+  &__assignments {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    ul {
+      list-style: disc;
+      padding-left: 1rem;
+    }
+
+    a {
+      text-transform: capitalize;
+      display: flex;
+      align-items: center;
+
+      img {
+        display: inline;
+        margin-left: 0.8rem;
+      }
     }
   }
 }

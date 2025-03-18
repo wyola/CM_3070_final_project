@@ -9,12 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components';
-import { API_ENDPOINTS } from '@/constants';
+import { API_ENDPOINTS, ORGANIZATION } from '@/constants';
 import { axiosInstance } from '@/lib/axios';
 import { ReportI } from '@/types';
 import { formatDate, mapStatusToLabel, mapStatusToVariant } from '@/utils';
 import './reportsTable.scss';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Link } from 'react-router';
 
 export const ReportsTable = () => {
   const [reports, setReports] = useState<ReportI[]>([]);
@@ -234,6 +235,35 @@ export const ReportsTable = () => {
                 </div>
               </>
             )}
+
+            {selectedReport.image && (
+              <div className="report-details__image">
+                <h3 className="report-details__subheader">Image</h3>
+                <img src={`http://localhost:3000/${selectedReport.image}`} />
+              </div>
+            )}
+
+            {selectedReport.assignments &&
+              selectedReport.assignments.length > 0 && (
+                <div className="report-details__assignments">
+                  <h3 className="report-details__subheader">Assignments</h3>
+                  <p>This report was also sent to following organizations: </p>
+                  <ul>
+                    {selectedReport.assignments.map((assignment) => (
+                      <li key={assignment.id}>
+                        <Link
+                          to={`${ORGANIZATION}/${assignment.organizationId}`}
+                          className="report-details__assignments--link"
+                          target="_blank"
+                        >
+                          {assignment.organizationName}
+                          <img src="/open.svg" width="16" height="16" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
           </div>
         )}
       </CustomModal>
