@@ -78,6 +78,7 @@ export interface ReportResponse {
   createdAt: string;
   assignments: ReportAssignmentResponse[];
   animals: string[];
+  viewed: boolean;
 }
 
 export interface ReportAssignmentResponse {

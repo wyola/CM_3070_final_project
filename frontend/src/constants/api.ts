@@ -1,5 +1,3 @@
-import { ALL } from 'dns';
-
 export const API_BASE_URL = 'http://localhost:3000';
 
 export const API_ENDPOINTS = {
@@ -27,6 +25,7 @@ export const API_ENDPOINTS = {
   REPORT: {
     CREATE: `/api/reports`,
     ALL: `/api/reports/organization`,
+    MARK_VIEWED: (reportId: number) => `/api/reports/${reportId}/mark-viewed`,
   },
   NOTIFICATIONS: {
     COUNT: `/api/notifications/count`,

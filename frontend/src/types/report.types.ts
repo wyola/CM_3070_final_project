@@ -59,4 +59,5 @@ export interface ReportI {
   createdAt: string; // ISO date string
   assignments: ReportAssignmentI[];
   animals: OrganizationAnimals[];
+  viewed: boolean;
 }

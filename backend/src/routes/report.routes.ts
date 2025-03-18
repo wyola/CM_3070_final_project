@@ -90,6 +90,8 @@ const upload = multer({
  *         createdAt:
  *           type: string
  *           format: date-time
+ *         viewed:
+ *           type: boolean
  *         assignments:
  *           type: array
  *           items:
@@ -254,6 +256,48 @@ router.get(
   '/organization',
   authenticateJWT,
   reportController.getOrganizationReports
+);
+
+/**
+ * @swagger
+ * /api/reports/{reportId}/mark-viewed:
+ *   patch:
+ *     tags: [Reports]
+ *     summary: Mark a report as viewed by the organization
+ *     description: Updates the viewedAt timestamp for the organization assignment. Can only be performed by users from organizations assigned to the report.
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: reportId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the report to mark as viewed
+ *     responses:
+ *       200:
+ *         description: Report marked as viewed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Report marked as viewed successfully"
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - organization not assigned to this report
+ *       404:
+ *         description: Report not found
+ *       500:
+ *         description: Server error
+ */
+router.patch(
+  '/:reportId/mark-viewed',
+  authenticateJWT,
+  reportController.markReportAsViewed
 );
 
 export default router;

@@ -114,4 +114,35 @@ export class ReportController {
       });
     }
   };
+
+  public markReportAsViewed = async (
+    req: RequestWithUser,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const reportId = parseInt(req.params.reportId);
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        res.status(401).json({ message: 'Unauthorized' });
+        return;
+      }
+
+      await reportService.markReportAsViewed(reportId, parseInt(userId));
+
+      res.status(200).json({
+        message: 'Report marked as viewed successfully',
+      });
+    } catch (error: any) {
+      if (error.message === 'Report not found') {
+        res.status(404).json({ message: error.message });
+        return;
+      }
+      if (error.message === 'Organization not assigned to this report') {
+        res.status(403).json({ message: error.message });
+        return;
+      }
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
 }
