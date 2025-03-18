@@ -14,7 +14,7 @@ import { axiosInstance } from '@/lib/axios';
 import { ReportI } from '@/types';
 import { formatDate, mapStatusToLabel, mapStatusToVariant } from '@/utils';
 import './reportsTable.scss';
-import { report } from 'process';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
 export const ReportsTable = () => {
   const [reports, setReports] = useState<ReportI[]>([]);
@@ -22,6 +22,7 @@ export const ReportsTable = () => {
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReport, setSelectedReport] = useState<ReportI | null>(null);
+  const [copiedGeolocation, setCopiedGeolocation] = useState(false);
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -81,6 +82,19 @@ export const ReportsTable = () => {
     setIsModalOpen(true);
   };
 
+  const copyGeoLocation = (lat: number, lon: number) => {
+    const text = `${lat} ${lon}`;
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        setCopiedGeolocation(true);
+        setTimeout(() => setCopiedGeolocation(false), 2000); // Reset after 2 seconds
+      })
+      .catch((err) => {
+        console.error('Failed to copy: ', err);
+      });
+  };
+
   return (
     <div className="reports">
       <h2 className="heading-secondary">Reports</h2>
@@ -114,67 +128,113 @@ export const ReportsTable = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={() => setIsModalOpen(false)}
+        className="report-modal"
       >
-        {selectedReport ? (
+        {selectedReport && (
           <div className="report-details">
-            <p>
-              <strong>Status:</strong> {mapStatusToLabel(selectedReport.status)}
-            </p>
-            <p>
-              <strong>Date:</strong> {formatDate(selectedReport.createdAt)}
-            </p>
-            <p>
-              <strong>Description:</strong> {selectedReport.description}
-            </p>
-
-            {selectedReport.address && (
-              <>
-                <p>
-                  <strong>Address:</strong> {selectedReport.address}
-                </p>
-                <p>
-                  <strong>City:</strong> {selectedReport.city}
-                </p>
-                <p>
-                  <strong>Postal Code:</strong> {selectedReport.postalCode}
-                </p>
-              </>
-            )}
-
-            {selectedReport.geolocation && (
-              <p>
-                <strong>Location:</strong> Lat: {selectedReport.geolocation.lat}
-                , Lon: {selectedReport.geolocation.lon}
-              </p>
-            )}
+            <div className="report-details__date-status">
+              <Badge
+                variant={mapStatusToVariant(selectedReport.status)}
+                className="report-details__date-status--badge"
+              >
+                {mapStatusToLabel(selectedReport.status)}
+              </Badge>
+              <span>{formatDate(selectedReport.createdAt)}</span>
+            </div>
 
             {selectedReport.animals && selectedReport.animals.length > 0 && (
-              <p>
-                <strong>Animals:</strong> {selectedReport.animals.join(', ')}
-              </p>
+              <div>
+                <h3 className="report-details__subheader">Animals</h3>
+                <p>{selectedReport.animals.join(', ')}</p>
+              </div>
             )}
 
-            {selectedReport.contactName && (
-              <div className="contact-info">
-                <h4>Contact Information</h4>
+            <div>
+              <h3 className="report-details__subheader">Description</h3>
+              <p>{selectedReport.description}</p>
+            </div>
+
+            {selectedReport.address && (
+              <div>
+                <h3 className="report-details__subheader">Address</h3>
                 <p>
-                  <strong>Name:</strong> {selectedReport.contactName}
+                  {selectedReport.address}, {selectedReport.postalCode}{' '}
+                  {selectedReport.city}
                 </p>
+              </div>
+            )}
+
+            {(selectedReport.contactName ||
+              selectedReport.contactEmail ||
+              selectedReport.contactPhone) && (
+              <div>
+                <h3 className="report-details__subheader">
+                  Contact Information
+                </h3>
+                {selectedReport.contactName && (
+                  <p>Name: {selectedReport.contactName}</p>
+                )}
                 {selectedReport.contactEmail && (
-                  <p>
-                    <strong>Email:</strong> {selectedReport.contactEmail}
-                  </p>
+                  <p>Email: {selectedReport.contactEmail}</p>
                 )}
                 {selectedReport.contactPhone && (
-                  <p>
-                    <strong>Phone:</strong> {selectedReport.contactPhone}
-                  </p>
+                  <p>Phone: {selectedReport.contactPhone}</p>
                 )}
               </div>
             )}
+
+            {selectedReport.geolocation && (
+              <>
+                <div className="report-details__geolocation">
+                  <h3 className="report-details__subheader">Geolocation</h3>
+                  <button
+                    onClick={() =>
+                      copyGeoLocation(
+                        selectedReport.geolocation!.lat,
+                        selectedReport.geolocation!.lon
+                      )
+                    }
+                    tabIndex={0}
+                    title="Click to copy coordinates"
+                  >
+                    {selectedReport.geolocation.lat},{' '}
+                    {selectedReport.geolocation.lon}
+                    <img src="/copy.svg" width="16" height="16" />
+                    {copiedGeolocation && <span> ✓ Copied!</span>}
+                  </button>
+                </div>
+                {/* TODO: move to styles file */}
+                <div style={{ height: '300px', width: '100%' }}>
+                  <MapContainer
+                    center={[
+                      selectedReport.geolocation.lat,
+                      selectedReport.geolocation.lon,
+                    ]}
+                    zoom={13}
+                    style={{ height: '100%', width: '100%' }}
+                  >
+                    <TileLayer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    <Marker
+                      position={[
+                        selectedReport.geolocation.lat,
+                        selectedReport.geolocation.lon,
+                      ]}
+                    >
+                      {selectedReport.address && (
+                        <Popup>
+                          {selectedReport.address}, {selectedReport.postalCode}{' '}
+                          {selectedReport.city}
+                        </Popup>
+                      )}
+                    </Marker>
+                  </MapContainer>
+                </div>
+              </>
+            )}
           </div>
-        ) : (
-          <p>No report selected</p>
         )}
       </CustomModal>
     </div>
