@@ -82,9 +82,23 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
     return <div className="no-reports">No reports found.</div>;
   }
 
-  const handleRowClick = (report: ReportI) => {
+  const handleRowClick = async (report: ReportI) => {
     setSelectedReport(report);
     setIsModalOpen(true);
+
+    try {
+      if (!report.viewed) {
+        await axiosInstance.patch(API_ENDPOINTS.REPORT.MARK_VIEWED(report.id));
+
+        setReports((prevReports) =>
+          prevReports.map((r) =>
+            r.id === report.id ? { ...r, viewed: true } : r
+          )
+        );
+      }
+    } catch (error) {
+      console.error('Failed to mark report as viewed:', error);
+    }
   };
 
   const copyGeoLocation = (lat: number, lon: number) => {
@@ -113,7 +127,15 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
         </TableHeader>
         <TableBody>
           {reports.map((report) => (
-            <TableRow key={report.id} onClick={() => handleRowClick(report)}>
+            <TableRow
+              key={report.id}
+              onClick={() => handleRowClick(report)}
+              className={
+                report.viewed
+                  ? 'reports-table__row--viewed'
+                  : 'reports-table__row'
+              }
+            >
               {columns.map((column) => (
                 <TableCell
                   key={`${report.id}-${column.accessor}`}

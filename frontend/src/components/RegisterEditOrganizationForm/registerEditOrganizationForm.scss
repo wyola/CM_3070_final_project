@@ -1,5 +1,3 @@
-@use '../../sass/abstract/variables' as *;
-
 .register-form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -22,7 +20,7 @@
       margin-top: 0;
       width: 1.5rem;
       height: 1.5rem;
-      accent-color: $color-primary-yellow;
+      accent-color: hsl(var(--primary));
     }
   }
 }
