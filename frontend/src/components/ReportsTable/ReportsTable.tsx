@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   Badge,
+  CustomModal,
   Table,
   TableBody,
   TableCell,
@@ -13,11 +14,14 @@ import { axiosInstance } from '@/lib/axios';
 import { ReportI } from '@/types';
 import { formatDate, mapStatusToLabel, mapStatusToVariant } from '@/utils';
 import './reportsTable.scss';
+import { report } from 'process';
 
 export const ReportsTable = () => {
   const [reports, setReports] = useState<ReportI[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedReport, setSelectedReport] = useState<ReportI | null>(null);
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -40,7 +44,7 @@ export const ReportsTable = () => {
   const columns = [
     { header: 'Date', accessor: 'createdAt' },
     { header: 'Title', accessor: 'title' },
-    { header: 'status', accessor: 'status' },
+    { header: 'Status', accessor: 'status' },
   ];
 
   const getCellContent = (report: ReportI, accessor: string) => {
@@ -72,8 +76,9 @@ export const ReportsTable = () => {
     return <div className="no-reports">No reports found.</div>;
   }
 
-  const handleRowClick = (reportId: number) => {
-    console.log(reportId);
+  const handleRowClick = (report: ReportI) => {
+    setSelectedReport(report);
+    setIsModalOpen(true);
   };
 
   return (
@@ -89,7 +94,7 @@ export const ReportsTable = () => {
         </TableHeader>
         <TableBody>
           {reports.map((report) => (
-            <TableRow key={report.id} onClick={() => handleRowClick(report.id)}>
+            <TableRow key={report.id} onClick={() => handleRowClick(report)}>
               {columns.map((column) => (
                 <TableCell
                   key={`${report.id}-${column.accessor}`}
@@ -102,6 +107,76 @@ export const ReportsTable = () => {
           ))}
         </TableBody>
       </Table>
+
+      <CustomModal
+        title={selectedReport?.title || 'Report details'}
+        buttonLabel="Close"
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={() => setIsModalOpen(false)}
+      >
+        {selectedReport ? (
+          <div className="report-details">
+            <p>
+              <strong>Status:</strong> {mapStatusToLabel(selectedReport.status)}
+            </p>
+            <p>
+              <strong>Date:</strong> {formatDate(selectedReport.createdAt)}
+            </p>
+            <p>
+              <strong>Description:</strong> {selectedReport.description}
+            </p>
+
+            {selectedReport.address && (
+              <>
+                <p>
+                  <strong>Address:</strong> {selectedReport.address}
+                </p>
+                <p>
+                  <strong>City:</strong> {selectedReport.city}
+                </p>
+                <p>
+                  <strong>Postal Code:</strong> {selectedReport.postalCode}
+                </p>
+              </>
+            )}
+
+            {selectedReport.geolocation && (
+              <p>
+                <strong>Location:</strong> Lat: {selectedReport.geolocation.lat}
+                , Lon: {selectedReport.geolocation.lon}
+              </p>
+            )}
+
+            {selectedReport.animals && selectedReport.animals.length > 0 && (
+              <p>
+                <strong>Animals:</strong> {selectedReport.animals.join(', ')}
+              </p>
+            )}
+
+            {selectedReport.contactName && (
+              <div className="contact-info">
+                <h4>Contact Information</h4>
+                <p>
+                  <strong>Name:</strong> {selectedReport.contactName}
+                </p>
+                {selectedReport.contactEmail && (
+                  <p>
+                    <strong>Email:</strong> {selectedReport.contactEmail}
+                  </p>
+                )}
+                {selectedReport.contactPhone && (
+                  <p>
+                    <strong>Phone:</strong> {selectedReport.contactPhone}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
+          <p>No report selected</p>
+        )}
+      </CustomModal>
     </div>
   );
 };

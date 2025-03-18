@@ -12,7 +12,7 @@ import './customModal.scss';
 
 type CustomModalProps = {
   title: string;
-  description: string;
+  description?: string;
   children: React.ReactNode;
   buttonLabel: string;
   isOpen: boolean;
@@ -45,7 +45,7 @@ export const CustomModal = ({
       <DialogContent className={`dialog ${className}`}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+          {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
         {children}
         <DialogFooter>
