@@ -178,7 +178,7 @@ export class ReportService {
     });
 
     return reportAssignments.map((assignment) =>
-      this.mapReportToResponse(assignment.report)
+      this.mapReportToResponse(assignment.report, undefined, organizationId)
     );
   }
 
@@ -223,9 +223,10 @@ export class ReportService {
 
   private mapReportToResponse(
     report: any,
-    assignments?: any[]
+    assignments?: any[],
+    organizationId?: number
   ): ReportResponse {
-    return {
+    const reportResponse = {
       id: report.id,
       title: report.title,
       description: report.description,
@@ -240,6 +241,7 @@ export class ReportService {
       status: report.status as ReportStatus,
       createdAt: report.createdAt.toISOString(),
       animals: report.animals ? JSON.parse(report.animals) : [],
+      viewed: false,
       assignments: (assignments || report.assignments).map((a: any) => ({
         id: a.id,
         organizationId: a.organizationId,
@@ -248,5 +250,13 @@ export class ReportService {
         createdAt: a.createdAt.toISOString(),
       })),
     };
+
+    if (organizationId) {
+      reportResponse.viewed = report.assignments.some(
+        (a: any) => a.organizationId === organizationId && a.viewedAt
+      );
+    }
+
+    return reportResponse;
   }
 }

@@ -90,6 +90,8 @@ const upload = multer({
  *         createdAt:
  *           type: string
  *           format: date-time
+ *         viewed:
+ *           type: boolean
  *         assignments:
  *           type: array
  *           items:
