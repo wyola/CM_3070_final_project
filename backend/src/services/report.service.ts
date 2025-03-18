@@ -144,29 +144,7 @@ export class ReportService {
       throw new Error('Report not found');
     }
 
-    return {
-      id: report.id,
-      title: report.title,
-      description: report.description,
-      address: report.address,
-      city: report.city,
-      postalCode: report.postalCode,
-      geolocation: report.geolocation ? JSON.parse(report.geolocation) : null,
-      image: report.image,
-      contactName: report.contactName,
-      contactEmail: report.contactEmail,
-      contactPhone: report.contactPhone,
-      status: report.status as ReportStatus,
-      createdAt: report.createdAt.toISOString(),
-      animals: report.animals ? JSON.parse(report.animals) : [],
-      assignments: report.assignments.map((assignment) => ({
-        id: assignment.id,
-        organizationId: assignment.organizationId,
-        organizationName: assignment.organization.name,
-        viewedAt: assignment.viewedAt?.toISOString() || null,
-        createdAt: assignment.createdAt.toISOString(),
-      })),
-    };
+    return this.mapReportToResponse(report);
   }
 
   async getReportsByOrganizationId(
@@ -199,32 +177,76 @@ export class ReportService {
       },
     });
 
-    return reportAssignments.map((assignment) => ({
-      id: assignment.report.id,
-      title: assignment.report.title,
-      description: assignment.report.description,
-      address: assignment.report.address,
-      city: assignment.report.city,
-      postalCode: assignment.report.postalCode,
-      geolocation: assignment.report.geolocation
-        ? JSON.parse(assignment.report.geolocation)
-        : null,
-      image: assignment.report.image,
-      contactName: assignment.report.contactName,
-      contactEmail: assignment.report.contactEmail,
-      contactPhone: assignment.report.contactPhone,
-      status: assignment.report.status as ReportStatus,
-      createdAt: assignment.report.createdAt.toISOString(),
-      animals: assignment.report.animals
-        ? JSON.parse(assignment.report.animals)
-        : [],
-      assignments: assignment.report.assignments.map((a) => ({
+    return reportAssignments.map((assignment) =>
+      this.mapReportToResponse(assignment.report)
+    );
+  }
+
+  public async markReportAsViewed(reportId: number, userId: number) {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user || !user.organizationId) {
+      throw new Error('User not associated with any organization');
+    }
+
+    // Check if the report exists
+    const report = await prisma.report.findUnique({
+      where: { id: reportId },
+      include: {
+        assignments: {
+          where: { organizationId: user.organizationId },
+        },
+      },
+    });
+
+    if (!report) {
+      throw new Error('Report not found');
+    }
+
+    // Check if the user's organization is assigned to this report
+    if (report.assignments.length === 0) {
+      throw new Error('Organization not assigned to this report');
+    }
+
+    // Update the assignment's viewedAt timestamp
+    const assignment = report.assignments[0];
+
+    const updatedAssignment = await prisma.reportAssignment.update({
+      where: { id: assignment.id },
+      data: {
+        viewedAt: new Date(),
+      },
+    });
+
+    return updatedAssignment;
+  }
+
+  private mapReportToResponse(
+    report: any,
+    assignments?: any[]
+  ): ReportResponse {
+    return {
+      id: report.id,
+      title: report.title,
+      description: report.description,
+      address: report.address,
+      city: report.city,
+      postalCode: report.postalCode,
+      geolocation: report.geolocation ? JSON.parse(report.geolocation) : null,
+      image: report.image,
+      contactName: report.contactName,
+      contactEmail: report.contactEmail,
+      contactPhone: report.contactPhone,
+      status: report.status as ReportStatus,
+      createdAt: report.createdAt.toISOString(),
+      animals: report.animals ? JSON.parse(report.animals) : [],
+      assignments: (assignments || report.assignments).map((a: any) => ({
         id: a.id,
         organizationId: a.organizationId,
         organizationName: a.organization.name,
         viewedAt: a.viewedAt?.toISOString() || null,
         createdAt: a.createdAt.toISOString(),
       })),
-    }));
+    };
   }
 }
