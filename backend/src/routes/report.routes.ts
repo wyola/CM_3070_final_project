@@ -300,4 +300,44 @@ router.patch(
   reportController.markReportAsViewed
 );
 
+/**
+ * @swagger
+ * /api/reports/{reportId}:
+ *   delete:
+ *     tags: [Reports]
+ *     summary: Delete a report
+ *     description: Deletes a report. Can only be performed by users from organizations assigned to the report.
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: reportId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the report to delete
+ *     responses:
+ *       200:
+ *         description: Report deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Report deleted successfully"
+ *       400:
+ *         description: Invalid report ID
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - organization not assigned to this report
+ *       404:
+ *         description: Report not found
+ *       500:
+ *         description: Server error
+ */
+router.delete('/:reportId', authenticateJWT, reportController.deleteReport);
+
 export default router;
