@@ -367,7 +367,7 @@ router.delete('/:reportId', authenticateJWT, reportController.deleteReport);
  *             properties:
  *               status:
  *                 type: string
- *                 enum: [IN_PROGRESS, HANDLED]
+ *                 enum: [IN_PROGRESS, HANDLED, OPEN]
  *                 description: New status for the report
  *     responses:
  *       200:

@@ -90,7 +90,11 @@ export interface ReportAssignmentResponse {
 }
 
 export const reportStatusUpdateSchema = z.object({
-  status: z.enum([ReportStatus.IN_PROGRESS, ReportStatus.HANDLED]),
+  status: z.enum([
+    ReportStatus.IN_PROGRESS,
+    ReportStatus.HANDLED,
+    ReportStatus.OPEN,
+  ]),
 });
 
 export type ReportStatusUpdateDto = z.infer<typeof reportStatusUpdateSchema>;

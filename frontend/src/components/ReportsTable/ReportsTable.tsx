@@ -337,7 +337,6 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
               <div className="report-details__actions--buttons">
                 {selectedReport.status !== ReportStatus.OPEN && (
                   <Button
-                    variant="outline"
                     onClick={() => updateReportStatus(ReportStatus.OPEN)}
                     className="status-button"
                   >
@@ -347,7 +346,7 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
 
                 {selectedReport.status !== ReportStatus.IN_PROGRESS && (
                   <Button
-                    variant="default"
+                    variant="secondary"
                     onClick={() => updateReportStatus(ReportStatus.IN_PROGRESS)}
                     className="status-button"
                   >
@@ -357,7 +356,7 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
 
                 {selectedReport.status !== ReportStatus.HANDLED && (
                   <Button
-                    variant="secondary"
+                    variant="outline"
                     onClick={() => updateReportStatus(ReportStatus.HANDLED)}
                     className="status-button"
                   >

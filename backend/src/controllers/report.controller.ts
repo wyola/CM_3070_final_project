@@ -206,7 +206,6 @@ export class ReportController {
         return;
       }
 
-      // Validate the status using Zod
       const validatedData = reportStatusUpdateSchema.parse(req.body);
 
       await reportService.updateReportStatus(
