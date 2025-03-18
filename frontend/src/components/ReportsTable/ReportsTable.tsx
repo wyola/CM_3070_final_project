@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import {
   Badge,
+  Button,
+  CustomAlertDialog,
   CustomModal,
   Table,
   TableBody,
@@ -13,7 +15,7 @@ import {
 } from '@/components';
 import { API_ENDPOINTS, ORGANIZATION } from '@/constants';
 import { axiosInstance } from '@/lib/axios';
-import { ReportI } from '@/types';
+import { ReportI, ReportStatus } from '@/types';
 import { formatDate, mapStatusToLabel, mapStatusToVariant } from '@/utils';
 import './reportsTable.scss';
 
@@ -28,6 +30,7 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReport, setSelectedReport] = useState<ReportI | null>(null);
   const [copiedGeolocation, setCopiedGeolocation] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -114,6 +117,49 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
       });
   };
 
+  const updateReportStatus = async (newStatus: ReportStatus) => {
+    if (!selectedReport) return;
+
+    try {
+      await axiosInstance.patch(
+        API_ENDPOINTS.REPORT.UPDATE_STATUS(selectedReport.id),
+        {
+          status: newStatus,
+        }
+      );
+
+      setReports((prevReports) =>
+        prevReports.map((report) =>
+          report.id === selectedReport.id
+            ? { ...report, status: newStatus }
+            : report
+        )
+      );
+
+      setSelectedReport({ ...selectedReport, status: newStatus });
+    } catch (error) {
+      console.error('Failed to update report status:', error);
+    }
+  };
+
+  const handleDeleteReport = async () => {
+    if (!selectedReport) return;
+
+    try {
+      await axiosInstance.delete(
+        API_ENDPOINTS.REPORT.DELETE(selectedReport.id)
+      );
+
+      setReports((prevReports) =>
+        prevReports.filter((report) => report.id !== selectedReport.id)
+      );
+      setIsModalOpen(false);
+      setSelectedReport(null);
+    } catch (error) {
+      console.error('Failed to delete report:', error);
+    }
+  };
+
   return (
     <div className="reports">
       <h2 className="heading-secondary">Reports</h2>
@@ -151,7 +197,7 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
 
       <CustomModal
         title={selectedReport?.title || 'Report details'}
-        buttonLabel="Close"
+        buttonLabel="Close modal"
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={() => setIsModalOpen(false)}
@@ -285,9 +331,65 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
                   ))}
               </ul>
             </div>
+
+            <div className="report-details__actions">
+              <h3 className="report-details__subheader">Actions</h3>
+              <div className="report-details__actions--buttons">
+                {selectedReport.status !== ReportStatus.OPEN && (
+                  <Button
+                    variant="outline"
+                    onClick={() => updateReportStatus(ReportStatus.OPEN)}
+                    className="status-button"
+                  >
+                    Mark as {mapStatusToLabel(ReportStatus.OPEN)}
+                  </Button>
+                )}
+
+                {selectedReport.status !== ReportStatus.IN_PROGRESS && (
+                  <Button
+                    variant="default"
+                    onClick={() => updateReportStatus(ReportStatus.IN_PROGRESS)}
+                    className="status-button"
+                  >
+                    Mark as {mapStatusToLabel(ReportStatus.IN_PROGRESS)}
+                  </Button>
+                )}
+
+                {selectedReport.status !== ReportStatus.HANDLED && (
+                  <Button
+                    variant="secondary"
+                    onClick={() => updateReportStatus(ReportStatus.HANDLED)}
+                    className="status-button"
+                  >
+                    Mark as {mapStatusToLabel(ReportStatus.HANDLED)}
+                  </Button>
+                )}
+                <Button
+                  variant="destructive"
+                  onClick={() => setShowDeleteConfirm(true)}
+                >
+                  Delete report
+                </Button>
+              </div>
+            </div>
           </div>
         )}
       </CustomModal>
+
+      {showDeleteConfirm && (
+        <CustomAlertDialog
+          title="Delete Report"
+          description="Are you sure you want to delete this report? This action cannot be undone."
+          cancelButtonLabel="Cancel"
+          confirmButtonLabel="Delete"
+          isOpen={showDeleteConfirm}
+          onCancel={() => setShowDeleteConfirm(false)}
+          onConfirm={() => {
+            handleDeleteReport();
+            setShowDeleteConfirm(false);
+          }}
+        />
+      )}
     </div>
   );
 };
