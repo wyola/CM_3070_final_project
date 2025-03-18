@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import {
   Badge,
   CustomModal,
@@ -14,10 +16,12 @@ import { axiosInstance } from '@/lib/axios';
 import { ReportI } from '@/types';
 import { formatDate, mapStatusToLabel, mapStatusToVariant } from '@/utils';
 import './reportsTable.scss';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-import { Link } from 'react-router';
 
-export const ReportsTable = () => {
+type ReportsTableProps = {
+  organizationId: number;
+};
+
+export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
   const [reports, setReports] = useState<ReportI[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -143,12 +147,10 @@ export const ReportsTable = () => {
               <span>{formatDate(selectedReport.createdAt)}</span>
             </div>
 
-            {selectedReport.animals && selectedReport.animals.length > 0 && (
-              <div>
-                <h3 className="report-details__subheader">Animals</h3>
-                <p>{selectedReport.animals.join(', ')}</p>
-              </div>
-            )}
+            <div>
+              <h3 className="report-details__subheader">Animals</h3>
+              <p>{selectedReport.animals.join(', ')}</p>
+            </div>
 
             <div>
               <h3 className="report-details__subheader">Description</h3>
@@ -184,57 +186,53 @@ export const ReportsTable = () => {
               </div>
             )}
 
-            {selectedReport.geolocation && (
-              <>
-                <div className="report-details__geolocation">
-                  <h3 className="report-details__subheader">Geolocation</h3>
-                  <button
-                    onClick={() =>
-                      copyGeoLocation(
-                        selectedReport.geolocation!.lat,
-                        selectedReport.geolocation!.lon
-                      )
-                    }
-                    tabIndex={0}
-                    title="Click to copy coordinates"
-                  >
-                    {selectedReport.geolocation.lat},{' '}
-                    {selectedReport.geolocation.lon}
-                    <img src="/copy.svg" width="16" height="16" />
-                    {copiedGeolocation && <span> ✓ Copied!</span>}
-                  </button>
-                </div>
-                {/* TODO: move to styles file */}
-                <div style={{ height: '300px', width: '100%' }}>
-                  <MapContainer
-                    center={[
-                      selectedReport.geolocation.lat,
-                      selectedReport.geolocation.lon,
-                    ]}
-                    zoom={13}
-                    style={{ height: '100%', width: '100%' }}
-                  >
-                    <TileLayer
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    <Marker
-                      position={[
-                        selectedReport.geolocation.lat,
-                        selectedReport.geolocation.lon,
-                      ]}
-                    >
-                      {selectedReport.address && (
-                        <Popup>
-                          {selectedReport.address}, {selectedReport.postalCode}{' '}
-                          {selectedReport.city}
-                        </Popup>
-                      )}
-                    </Marker>
-                  </MapContainer>
-                </div>
-              </>
-            )}
+            <div className="report-details__geolocation">
+              <h3 className="report-details__subheader">Geolocation</h3>
+              <button
+                onClick={() =>
+                  copyGeoLocation(
+                    selectedReport.geolocation!.lat,
+                    selectedReport.geolocation!.lon
+                  )
+                }
+                tabIndex={0}
+                title="Click to copy coordinates"
+              >
+                {selectedReport.geolocation.lat},{' '}
+                {selectedReport.geolocation.lon}
+                <img src="/copy.svg" width="16" height="16" />
+                {copiedGeolocation && <span> ✓ Copied!</span>}
+              </button>
+            </div>
+            {/* TODO: move to styles file */}
+            <div style={{ height: '300px', width: '100%' }}>
+              <MapContainer
+                center={[
+                  selectedReport.geolocation.lat,
+                  selectedReport.geolocation.lon,
+                ]}
+                zoom={13}
+                style={{ height: '100%', width: '100%' }}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <Marker
+                  position={[
+                    selectedReport.geolocation.lat,
+                    selectedReport.geolocation.lon,
+                  ]}
+                >
+                  {selectedReport.address && (
+                    <Popup>
+                      {selectedReport.address}, {selectedReport.postalCode}{' '}
+                      {selectedReport.city}
+                    </Popup>
+                  )}
+                </Marker>
+              </MapContainer>
+            </div>
 
             {selectedReport.image && (
               <div className="report-details__image">
@@ -243,27 +241,28 @@ export const ReportsTable = () => {
               </div>
             )}
 
-            {selectedReport.assignments &&
-              selectedReport.assignments.length > 0 && (
-                <div className="report-details__assignments">
-                  <h3 className="report-details__subheader">Assignments</h3>
-                  <p>This report was also sent to following organizations: </p>
-                  <ul>
-                    {selectedReport.assignments.map((assignment) => (
-                      <li key={assignment.id}>
-                        <Link
-                          to={`${ORGANIZATION}/${assignment.organizationId}`}
-                          className="report-details__assignments--link"
-                          target="_blank"
-                        >
-                          {assignment.organizationName}
-                          <img src="/open.svg" width="16" height="16" />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+            <div className="report-details__assignments">
+              <h3 className="report-details__subheader">Assignments</h3>
+              <p>This report was also sent to following organizations: </p>
+              <ul>
+                {selectedReport.assignments
+                  .filter(
+                    (assignment) => assignment.organizationId !== organizationId
+                  )
+                  .map((assignment) => (
+                    <li key={assignment.id}>
+                      <Link
+                        to={`${ORGANIZATION}/${assignment.organizationId}`}
+                        className="report-details__assignments--link"
+                        target="_blank"
+                      >
+                        {assignment.organizationName}
+                        <img src="/open.svg" width="16" height="16" />
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </div>
           </div>
         )}
       </CustomModal>

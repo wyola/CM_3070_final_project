@@ -50,7 +50,7 @@ export interface ReportI {
   address?: string;
   city?: string;
   postalCode?: string;
-  geolocation?: ReportGeolocationI;
+  geolocation: ReportGeolocationI;
   image?: string;
   contactName?: string;
   contactEmail?: string;

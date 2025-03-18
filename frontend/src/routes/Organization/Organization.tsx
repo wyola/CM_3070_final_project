@@ -95,9 +95,9 @@ export const Organization = () => {
         />
       )}
 
-      <OrganizationsNeeds organizationId={Number(id)} />
+      <OrganizationsNeeds organizationId={id} />
 
-      {isOwner && <ReportsTable />}
+      {isOwner && <ReportsTable organizationId={id} />}
 
       <div className="organization__volunteering">
         <h2 className="heading-secondary">Volunteering options</h2>
