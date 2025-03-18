@@ -340,4 +340,53 @@ router.patch(
  */
 router.delete('/:reportId', authenticateJWT, reportController.deleteReport);
 
+/**
+ * @swagger
+ * /api/reports/{reportId}/status:
+ *   patch:
+ *     tags: [Reports]
+ *     summary: Update report status
+ *     description: Update the status of a report. Only organizations assigned to the report can update its status.
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: reportId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Report ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - status
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 enum: [IN_PROGRESS, HANDLED]
+ *                 description: New status for the report
+ *     responses:
+ *       200:
+ *         description: Report status updated successfully
+ *       400:
+ *         description: Invalid report ID or status
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Organization not assigned to this report
+ *       404:
+ *         description: Report not found
+ *       500:
+ *         description: Server error
+ */
+router.patch(
+  '/:reportId/status',
+  authenticateJWT,
+  reportController.updateReportStatus
+);
+
 export default router;

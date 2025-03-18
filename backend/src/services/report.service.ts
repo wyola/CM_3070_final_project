@@ -283,4 +283,45 @@ export class ReportService {
 
     return reportResponse;
   }
+
+  async updateReportStatus(
+    reportId: number,
+    userId: number,
+    status: ReportStatus
+  ): Promise<void> {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { organizationId: true },
+    });
+
+    if (!user || !user.organizationId) {
+      throw new Error('User not associated with any organization');
+    }
+
+    const reportAssignment = await prisma.reportAssignment.findFirst({
+      where: {
+        reportId,
+        organizationId: user.organizationId,
+      },
+      include: {
+        report: true,
+      },
+    });
+
+    if (!reportAssignment) {
+      throw new Error('Organization not assigned to this report');
+    }
+
+    await prisma.report.update({
+      where: { id: reportId },
+      data: {
+        status: status as ReportStatus,
+        updatedAt: new Date(),
+      },
+    });
+
+    if (!reportAssignment.viewedAt) {
+      await this.markReportAsViewed(reportId, userId);
+    }
+  }
 }
