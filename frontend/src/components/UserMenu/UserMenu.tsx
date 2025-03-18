@@ -34,8 +34,8 @@ export const UserMenu = ({ organizationId }: UserMenuProps) => {
 
     fetchReportCount();
 
-    const intervalId = setInterval(fetchReportCount, 60000); // refresh every 1 minute
-    return () => clearInterval(intervalId);
+    const interval = setInterval(fetchReportCount, 60000); // fetch notifications every 1 minute
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -43,7 +43,7 @@ export const UserMenu = ({ organizationId }: UserMenuProps) => {
       <DropdownMenuTrigger className="user-menu__trigger">
         <img src="/avatar.svg" alt="user avatar" width="32" height="32" />
         <Badge variant="destructive" className="user-menu__trigger--badge">
-          {reportCount}
+          {reportCount < 10 ? reportCount : '9+'}
         </Badge>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="user-menu__content">

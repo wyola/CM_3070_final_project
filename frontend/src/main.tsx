@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router';
+import './sass/main.scss';
 import {
   Home,
   Login,
@@ -19,7 +20,6 @@ import {
   REPORT,
 } from '@/constants';
 import { UserProvider } from '@/contexts';
-import './sass/main.scss';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

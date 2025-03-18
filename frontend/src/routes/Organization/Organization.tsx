@@ -6,17 +6,21 @@ import {
   OrganizationHeader,
   OrganizationMap,
   OrganizationsNeeds,
+  ReportsTable,
 } from '@/components';
 import { OrganizationI } from '@/types';
 import { axiosInstance } from '@/lib/axios';
 import axios from 'axios';
 import { API_ENDPOINTS } from '@/constants';
+import { useOwnership } from '@/hooks';
 import './organization.scss';
 
 export const Organization = () => {
   const [organization, setOrganization] = useState<OrganizationI | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const isOwner = useOwnership();
 
   const { id: idFromParams } = useParams();
 
@@ -91,7 +95,9 @@ export const Organization = () => {
         />
       )}
 
-      <OrganizationsNeeds organizationId={Number(id)} />
+      <OrganizationsNeeds organizationId={id} />
+
+      {isOwner && <ReportsTable organizationId={id} />}
 
       <div className="organization__volunteering">
         <h2 className="heading-secondary">Volunteering options</h2>
