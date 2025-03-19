@@ -10,6 +10,8 @@ import {
   CustomFormField,
   CustomMultiSelect,
   Button,
+  RichTextEditor,
+  Label,
 } from '@/components';
 import './registerEditOrganizationForm.scss';
 
@@ -325,25 +327,33 @@ export const RegisterEditOrganizationForm = ({
                 }
               />
 
-              <CustomFormField
-                label="Description"
-                type="textarea"
-                name="description"
-                id="description"
-                required
-                disabled={!isKRSValid && !isEditing}
-                placeholder={
-                  isKRSValid
-                    ? 'Short description of your organization'
-                    : placeholderEnabled
-                }
-                errorMessage={
-                  isKRSValid
-                    ? formErrors.find((error) => error.field === 'description')
-                        ?.message
-                    : ''
-                }
-              />
+              <div className="register-form__field">
+                <Label className="register-form__label" htmlFor="description">
+                  Description
+                  <span className="form-item__required"> *</span>
+                </Label>
+                <RichTextEditor
+                  name="description"
+                  required
+                  placeholder={
+                    isKRSValid
+                      ? 'Short description of your organization'
+                      : placeholderEnabled
+                  }
+                  disabled={!isKRSValid && !isEditing}
+                />
+                {isKRSValid &&
+                  formErrors.find((error) => error.field === 'description')
+                    ?.message && (
+                    <span className="register-form__error">
+                      {
+                        formErrors.find(
+                          (error) => error.field === 'description'
+                        )?.message
+                      }
+                    </span>
+                  )}
+              </div>
 
               <CustomMultiSelect
                 name="animals"

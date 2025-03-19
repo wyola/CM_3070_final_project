@@ -16,12 +16,14 @@ interface RichTextEditorProps {
   name: string;
   required?: boolean;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 export const RichTextEditor = ({
   name,
   required = false,
   placeholder,
+  disabled
 }: RichTextEditorProps) => {
   const { register, setValue, watch } = useFormContext();
   const value = watch(name) || '';
@@ -42,6 +44,7 @@ export const RichTextEditor = ({
         }
         containerProps={{ className: 'rich-text-container' }}
         placeholder={placeholder}
+        disabled={disabled}
       >
         <Toolbar>
           <BtnUndo />

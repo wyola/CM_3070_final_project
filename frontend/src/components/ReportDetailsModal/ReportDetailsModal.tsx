@@ -86,7 +86,7 @@ export const ReportDetailsModal = ({
 
         <div>
           <h3 className="report-details__subheader">Description</h3>
-          <div
+          <p
             className="report-details__description"
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(report.description, {
