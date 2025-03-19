@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import axios from 'axios';
-import { CustomFormField, CustomModal, CustomSelect } from '@/components';
+import {
+  CustomFormField,
+  CustomModal,
+  CustomSelect,
+  Label,
+  RichTextEditor,
+} from '@/components';
 import { KindsOfNeeds, NeedI } from '@/types';
 import { mapKindToLabel } from '@/utils';
 import { axiosInstance } from '@/lib/axios';
@@ -126,17 +132,25 @@ export const AddEditNeedModal = ({
             }
           />
 
-          <CustomFormField
-            label="Description"
-            type="text"
-            name="description"
-            id="description"
-            required
-            errorMessage={
-              error ||
-              formErrors.find((error) => error.field === 'description')?.message
-            }
-          />
+          <div className="add-need__form--field">
+            <Label className="add-need__form--label">
+              Description <span className="form-item__required"> *</span>
+            </Label>
+            <RichTextEditor
+              name="description"
+              required
+              placeholder="Enter detailed description of this need..."
+            />
+            {(error ||
+              formErrors.find((error) => error.field === 'description')
+                ?.message) && (
+              <p className="add-need__form--error">
+                {error ||
+                  formErrors.find((error) => error.field === 'description')
+                    ?.message}
+              </p>
+            )}
+          </div>
 
           <CustomFormField
             label="High priority"
