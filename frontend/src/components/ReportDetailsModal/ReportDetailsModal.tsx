@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { Badge, Button, CustomAlertDialog, CustomModal } from '@/components';
+import {
+  Badge,
+  Button,
+  CustomAlertDialog,
+  CustomModal,
+  LocationMap,
+} from '@/components';
 import { ReportI, ReportStatus } from '@/types';
 import { formatDate, mapStatusToLabel, mapStatusToVariant } from '@/utils';
 import { ORGANIZATION } from '@/constants';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import './reportDetailsModal.scss';
 
 type ReportDetailsModalProps = {
@@ -115,26 +120,19 @@ export const ReportDetailsModal = ({
           </button>
         </div>
 
-        {/* TODO: move to styles file */}
-        <div style={{ height: '300px', width: '100%' }}>
-          <MapContainer
-            center={[report.geolocation.lat, report.geolocation.lon]}
-            zoom={13}
-            style={{ height: '100%', width: '100%' }}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <Marker position={[report.geolocation.lat, report.geolocation.lon]}>
-              {report.address && (
-                <Popup>
-                  {report.address}, {report.postalCode} {report.city}
-                </Popup>
-              )}
-            </Marker>
-          </MapContainer>
-        </div>
+        <LocationMap
+          geolocation={report.geolocation}
+          popupHeader={report.title}
+          fullAddress={
+            report.address
+              ? {
+                  address: report.address || '',
+                  postalCode: report.postalCode || '',
+                  city: report.city || '',
+                }
+              : undefined
+          }
+        />
 
         {report.image && (
           <div className="report-details__image">
