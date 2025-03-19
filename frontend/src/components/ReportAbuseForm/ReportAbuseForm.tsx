@@ -12,6 +12,8 @@ import {
   FormMessage,
   ReportSummary,
   LocationMap,
+  RichTextEditor,
+  Label,
 } from '@/components';
 import { ReportFormDataI } from '@/types';
 import { createReportApi } from '@/lib/axios';
@@ -97,7 +99,7 @@ export const ReportAbuseForm = () => {
   const methods = useForm<ReportFormDataI>({
     defaultValues: {
       title: '',
-      description: '',
+      description: '<p>Please describe the situation in detail...</p>',
       address: '',
       city: '',
       postalCode: '',
@@ -164,19 +166,6 @@ export const ReportAbuseForm = () => {
               }
             />
 
-            <CustomFormField
-              label="Description"
-              type="textarea"
-              name="description"
-              id="description"
-              required
-              placeholder="Please describe the situation in detail"
-              errorMessage={
-                formErrors.find((error) => error.field === 'description')
-                  ?.message
-              }
-            />
-
             <CustomMultiSelect
               name="animals"
               id="animals"
@@ -188,6 +177,22 @@ export const ReportAbuseForm = () => {
                 formErrors.find((error) => error.field === 'animals.0')?.message
               }
             />
+
+            <div className="description-field">
+              <Label htmlFor="description" className="description-field__label">
+                Description <span className="form-item__required">*</span>
+              </Label>
+              <RichTextEditor name="description" required />
+              {formErrors.find((error) => error.field === 'description')
+                ?.message && (
+                <FormMessage className="report__form--error-message">
+                  {
+                    formErrors.find((error) => error.field === 'description')
+                      ?.message
+                  }
+                </FormMessage>
+              )}
+            </div>
 
             <div className="report__form--location">
               <p className="report__form--helper-text">

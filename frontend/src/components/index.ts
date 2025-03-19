@@ -24,3 +24,4 @@ export { UserMenu } from './UserMenu/UserMenu';
 export { ReportsTable } from './ReportsTable/ReportsTable';
 export { ReportDetailsModal } from './ReportDetailsModal/ReportDetailsModal';
 export { LocationMap } from './LocationMap/LocationMap';
+export { RichTextEditor } from './RichTextEditor/RichTextEditor';

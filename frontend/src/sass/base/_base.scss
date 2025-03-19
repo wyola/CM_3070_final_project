@@ -34,6 +34,19 @@ body {
     padding-left: 2rem;
     padding-right: 2rem;
   }
+
+  // overwrite Tailwind base styles
+  ul,
+  ol {
+    padding-left: 2rem;
+  }
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: auto;
+  }
 }
 
 main {
