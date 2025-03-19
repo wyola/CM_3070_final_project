@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import {
   CustomFormField,
@@ -11,12 +11,13 @@ import {
   CustomMultiSelect,
   FormMessage,
   ReportSummary,
+  LocationMap,
 } from '@/components';
 import { ReportFormDataI } from '@/types';
 import { createReportApi } from '@/lib/axios';
 import { ANIMAL_OPTIONS } from '@/constants';
 import axios from 'axios';
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import { useMapEvents } from 'react-leaflet';
 import * as L from 'leaflet';
 import './reportAbuseForm.scss';
 
@@ -33,7 +34,6 @@ export const ReportAbuseForm = () => {
   const [assignedOrganizations, setAssignedOrganizations] = useState<
     { organizationName: string; organizationId: number }[]
   >([]);
-  const mapRef = useRef(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -213,18 +213,10 @@ export const ReportAbuseForm = () => {
                         adjust pin position. Zoom-in to give the most accurate
                         location.
                       </p>
-                      <MapContainer
-                        center={position}
-                        zoom={13}
-                        style={{ height: '400px', width: '100%', zIndex: 0 }}
-                        ref={mapRef}
-                      >
-                        <TileLayer
-                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        />
-                        <CenterMarker />
-                      </MapContainer>
+                      <LocationMap
+                        geolocation={{ lat: position[0], lon: position[1] }}
+                        customMarker={<CenterMarker />}
+                      />
                     </div>
                   ) : (
                     <div className="report__form--loading-map">

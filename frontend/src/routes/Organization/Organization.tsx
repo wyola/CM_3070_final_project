@@ -4,7 +4,7 @@ import {
   CustomCard,
   OrganizationContact,
   OrganizationHeader,
-  OrganizationMap,
+  LocationMap,
   OrganizationsNeeds,
   ReportsTable,
 } from '@/components';
@@ -88,10 +88,10 @@ export const Organization = () => {
       />
 
       {organization.geolocation && (
-        <OrganizationMap
+        <LocationMap
           geolocation={organization.geolocation}
-          name={name}
-          address={`${address}, ${postalCode} ${city}`}
+          popupHeader={name}
+          mapContainerHeight="200px"
         />
       )}
 
