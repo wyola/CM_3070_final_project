@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { useState } from 'react';
 import {
   Badge,
-  Button,
-  CustomAlertDialog,
-  CustomModal,
+  ReportDetailsModal,
   Table,
   TableBody,
   TableCell,
@@ -13,10 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components';
-import { API_ENDPOINTS, ORGANIZATION } from '@/constants';
-import { axiosInstance } from '@/lib/axios';
 import { ReportI, ReportStatus } from '@/types';
 import { formatDate, mapStatusToLabel, mapStatusToVariant } from '@/utils';
+import { useReports } from '@/hooks';
 import './reportsTable.scss';
 
 type ReportsTableProps = {
@@ -24,31 +19,17 @@ type ReportsTableProps = {
 };
 
 export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
-  const [reports, setReports] = useState<ReportI[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReport, setSelectedReport] = useState<ReportI | null>(null);
-  const [copiedGeolocation, setCopiedGeolocation] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axiosInstance.get(API_ENDPOINTS.REPORT.ALL);
-        setReports(response.data.data || []);
-        setError(null);
-      } catch (err) {
-        console.error('Failed to fetch reports:', err);
-        setError('Failed to load reports. Please try again.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchReports();
-  }, []);
+  const {
+    reports,
+    isLoading,
+    error,
+    markAsViewed,
+    updateReportStatus,
+    deleteReport,
+  } = useReports();
 
   const columns = [
     { header: 'Date', accessor: 'createdAt' },
@@ -88,76 +69,31 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
   const handleRowClick = async (report: ReportI) => {
     setSelectedReport(report);
     setIsModalOpen(true);
-
-    try {
-      if (!report.viewed) {
-        await axiosInstance.patch(API_ENDPOINTS.REPORT.MARK_VIEWED(report.id));
-
-        setReports((prevReports) =>
-          prevReports.map((r) =>
-            r.id === report.id ? { ...r, viewed: true } : r
-          )
-        );
-      }
-    } catch (error) {
-      console.error('Failed to mark report as viewed:', error);
-    }
+    if (!report.viewed) await markAsViewed(report.id);
   };
 
-  const copyGeoLocation = (lat: number, lon: number) => {
-    const text = `${lat} ${lon}`;
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        setCopiedGeolocation(true);
-        setTimeout(() => setCopiedGeolocation(false), 2000); // Reset after 2 seconds
-      })
-      .catch((err) => {
-        console.error('Failed to copy: ', err);
+  const handleClose = () => {
+    if (selectedReport) {
+      const updatedReport = reports.find((r) => r.id === selectedReport.id);
+      setSelectedReport(updatedReport || null);
+    }
+    setIsModalOpen(false);
+  };
+
+  const handleStatusUpdate = async (
+    reportId: number,
+    newStatus: ReportStatus
+  ) => {
+    const success = await updateReportStatus(reportId, newStatus);
+
+    if (success && selectedReport && selectedReport.id === reportId) {
+      setSelectedReport({
+        ...selectedReport,
+        status: newStatus,
       });
-  };
-
-  const updateReportStatus = async (newStatus: ReportStatus) => {
-    if (!selectedReport) return;
-
-    try {
-      await axiosInstance.patch(
-        API_ENDPOINTS.REPORT.UPDATE_STATUS(selectedReport.id),
-        {
-          status: newStatus,
-        }
-      );
-
-      setReports((prevReports) =>
-        prevReports.map((report) =>
-          report.id === selectedReport.id
-            ? { ...report, status: newStatus }
-            : report
-        )
-      );
-
-      setSelectedReport({ ...selectedReport, status: newStatus });
-    } catch (error) {
-      console.error('Failed to update report status:', error);
     }
-  };
 
-  const handleDeleteReport = async () => {
-    if (!selectedReport) return;
-
-    try {
-      await axiosInstance.delete(
-        API_ENDPOINTS.REPORT.DELETE(selectedReport.id)
-      );
-
-      setReports((prevReports) =>
-        prevReports.filter((report) => report.id !== selectedReport.id)
-      );
-      setIsModalOpen(false);
-      setSelectedReport(null);
-    } catch (error) {
-      console.error('Failed to delete report:', error);
-    }
+    return success;
   };
 
   return (
@@ -178,8 +114,8 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
               onClick={() => handleRowClick(report)}
               className={
                 report.viewed
-                  ? 'reports-table__row--viewed'
-                  : 'reports-table__row'
+                  ? 'reports__table-row--viewed'
+                  : 'reports__table-row'
               }
             >
               {columns.map((column) => (
@@ -195,198 +131,14 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
         </TableBody>
       </Table>
 
-      <CustomModal
-        title={selectedReport?.title || 'Report details'}
-        buttonLabel="Close modal"
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onConfirm={() => setIsModalOpen(false)}
-        className="report-modal"
-      >
-        {selectedReport && (
-          <div className="report-details">
-            <div className="report-details__date-status">
-              <Badge
-                variant={mapStatusToVariant(selectedReport.status)}
-                className="report-details__date-status--badge"
-              >
-                {mapStatusToLabel(selectedReport.status)}
-              </Badge>
-              <span>{formatDate(selectedReport.createdAt)}</span>
-            </div>
-
-            <div>
-              <h3 className="report-details__subheader">Animals</h3>
-              <p>{selectedReport.animals.join(', ')}</p>
-            </div>
-
-            <div>
-              <h3 className="report-details__subheader">Description</h3>
-              <p>{selectedReport.description}</p>
-            </div>
-
-            {selectedReport.address && (
-              <div>
-                <h3 className="report-details__subheader">Address</h3>
-                <p>
-                  {selectedReport.address}, {selectedReport.postalCode}{' '}
-                  {selectedReport.city}
-                </p>
-              </div>
-            )}
-
-            {(selectedReport.contactName ||
-              selectedReport.contactEmail ||
-              selectedReport.contactPhone) && (
-              <div>
-                <h3 className="report-details__subheader">
-                  Contact Information
-                </h3>
-                {selectedReport.contactName && (
-                  <p>Name: {selectedReport.contactName}</p>
-                )}
-                {selectedReport.contactEmail && (
-                  <p>Email: {selectedReport.contactEmail}</p>
-                )}
-                {selectedReport.contactPhone && (
-                  <p>Phone: {selectedReport.contactPhone}</p>
-                )}
-              </div>
-            )}
-
-            <div className="report-details__geolocation">
-              <h3 className="report-details__subheader">Geolocation</h3>
-              <button
-                onClick={() =>
-                  copyGeoLocation(
-                    selectedReport.geolocation!.lat,
-                    selectedReport.geolocation!.lon
-                  )
-                }
-                tabIndex={0}
-                title="Click to copy coordinates"
-              >
-                {selectedReport.geolocation.lat},{' '}
-                {selectedReport.geolocation.lon}
-                <img src="/copy.svg" width="16" height="16" />
-                {copiedGeolocation && <span> ✓ Copied!</span>}
-              </button>
-            </div>
-            {/* TODO: move to styles file */}
-            <div style={{ height: '300px', width: '100%' }}>
-              <MapContainer
-                center={[
-                  selectedReport.geolocation.lat,
-                  selectedReport.geolocation.lon,
-                ]}
-                zoom={13}
-                style={{ height: '100%', width: '100%' }}
-              >
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                />
-                <Marker
-                  position={[
-                    selectedReport.geolocation.lat,
-                    selectedReport.geolocation.lon,
-                  ]}
-                >
-                  {selectedReport.address && (
-                    <Popup>
-                      {selectedReport.address}, {selectedReport.postalCode}{' '}
-                      {selectedReport.city}
-                    </Popup>
-                  )}
-                </Marker>
-              </MapContainer>
-            </div>
-
-            {selectedReport.image && (
-              <div className="report-details__image">
-                <h3 className="report-details__subheader">Image</h3>
-                <img src={`http://localhost:3000/${selectedReport.image}`} />
-              </div>
-            )}
-
-            <div className="report-details__assignments">
-              <h3 className="report-details__subheader">Assignments</h3>
-              <p>This report was also sent to following organizations: </p>
-              <ul>
-                {selectedReport.assignments
-                  .filter(
-                    (assignment) => assignment.organizationId !== organizationId
-                  )
-                  .map((assignment) => (
-                    <li key={assignment.id}>
-                      <Link
-                        to={`${ORGANIZATION}/${assignment.organizationId}`}
-                        className="report-details__assignments--link"
-                        target="_blank"
-                      >
-                        {assignment.organizationName}
-                        <img src="/open.svg" width="16" height="16" />
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-
-            <div className="report-details__actions">
-              <h3 className="report-details__subheader">Actions</h3>
-              <div className="report-details__actions--buttons">
-                {selectedReport.status !== ReportStatus.OPEN && (
-                  <Button
-                    onClick={() => updateReportStatus(ReportStatus.OPEN)}
-                    className="status-button"
-                  >
-                    Mark as {mapStatusToLabel(ReportStatus.OPEN)}
-                  </Button>
-                )}
-
-                {selectedReport.status !== ReportStatus.IN_PROGRESS && (
-                  <Button
-                    variant="secondary"
-                    onClick={() => updateReportStatus(ReportStatus.IN_PROGRESS)}
-                    className="status-button"
-                  >
-                    Mark as {mapStatusToLabel(ReportStatus.IN_PROGRESS)}
-                  </Button>
-                )}
-
-                {selectedReport.status !== ReportStatus.HANDLED && (
-                  <Button
-                    variant="outline"
-                    onClick={() => updateReportStatus(ReportStatus.HANDLED)}
-                    className="status-button"
-                  >
-                    Mark as {mapStatusToLabel(ReportStatus.HANDLED)}
-                  </Button>
-                )}
-                <Button
-                  variant="destructive"
-                  onClick={() => setShowDeleteConfirm(true)}
-                >
-                  Delete report
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
-      </CustomModal>
-
-      {showDeleteConfirm && (
-        <CustomAlertDialog
-          title="Delete Report"
-          description="Are you sure you want to delete this report? This action cannot be undone."
-          cancelButtonLabel="Cancel"
-          confirmButtonLabel="Delete"
-          isOpen={showDeleteConfirm}
-          onCancel={() => setShowDeleteConfirm(false)}
-          onConfirm={() => {
-            handleDeleteReport();
-            setShowDeleteConfirm(false);
-          }}
+      {selectedReport && (
+        <ReportDetailsModal
+          report={selectedReport}
+          organizationId={organizationId}
+          onClose={handleClose}
+          isOpen={isModalOpen}
+          updateReportStatus={handleStatusUpdate}
+          deleteReport={deleteReport}
         />
       )}
     </div>
