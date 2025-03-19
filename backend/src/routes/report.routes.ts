@@ -300,4 +300,93 @@ router.patch(
   reportController.markReportAsViewed
 );
 
+/**
+ * @swagger
+ * /api/reports/{reportId}:
+ *   delete:
+ *     tags: [Reports]
+ *     summary: Delete a report
+ *     description: Deletes a report. Can only be performed by users from organizations assigned to the report.
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: reportId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the report to delete
+ *     responses:
+ *       200:
+ *         description: Report deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Report deleted successfully"
+ *       400:
+ *         description: Invalid report ID
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - organization not assigned to this report
+ *       404:
+ *         description: Report not found
+ *       500:
+ *         description: Server error
+ */
+router.delete('/:reportId', authenticateJWT, reportController.deleteReport);
+
+/**
+ * @swagger
+ * /api/reports/{reportId}/status:
+ *   patch:
+ *     tags: [Reports]
+ *     summary: Update report status
+ *     description: Update the status of a report. Only organizations assigned to the report can update its status.
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: reportId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Report ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - status
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 enum: [IN_PROGRESS, HANDLED, OPEN]
+ *                 description: New status for the report
+ *     responses:
+ *       200:
+ *         description: Report status updated successfully
+ *       400:
+ *         description: Invalid report ID or status
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Organization not assigned to this report
+ *       404:
+ *         description: Report not found
+ *       500:
+ *         description: Server error
+ */
+router.patch(
+  '/:reportId/status',
+  authenticateJWT,
+  reportController.updateReportStatus
+);
+
 export default router;

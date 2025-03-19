@@ -26,6 +26,8 @@ export const API_ENDPOINTS = {
     CREATE: `/api/reports`,
     ALL: `/api/reports/organization`,
     MARK_VIEWED: (reportId: number) => `/api/reports/${reportId}/mark-viewed`,
+    UPDATE_STATUS: (reportId: number) => `/api/reports/${reportId}/status`,
+    DELETE: (reportId: number) => `/api/reports/${reportId}`,
   },
   NOTIFICATIONS: {
     COUNT: `/api/notifications/count`,

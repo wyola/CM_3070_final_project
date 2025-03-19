@@ -183,6 +183,41 @@ export class ReportService {
   }
 
   public async markReportAsViewed(reportId: number, userId: number) {
+    const { report, organizationId } = await this.validateReportAccess(
+      reportId,
+      userId
+    );
+
+    // Update the assignment's viewedAt timestamp
+    const assignment = report.assignments[0];
+
+    const updatedAssignment = await prisma.reportAssignment.update({
+      where: { id: assignment.id },
+      data: {
+        viewedAt: new Date(),
+      },
+    });
+
+    return updatedAssignment;
+  }
+
+  public async deleteReport(reportId: number, userId: number) {
+    await this.validateReportAccess(reportId, userId);
+
+    // Delete all assignments first (due to foreign key constraints)
+    await prisma.reportAssignment.deleteMany({
+      where: { reportId },
+    });
+
+    // Delete the report
+    await prisma.report.delete({
+      where: { id: reportId },
+    });
+
+    return true;
+  }
+
+  private async validateReportAccess(reportId: number, userId: number) {
     const user = await prisma.user.findUnique({ where: { id: userId } });
 
     if (!user || !user.organizationId) {
@@ -203,22 +238,11 @@ export class ReportService {
       throw new Error('Report not found');
     }
 
-    // Check if the user's organization is assigned to this report
     if (report.assignments.length === 0) {
       throw new Error('Organization not assigned to this report');
     }
 
-    // Update the assignment's viewedAt timestamp
-    const assignment = report.assignments[0];
-
-    const updatedAssignment = await prisma.reportAssignment.update({
-      where: { id: assignment.id },
-      data: {
-        viewedAt: new Date(),
-      },
-    });
-
-    return updatedAssignment;
+    return { report, organizationId: user.organizationId };
   }
 
   private mapReportToResponse(
@@ -258,5 +282,46 @@ export class ReportService {
     }
 
     return reportResponse;
+  }
+
+  async updateReportStatus(
+    reportId: number,
+    userId: number,
+    status: ReportStatus
+  ): Promise<void> {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { organizationId: true },
+    });
+
+    if (!user || !user.organizationId) {
+      throw new Error('User not associated with any organization');
+    }
+
+    const reportAssignment = await prisma.reportAssignment.findFirst({
+      where: {
+        reportId,
+        organizationId: user.organizationId,
+      },
+      include: {
+        report: true,
+      },
+    });
+
+    if (!reportAssignment) {
+      throw new Error('Organization not assigned to this report');
+    }
+
+    await prisma.report.update({
+      where: { id: reportId },
+      data: {
+        status: status as ReportStatus,
+        updatedAt: new Date(),
+      },
+    });
+
+    if (!reportAssignment.viewedAt) {
+      await this.markReportAsViewed(reportId, userId);
+    }
   }
 }

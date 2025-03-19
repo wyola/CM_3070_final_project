@@ -88,3 +88,13 @@ export interface ReportAssignmentResponse {
   viewedAt: string | null;
   createdAt: string;
 }
+
+export const reportStatusUpdateSchema = z.object({
+  status: z.enum([
+    ReportStatus.IN_PROGRESS,
+    ReportStatus.HANDLED,
+    ReportStatus.OPEN,
+  ]),
+});
+
+export type ReportStatusUpdateDto = z.infer<typeof reportStatusUpdateSchema>;

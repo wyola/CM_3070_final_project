@@ -123,8 +123,6 @@ export const ReportAbuseForm = () => {
     try {
       const response = await createReportApi.createReport(data, addressType);
 
-      console.log(response.data.assignments);
-
       if (response && response.data.assignments) {
         setAssignedOrganizations(response.data.assignments);
       }

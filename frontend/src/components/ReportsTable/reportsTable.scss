@@ -3,70 +3,14 @@
   flex-direction: column;
   gap: 1rem;
 
-  &-table__row {
+  &__table-row {
     background-color: hsl(var(--secondary));
   }
 
-  &-table__row,
-  &-table__row--viewed {
+  &__table-row,
+  &__table-row--viewed {
     &:hover {
       cursor: pointer;
-    }
-  }
-}
-
-.report-modal {
-  width: 90vw;
-  max-width: unset;
-}
-
-.report-details {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  &__subheader {
-    font-weight: 500;
-  }
-
-  &__date-status {
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-
-    &--badge {
-      font-size: 1rem;
-      padding: 0.5rem 1rem;
-    }
-  }
-
-  &__geolocation {
-    button {
-      display: flex;
-      gap: 0.5rem;
-    }
-  }
-
-  &__assignments {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-
-    ul {
-      list-style: disc;
-      padding-left: 1rem;
-    }
-
-    a {
-      text-transform: capitalize;
-      display: flex;
-      align-items: center;
-
-      img {
-        display: inline;
-        margin-left: 0.8rem;
-      }
     }
   }
 }
