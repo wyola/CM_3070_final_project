@@ -9,14 +9,11 @@
     &--helper-text {
       font-size: 0.875rem;
       font-weight: 500;
-
-      span {
-        color: red;
-      }
     }
 
     .description-field__label {
-      margin-bottom: 0.5rem;
+      display: block;
+      margin-bottom: 0.8rem;
     }
 
     &--location {

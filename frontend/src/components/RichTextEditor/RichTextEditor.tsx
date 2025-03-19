@@ -1,5 +1,15 @@
-import { useController, useFormContext } from 'react-hook-form';
-import Editor from 'react-simple-wysiwyg';
+import { useFormContext } from 'react-hook-form';
+import Editor, {
+  BtnBold,
+  BtnBulletList,
+  BtnItalic,
+  BtnNumberedList,
+  BtnRedo,
+  BtnUnderline,
+  BtnUndo,
+  Separator,
+  Toolbar,
+} from 'react-simple-wysiwyg';
 import './richTextEditor.scss';
 
 interface RichTextEditorProps {
@@ -11,23 +21,40 @@ interface RichTextEditorProps {
 export const RichTextEditor = ({
   name,
   required = false,
-  placeholder = 'Please describe the situation in detail',
+  placeholder,
 }: RichTextEditorProps) => {
-  const { control } = useFormContext();
-  const { field } = useController({
-    name,
-    control,
-    rules: { required: required ? 'This field is required' : false },
-  });
+  const { register, setValue, watch } = useFormContext();
+  const value = watch(name) || '';
 
+  register(name, {
+    required: required ? 'This field is required' : false,
+    value: '',
+  });
   return (
     <div className="rich-text-editor">
       <Editor
-        value={field.value}
-        onChange={(e) => field.onChange(e.target.value)}
+        value={value}
+        onChange={(e) =>
+          setValue(name, e.target.value, {
+            shouldValidate: true,
+            shouldDirty: true,
+          })
+        }
         containerProps={{ className: 'rich-text-container' }}
         placeholder={placeholder}
-      />
+      >
+        <Toolbar>
+          <BtnUndo />
+          <BtnRedo />
+          <Separator />
+          <BtnBold />
+          <BtnItalic />
+          <BtnUnderline />
+          <Separator />
+          <BtnNumberedList />
+          <BtnBulletList />
+        </Toolbar>
+      </Editor>
     </div>
   );
 };

@@ -99,7 +99,7 @@ export const ReportAbuseForm = () => {
   const methods = useForm<ReportFormDataI>({
     defaultValues: {
       title: '',
-      description: '<p>Please describe the situation in detail...</p>',
+      description: '',
       address: '',
       city: '',
       postalCode: '',
@@ -182,7 +182,11 @@ export const ReportAbuseForm = () => {
               <Label htmlFor="description" className="description-field__label">
                 Description <span className="form-item__required">*</span>
               </Label>
-              <RichTextEditor name="description" required />
+              <RichTextEditor
+                name="description"
+                required
+                placeholder="Please describe the situation in detail..."
+              />
               {formErrors.find((error) => error.field === 'description')
                 ?.message && (
                 <FormMessage className="report__form--error-message">
@@ -197,7 +201,7 @@ export const ReportAbuseForm = () => {
             <div className="report__form--location">
               <p className="report__form--helper-text">
                 Provide abuse location by showing it on map or by filling out
-                address form <span>*</span>
+                address form <span className="form-item__required">*</span>
               </p>
 
               <Tabs
@@ -331,7 +335,7 @@ export const ReportAbuseForm = () => {
               className="submit-button"
               disabled={isSubmitting}
             >
-              {isLoading ? 'Submitting...' : 'Submit Report'}
+              {isLoading ? 'Submitting...' : 'Submit'}
             </Button>
           </form>
         </FormProvider>
