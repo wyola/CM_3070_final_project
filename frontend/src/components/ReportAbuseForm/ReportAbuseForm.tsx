@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import {
   CustomFormField,
@@ -17,7 +17,7 @@ import { ReportFormDataI } from '@/types';
 import { createReportApi } from '@/lib/axios';
 import { ANIMAL_OPTIONS } from '@/constants';
 import axios from 'axios';
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import { useMapEvents } from 'react-leaflet';
 import * as L from 'leaflet';
 import './reportAbuseForm.scss';
 
@@ -34,7 +34,6 @@ export const ReportAbuseForm = () => {
   const [assignedOrganizations, setAssignedOrganizations] = useState<
     { organizationName: string; organizationId: number }[]
   >([]);
-  const mapRef = useRef(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
