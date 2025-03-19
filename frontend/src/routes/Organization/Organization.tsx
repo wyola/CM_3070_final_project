@@ -91,6 +91,7 @@ export const Organization = () => {
         <LocationMap
           geolocation={organization.geolocation}
           popupHeader={name}
+          mapContainerHeight="200px"
         />
       )}
 
