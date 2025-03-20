@@ -53,10 +53,7 @@ export const CustomModal = ({
             <Button
               type="button"
               variant="secondary"
-              onClick={() => {
-                onConfirm();
-                onClose();
-              }}
+              onClick={onConfirm}
               disabled={buttonDisabled}
             >
               {buttonLabel}
