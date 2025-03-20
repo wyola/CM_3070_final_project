@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { RegisterEditOrganizationForm } from '@/components';
+import { PageTitle, RegisterEditOrganizationForm } from '@/components';
 import { API_ENDPOINTS, ORGANIZATION } from '@/constants';
 import axios from 'axios';
 import { axiosInstance } from '@/lib/axios';
 import { OrganizationI } from '@/types';
 import { useOwnership } from '@/hooks';
-import './organizationEdit.scss';
 
 export const OrganizationEdit = () => {
   const [organization, setOrganization] = useState<OrganizationI | null>(null);
@@ -47,7 +46,7 @@ export const OrganizationEdit = () => {
 
   return (
     <section className="content edit-organization">
-      <h1 className="heading-primary">Edit organization information</h1>
+      <PageTitle title="Edit organization information" />
       {organization ? (
         <RegisterEditOrganizationForm
           isEditing
