@@ -334,7 +334,6 @@ export const RegisterEditOrganizationForm = ({
                 </Label>
                 <RichTextEditor
                   name="description"
-                  required
                   placeholder={
                     isKRSValid
                       ? 'Short description of your organization'

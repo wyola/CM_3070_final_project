@@ -174,7 +174,7 @@ export const ReportAbuseForm = () => {
               label="Animals involved"
               required
               errorMessage={
-                formErrors.find((error) => error.field === 'animals.0')?.message
+                formErrors.find((error) => error.field === 'animals')?.message
               }
             />
 
@@ -184,7 +184,6 @@ export const ReportAbuseForm = () => {
               </Label>
               <RichTextEditor
                 name="description"
-                required
                 placeholder="Please describe the situation in detail..."
               />
               {formErrors.find((error) => error.field === 'description')
@@ -334,6 +333,7 @@ export const ReportAbuseForm = () => {
               type="submit"
               className="submit-button"
               disabled={isSubmitting}
+              onClick={() => console.log('xxx ass')}
             >
               {isLoading ? 'Submitting...' : 'Submit'}
             </Button>

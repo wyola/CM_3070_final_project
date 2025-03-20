@@ -138,7 +138,6 @@ export const AddEditNeedModal = ({
             </Label>
             <RichTextEditor
               name="description"
-              required
               placeholder="Enter detailed description of this need..."
             />
             {(error ||

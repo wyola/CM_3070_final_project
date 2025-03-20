@@ -2,11 +2,13 @@ import { useFormContext } from 'react-hook-form';
 import Editor, {
   BtnBold,
   BtnBulletList,
+  BtnClearFormatting,
   BtnItalic,
   BtnNumberedList,
   BtnRedo,
   BtnUnderline,
   BtnUndo,
+  HtmlButton,
   Separator,
   Toolbar,
 } from 'react-simple-wysiwyg';
@@ -14,26 +16,21 @@ import './richTextEditor.scss';
 
 interface RichTextEditorProps {
   name: string;
-  required?: boolean;
   placeholder?: string;
   disabled?: boolean;
 }
 
 export const RichTextEditor = ({
   name,
-  required = false,
   placeholder,
-  disabled
+  disabled,
 }: RichTextEditorProps) => {
   const { register, setValue, watch } = useFormContext();
   const value = watch(name) || '';
 
-  register(name, {
-    required: required ? 'This field is required' : false,
-    value: '',
-  });
+  register(name);
+
   return (
-    <div className="rich-text-editor">
       <Editor
         value={value}
         onChange={(e) =>
@@ -42,7 +39,7 @@ export const RichTextEditor = ({
             shouldDirty: true,
           })
         }
-        containerProps={{ className: 'rich-text-container' }}
+        containerProps={{ className: 'rich-text-editor' }}
         placeholder={placeholder}
         disabled={disabled}
       >
@@ -56,8 +53,8 @@ export const RichTextEditor = ({
           <Separator />
           <BtnNumberedList />
           <BtnBulletList />
+          <BtnClearFormatting />
         </Toolbar>
       </Editor>
-    </div>
   );
 };
