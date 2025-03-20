@@ -1,5 +1,4 @@
 import { Link } from 'react-router';
-import DOMPurify from 'dompurify';
 import { CustomCard } from '@/components';
 import { OrganizationAnimals } from '@/types';
 import { useOwnership } from '@/hooks';
@@ -39,14 +38,7 @@ export const OrganizationHeader = ({
       <div className="organization-header__animals">
         We take care of: {animals.join(', ')}
       </div>
-      <p
-        className="organization-header__description"
-        dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(description, {
-            USE_PROFILES: { html: true },
-          }),
-        }}
-      ></p>
+      <p className="organization-header__description">{description}</p>
     </CustomCard>
   );
 };

@@ -12,8 +12,6 @@ import {
   FormMessage,
   ReportSummary,
   LocationMap,
-  RichTextEditor,
-  Label,
 } from '@/components';
 import { ReportFormDataI } from '@/types';
 import { createReportApi } from '@/lib/axios';
@@ -166,6 +164,19 @@ export const ReportAbuseForm = () => {
               }
             />
 
+            <CustomFormField
+              label="Description"
+              type="textarea"
+              name="description"
+              id="description"
+              required
+              placeholder="Please describe the situation in detail"
+              errorMessage={
+                formErrors.find((error) => error.field === 'description')
+                  ?.message
+              }
+            />
+
             <CustomMultiSelect
               name="animals"
               id="animals"
@@ -174,33 +185,14 @@ export const ReportAbuseForm = () => {
               label="Animals involved"
               required
               errorMessage={
-                formErrors.find((error) => error.field === 'animals')?.message
+                formErrors.find((error) => error.field === 'animals.0')?.message
               }
             />
-
-            <div className="description-field">
-              <Label htmlFor="description" className="description-field__label">
-                Description <span className="form-item__required">*</span>
-              </Label>
-              <RichTextEditor
-                name="description"
-                placeholder="Please describe the situation in detail..."
-              />
-              {formErrors.find((error) => error.field === 'description')
-                ?.message && (
-                <FormMessage className="report__form--error-message">
-                  {
-                    formErrors.find((error) => error.field === 'description')
-                      ?.message
-                  }
-                </FormMessage>
-              )}
-            </div>
 
             <div className="report__form--location">
               <p className="report__form--helper-text">
                 Provide abuse location by showing it on map or by filling out
-                address form <span className="form-item__required">*</span>
+                address form <span>*</span>
               </p>
 
               <Tabs
@@ -333,9 +325,8 @@ export const ReportAbuseForm = () => {
               type="submit"
               className="submit-button"
               disabled={isSubmitting}
-              onClick={() => console.log('xxx ass')}
             >
-              {isLoading ? 'Submitting...' : 'Submit'}
+              {isLoading ? 'Submitting...' : 'Submit Report'}
             </Button>
           </form>
         </FormProvider>

@@ -12,7 +12,6 @@ import axios from 'axios';
 import { axiosInstance } from '@/lib/axios';
 import { API_ENDPOINTS } from '@/constants';
 import { useOwnership } from '@/hooks';
-import DOMPurify from 'dompurify';
 import './need.scss';
 
 type NeedProps = {
@@ -73,14 +72,7 @@ export const Need = ({
             />
           )}
         </div>
-        <p
-          className="need__description"
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(description, {
-              USE_PROFILES: { html: true },
-            }),
-          }}
-        ></p>
+        <p className="need__description">{description}</p>
 
         {isOwner && (
           <div className="need__actions">
