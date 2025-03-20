@@ -139,7 +139,6 @@ export const AddEditNeedModal = ({
         <form onSubmit={handleSubmit(onSubmit)} className="add-need__form">
           <CustomSelect
             name="kind"
-            id="kind"
             placeholder="Select need..."
             options={needsOptions}
             required
@@ -173,7 +172,6 @@ export const AddEditNeedModal = ({
             label="High priority"
             type="checkbox"
             name="priority"
-            id="priority"
             className="add-need__form--checkbox"
           />
         </form>

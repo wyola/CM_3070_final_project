@@ -9,13 +9,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components';
+import { useId } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 type CustomSelectProps = {
   name: string;
   placeholder: string;
   options: { value: string; label: string }[];
-  id: string;
   required?: boolean;
   label?: string;
   errorMessage?: string;
@@ -25,12 +25,12 @@ export const CustomSelect = ({
   name,
   placeholder,
   options,
-  id,
   required,
   label,
   errorMessage,
 }: CustomSelectProps) => {
   const { control } = useFormContext();
+  const fieldId = useId();
 
   return (
     <FormField
@@ -39,7 +39,7 @@ export const CustomSelect = ({
       render={({ field }) => (
         <FormItem className="multiselect form-item">
           {label && (
-            <FormLabel htmlFor={id}>
+            <FormLabel htmlFor={fieldId}>
               {label}
               {required && <span className="form-item__required"> *</span>}
             </FormLabel>
@@ -49,7 +49,7 @@ export const CustomSelect = ({
             defaultValue={field.value}
             required={required}
           >
-            <SelectTrigger id={id}>
+            <SelectTrigger id={fieldId}>
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>

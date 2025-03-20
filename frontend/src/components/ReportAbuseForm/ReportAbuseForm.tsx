@@ -158,7 +158,6 @@ export const ReportAbuseForm = () => {
               label="Title"
               type="text"
               name="title"
-              id="title"
               required
               placeholder="Enter a brief title for your report"
               errorMessage={
@@ -168,7 +167,6 @@ export const ReportAbuseForm = () => {
 
             <CustomMultiSelect
               name="animals"
-              id="animals"
               placeholder="Select animals involved"
               options={ANIMAL_OPTIONS}
               label="Animals involved"
@@ -238,7 +236,6 @@ export const ReportAbuseForm = () => {
                     label="Address"
                     type="text"
                     name="address"
-                    id="address"
                     required
                     placeholder="Street, building number, apartment number"
                   />
@@ -247,7 +244,6 @@ export const ReportAbuseForm = () => {
                       label="City"
                       type="text"
                       name="city"
-                      id="city"
                       required
                       placeholder="City name"
                     />
@@ -255,7 +251,6 @@ export const ReportAbuseForm = () => {
                       label="Postal Code"
                       type="text"
                       name="postalCode"
-                      id="postalCode"
                       required
                       pattern="[0-9]{2}-[0-9]{3}"
                       placeholder="Postal code in format 00-000"
@@ -278,7 +273,6 @@ export const ReportAbuseForm = () => {
               label="Upload Photo, max 5MB (optional)"
               type="file"
               name="image"
-              id="image"
               accept="image/*"
               errorMessage={
                 formErrors.find((error) => error.field === 'image')?.message
@@ -309,21 +303,18 @@ export const ReportAbuseForm = () => {
                   label="Your Name (optional)"
                   type="text"
                   name="contactName"
-                  id="contactName"
                   placeholder="Enter your name"
                 />
                 <CustomFormField
                   label="Email (optional)"
                   type="email"
                   name="contactEmail"
-                  id="contactEmail"
                   placeholder="Enter your email address"
                 />
                 <CustomFormField
                   label="Phone Number (optional)"
                   type="tel"
                   name="contactPhone"
-                  id="contactPhone"
                   placeholder="Enter your phone number (9 digits)"
                 />
               </>

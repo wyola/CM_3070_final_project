@@ -59,7 +59,6 @@ export const Login = () => {
             label="Email"
             type="email"
             name="email"
-            id="email"
             required
             errorMessage={error}
           />
@@ -68,7 +67,6 @@ export const Login = () => {
             label="Password"
             type="password"
             name="password"
-            id="password"
             required
             errorMessage={error}
           />

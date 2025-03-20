@@ -153,7 +153,6 @@ export const RegisterEditOrganizationForm = ({
                 label="KRS Number"
                 type="text"
                 name="krs"
-                id="krs"
                 required
                 placeholder={isEditing ? '' : 'Enter KRS number to validate it'}
                 errorMessage={
@@ -167,7 +166,6 @@ export const RegisterEditOrganizationForm = ({
                 label="Organization Name"
                 type="text"
                 name="name"
-                id="name"
                 required
                 disabled={!isEditing}
                 placeholder={
@@ -185,7 +183,6 @@ export const RegisterEditOrganizationForm = ({
                 label="City"
                 type="text"
                 name="city"
-                id="city"
                 required
                 disabled={!isEditing}
                 placeholder={isEditing ? 'City' : placeholderDisabled}
@@ -201,7 +198,6 @@ export const RegisterEditOrganizationForm = ({
                 label="Voivodeship"
                 type="text"
                 name="voivodeship"
-                id="voivodeship"
                 required
                 disabled={!isEditing}
                 placeholder={isEditing ? 'Voivodeship' : placeholderDisabled}
@@ -219,7 +215,6 @@ export const RegisterEditOrganizationForm = ({
                     label="Email"
                     type="email"
                     name="email"
-                    id="email"
                     required
                     disabled={!isKRSValid || isEditing}
                     placeholder={
@@ -237,7 +232,6 @@ export const RegisterEditOrganizationForm = ({
                     label="Password"
                     type="password"
                     name="password"
-                    id="password"
                     required
                     disabled={!isKRSValid}
                     placeholder={
@@ -257,7 +251,6 @@ export const RegisterEditOrganizationForm = ({
                 label="Phone Number"
                 type="tel"
                 name="phone"
-                id="phone"
                 required
                 disabled={!isKRSValid && !isEditing}
                 placeholder={
@@ -275,7 +268,6 @@ export const RegisterEditOrganizationForm = ({
                 label="Postal Code"
                 type="text"
                 name="postalCode"
-                id="postalCode"
                 pattern="[0-9]{2}-[0-9]{3}"
                 required
                 disabled={!isKRSValid && !isEditing}
@@ -296,7 +288,6 @@ export const RegisterEditOrganizationForm = ({
                 label="Address"
                 type="text"
                 name="address"
-                id="address"
                 required
                 disabled={!isKRSValid && !isEditing}
                 placeholder={
@@ -316,7 +307,6 @@ export const RegisterEditOrganizationForm = ({
                 label="Upload Logo"
                 type="file"
                 name="logo"
-                id="logo"
                 required
                 disabled={!isKRSValid && !isEditing}
                 errorMessage={
@@ -356,7 +346,6 @@ export const RegisterEditOrganizationForm = ({
 
               <CustomMultiSelect
                 name="animals"
-                id="animals"
                 placeholder={
                   isKRSValid ? 'Select at least one' : placeholderEnabled
                 }
@@ -376,7 +365,6 @@ export const RegisterEditOrganizationForm = ({
                 label="Website"
                 type="url"
                 name="website"
-                id="website"
                 disabled={!isKRSValid && !isEditing}
                 placeholder={
                   isKRSValid ? 'Address of your website' : placeholderEnabled
@@ -393,7 +381,6 @@ export const RegisterEditOrganizationForm = ({
                 label="Accept Reports"
                 type="checkbox"
                 name="acceptsReports"
-                id="acceptsReports"
                 className="register-form__checkbox"
                 disabled={!isKRSValid && !isEditing}
                 placeholder={placeholderEnabled}
