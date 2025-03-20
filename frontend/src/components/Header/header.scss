@@ -1,18 +1,11 @@
 .header {
-  padding: 2rem 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-color: hsl(var(--secondary));
 
-  &__logo {
+  &__content {
+    padding: 2rem 0;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 1rem;
-    font-size: 1.5rem;
-
-    &--image {
-      width: 2.5rem;
-    }
   }
 
   &__nav {

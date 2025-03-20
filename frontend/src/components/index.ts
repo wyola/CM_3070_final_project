@@ -26,3 +26,5 @@ export { ReportDetailsModal } from './ReportDetailsModal/ReportDetailsModal';
 export { LocationMap } from './LocationMap/LocationMap';
 export { RichTextEditorFormField } from './RichTextEditorFormField/RichTextEditorFormField';
 export { PageTitle } from './PageTitle/PageTitle';
+export { Logo } from './Logo/Logo';
+export { Footer } from './Footer/Footer';

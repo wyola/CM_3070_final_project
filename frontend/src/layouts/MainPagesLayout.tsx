@@ -1,18 +1,15 @@
-import { Header } from '@/components/Header/Header';
 import { Outlet } from 'react-router';
+import { Header, Footer } from '@/components';
+import './mainPagesLayout.scss';
 
 export function MainPagesLayout() {
   return (
     <>
       <Header />
-      <main>
+      <main className='main'>
         <Outlet />
       </main>
-      <footer
-        style={{ background: '#d7ccc8', height: '200px', marginTop: '48px' }}
-      >
-        footer
-      </footer>
+      <Footer />
     </>
   );
 }
