@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import {
   Select,
   SelectContent,
@@ -17,7 +17,6 @@ type CustomMultiSelectProps = {
   name: string;
   placeholder: string;
   options: { value: string; label: string }[];
-  id: string;
   label?: string;
   required?: boolean;
   errorMessage?: string;
@@ -28,7 +27,6 @@ export const CustomMultiSelect = ({
   name,
   placeholder,
   options,
-  id,
   label,
   required,
   errorMessage,
@@ -37,6 +35,8 @@ export const CustomMultiSelect = ({
   const [isOpen, setIsOpen] = useState(false);
   const { control, setValue, watch } = useFormContext();
   const selectedValues = watch(name) || [];
+
+  const fieldId = useId();
 
   const handleValueChange = (value: string) => {
     const newValues = selectedValues.includes(value)
@@ -57,7 +57,7 @@ export const CustomMultiSelect = ({
       render={({ field }) => (
         <FormItem className="multiselect form-item">
           {label && (
-            <FormLabel htmlFor={id}>
+            <FormLabel htmlFor={fieldId}>
               {label}
               {required && <span className="form-item__required"> *</span>}
             </FormLabel>
@@ -83,12 +83,12 @@ export const CustomMultiSelect = ({
                   className="multiselect__option"
                 >
                   <Checkbox
-                    id={`${id}-${value}`}
+                    id={`${fieldId}-${value}`}
                     checked={selectedValues.includes(value)}
                     onCheckedChange={() => handleValueChange(value)}
                   />
                   <label
-                    htmlFor={`${id}-${value}`}
+                    htmlFor={`${fieldId}-${value}`}
                     onClick={(e) => e.stopPropagation()}
                   >
                     {label}

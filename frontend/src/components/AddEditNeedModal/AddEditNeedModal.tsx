@@ -5,11 +5,10 @@ import {
   CustomFormField,
   CustomModal,
   CustomSelect,
-  Label,
-  RichTextEditor,
+  RichTextEditorFormField,
 } from '@/components';
 import { KindsOfNeeds, NeedI } from '@/types';
-import { mapKindToLabel } from '@/utils';
+import { getFormFieldError, mapKindToLabel } from '@/utils';
 import { axiosInstance } from '@/lib/axios';
 import { API_ENDPOINTS } from '@/constants';
 import './addEditNeedModal.scss';
@@ -139,41 +138,25 @@ export const AddEditNeedModal = ({
         <form onSubmit={handleSubmit(onSubmit)} className="add-need__form">
           <CustomSelect
             name="kind"
-            id="kind"
             placeholder="Select need..."
             options={needsOptions}
             required
             label="Need"
-            errorMessage={
-              error ||
-              formErrors.find((error) => error.field === 'kind')?.message
-            }
+            errorMessage={getFormFieldError('kind', formErrors, error)}
           />
 
-          <div className="add-need__form--field">
-            <Label className="add-need__form--label">
-              Description <span className="form-item__required"> *</span>
-            </Label>
-            <RichTextEditor
-              name="description"
-              placeholder="Enter detailed description of this need..."
-            />
-            {(error ||
-              formErrors.find((error) => error.field === 'description')
-                ?.message) && (
-              <p className="add-need__form--error">
-                {error ||
-                  formErrors.find((error) => error.field === 'description')
-                    ?.message}
-              </p>
-            )}
-          </div>
+          <RichTextEditorFormField
+            name="description"
+            label="Description"
+            required
+            placeholder="Enter detailed description of this need..."
+            formErrors={formErrors}
+          />
 
           <CustomFormField
             label="High priority"
             type="checkbox"
             name="priority"
-            id="priority"
             className="add-need__form--checkbox"
           />
         </form>

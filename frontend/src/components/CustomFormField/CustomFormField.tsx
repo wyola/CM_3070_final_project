@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes, useId } from 'react';
 import {
   FormControl,
   FormField,
@@ -12,7 +12,6 @@ import './customFormField.scss';
 
 type CustomFormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   name: string;
-  id: string;
   label?: string;
   className?: string;
   required?: boolean;
@@ -21,7 +20,6 @@ type CustomFormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 
 export const CustomFormField = ({
   name,
-  id,
   label,
   className,
   required,
@@ -30,6 +28,8 @@ export const CustomFormField = ({
 }: CustomFormFieldProps) => {
   const { control } = useFormContext();
 
+  const fieldId = useId();
+
   return (
     <FormField
       control={control}
@@ -37,14 +37,14 @@ export const CustomFormField = ({
       render={({ field: { onChange, value, ...fieldProps } }) => (
         <FormItem className={`${className} form-item`}>
           {label && (
-            <FormLabel htmlFor={id}>
+            <FormLabel htmlFor={fieldId}>
               {label}
               {required && <span className="form-item__required"> *</span>}
             </FormLabel>
           )}
           <FormControl>
             <Input
-              id={id}
+              id={fieldId}
               {...fieldProps}
               onChange={
                 inputProps.type === 'file'

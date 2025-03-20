@@ -5,13 +5,13 @@ import { ANIMAL_OPTIONS, API_ENDPOINTS, ORGANIZATION } from '@/constants';
 import axios from 'axios';
 import { axiosInstance, organizationRegistrationApi } from '@/lib/axios';
 import { OrganizationI, OrganizationRegistrationI } from '@/types';
+import { getFormFieldError } from '@/utils';
 import {
   SuccessMessage,
   CustomFormField,
   CustomMultiSelect,
   Button,
-  RichTextEditor,
-  Label,
+  RichTextEditorFormField,
 } from '@/components';
 import './registerEditOrganizationForm.scss';
 
@@ -153,13 +153,9 @@ export const RegisterEditOrganizationForm = ({
                 label="KRS Number"
                 type="text"
                 name="krs"
-                id="krs"
                 required
                 placeholder={isEditing ? '' : 'Enter KRS number to validate it'}
-                errorMessage={
-                  error ||
-                  formErrors.find((error) => error.field === 'krs')?.message
-                }
+                errorMessage={getFormFieldError('krs', formErrors, error)}
                 disabled={isEditing}
               />
 
@@ -167,17 +163,13 @@ export const RegisterEditOrganizationForm = ({
                 label="Organization Name"
                 type="text"
                 name="name"
-                id="name"
                 required
                 disabled={!isEditing}
                 placeholder={
                   isEditing ? 'Organization name' : placeholderDisabled
                 }
                 errorMessage={
-                  isKRSValid
-                    ? formErrors.find((error) => error.field === 'name')
-                        ?.message
-                    : ''
+                  isKRSValid ? getFormFieldError('name', formErrors) : ''
                 }
               />
 
@@ -185,15 +177,11 @@ export const RegisterEditOrganizationForm = ({
                 label="City"
                 type="text"
                 name="city"
-                id="city"
                 required
                 disabled={!isEditing}
                 placeholder={isEditing ? 'City' : placeholderDisabled}
                 errorMessage={
-                  isKRSValid
-                    ? formErrors.find((error) => error.field === 'city')
-                        ?.message
-                    : ''
+                  isKRSValid ? getFormFieldError('city', formErrors) : ''
                 }
               />
 
@@ -201,15 +189,11 @@ export const RegisterEditOrganizationForm = ({
                 label="Voivodeship"
                 type="text"
                 name="voivodeship"
-                id="voivodeship"
                 required
                 disabled={!isEditing}
                 placeholder={isEditing ? 'Voivodeship' : placeholderDisabled}
                 errorMessage={
-                  isKRSValid
-                    ? formErrors.find((error) => error.field === 'voivodeship')
-                        ?.message
-                    : ''
+                  isKRSValid ? getFormFieldError('voivodeship', formErrors) : ''
                 }
               />
 
@@ -219,17 +203,13 @@ export const RegisterEditOrganizationForm = ({
                     label="Email"
                     type="email"
                     name="email"
-                    id="email"
                     required
                     disabled={!isKRSValid || isEditing}
                     placeholder={
                       isKRSValid ? 'Email address' : placeholderEnabled
                     }
                     errorMessage={
-                      isKRSValid
-                        ? formErrors.find((error) => error.field === 'email')
-                            ?.message
-                        : ''
+                      isKRSValid ? getFormFieldError('email', formErrors) : ''
                     }
                   />
 
@@ -237,7 +217,6 @@ export const RegisterEditOrganizationForm = ({
                     label="Password"
                     type="password"
                     name="password"
-                    id="password"
                     required
                     disabled={!isKRSValid}
                     placeholder={
@@ -245,8 +224,7 @@ export const RegisterEditOrganizationForm = ({
                     }
                     errorMessage={
                       isKRSValid
-                        ? formErrors.find((error) => error.field === 'password')
-                            ?.message
+                        ? getFormFieldError('password', formErrors)
                         : ''
                     }
                   />
@@ -257,17 +235,13 @@ export const RegisterEditOrganizationForm = ({
                 label="Phone Number"
                 type="tel"
                 name="phone"
-                id="phone"
                 required
                 disabled={!isKRSValid && !isEditing}
                 placeholder={
                   isKRSValid ? 'Phone number 9 digits' : placeholderEnabled
                 }
                 errorMessage={
-                  isKRSValid
-                    ? formErrors.find((error) => error.field === 'phone')
-                        ?.message
-                    : ''
+                  isKRSValid ? getFormFieldError('phone', formErrors) : ''
                 }
               />
 
@@ -275,7 +249,6 @@ export const RegisterEditOrganizationForm = ({
                 label="Postal Code"
                 type="text"
                 name="postalCode"
-                id="postalCode"
                 pattern="[0-9]{2}-[0-9]{3}"
                 required
                 disabled={!isKRSValid && !isEditing}
@@ -285,10 +258,7 @@ export const RegisterEditOrganizationForm = ({
                     : placeholderEnabled
                 }
                 errorMessage={
-                  isKRSValid
-                    ? formErrors.find((error) => error.field === 'postalCode')
-                        ?.message
-                    : ''
+                  isKRSValid ? getFormFieldError('postalCode', formErrors) : ''
                 }
               />
 
@@ -296,7 +266,6 @@ export const RegisterEditOrganizationForm = ({
                 label="Address"
                 type="text"
                 name="address"
-                id="address"
                 required
                 disabled={!isKRSValid && !isEditing}
                 placeholder={
@@ -305,10 +274,7 @@ export const RegisterEditOrganizationForm = ({
                     : placeholderEnabled
                 }
                 errorMessage={
-                  isKRSValid
-                    ? formErrors.find((error) => error.field === 'address')
-                        ?.message
-                    : ''
+                  isKRSValid ? getFormFieldError('address', formErrors) : ''
                 }
               />
 
@@ -316,47 +282,28 @@ export const RegisterEditOrganizationForm = ({
                 label="Upload Logo"
                 type="file"
                 name="logo"
-                id="logo"
                 required
                 disabled={!isKRSValid && !isEditing}
                 errorMessage={
-                  isKRSValid
-                    ? formErrors.find((error) => error.field === 'logo')
-                        ?.message
-                    : ''
+                  isKRSValid ? getFormFieldError('logo', formErrors) : ''
                 }
               />
 
-              <div className="register-form__field">
-                <Label className="register-form__label" htmlFor="description">
-                  Description
-                  <span className="form-item__required"> *</span>
-                </Label>
-                <RichTextEditor
-                  name="description"
-                  placeholder={
-                    isKRSValid
-                      ? 'Short description of your organization'
-                      : placeholderEnabled
-                  }
-                  disabled={!isKRSValid && !isEditing}
-                />
-                {isKRSValid &&
-                  formErrors.find((error) => error.field === 'description')
-                    ?.message && (
-                    <span className="register-form__error">
-                      {
-                        formErrors.find(
-                          (error) => error.field === 'description'
-                        )?.message
-                      }
-                    </span>
-                  )}
-              </div>
+              <RichTextEditorFormField
+                name="description"
+                label="Description"
+                required
+                placeholder={
+                  isKRSValid
+                    ? 'Short description of your organization'
+                    : placeholderEnabled
+                }
+                disabled={!isKRSValid && !isEditing}
+                formErrors={formErrors}
+              />
 
               <CustomMultiSelect
                 name="animals"
-                id="animals"
                 placeholder={
                   isKRSValid ? 'Select at least one' : placeholderEnabled
                 }
@@ -364,10 +311,7 @@ export const RegisterEditOrganizationForm = ({
                 label="Animals you take care of"
                 required
                 errorMessage={
-                  isKRSValid
-                    ? formErrors.find((error) => error.field === 'animals.0')
-                        ?.message
-                    : ''
+                  isKRSValid ? getFormFieldError('animals.0', formErrors) : ''
                 }
                 disabled={!isKRSValid && !isEditing}
               />
@@ -376,16 +320,12 @@ export const RegisterEditOrganizationForm = ({
                 label="Website"
                 type="url"
                 name="website"
-                id="website"
                 disabled={!isKRSValid && !isEditing}
                 placeholder={
                   isKRSValid ? 'Address of your website' : placeholderEnabled
                 }
                 errorMessage={
-                  isKRSValid
-                    ? formErrors.find((error) => error.field === 'website')
-                        ?.message
-                    : ''
+                  isKRSValid ? getFormFieldError('website', formErrors) : ''
                 }
               />
 
@@ -393,7 +333,6 @@ export const RegisterEditOrganizationForm = ({
                 label="Accept Reports"
                 type="checkbox"
                 name="acceptsReports"
-                id="acceptsReports"
                 className="register-form__checkbox"
                 disabled={!isKRSValid && !isEditing}
                 placeholder={placeholderEnabled}

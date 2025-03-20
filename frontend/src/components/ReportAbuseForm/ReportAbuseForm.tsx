@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
+import axios from 'axios';
+import { useMapEvents } from 'react-leaflet';
+import * as L from 'leaflet';
 import {
   CustomFormField,
   Button,
@@ -12,15 +15,12 @@ import {
   FormMessage,
   ReportSummary,
   LocationMap,
-  RichTextEditor,
-  Label,
+  RichTextEditorFormField,
 } from '@/components';
 import { ReportFormDataI } from '@/types';
 import { createReportApi } from '@/lib/axios';
 import { ANIMAL_OPTIONS } from '@/constants';
-import axios from 'axios';
-import { useMapEvents } from 'react-leaflet';
-import * as L from 'leaflet';
+import { getFormFieldError } from '@/utils';
 import './reportAbuseForm.scss';
 
 export const ReportAbuseForm = () => {
@@ -158,44 +158,27 @@ export const ReportAbuseForm = () => {
               label="Title"
               type="text"
               name="title"
-              id="title"
               required
               placeholder="Enter a brief title for your report"
-              errorMessage={
-                formErrors.find((error) => error.field === 'title')?.message
-              }
+              errorMessage={getFormFieldError('title', formErrors)}
             />
 
             <CustomMultiSelect
               name="animals"
-              id="animals"
               placeholder="Select animals involved"
               options={ANIMAL_OPTIONS}
               label="Animals involved"
               required
-              errorMessage={
-                formErrors.find((error) => error.field === 'animals')?.message
-              }
+              errorMessage={getFormFieldError('animals', formErrors)}
             />
 
-            <div className="description-field">
-              <Label htmlFor="description" className="description-field__label">
-                Description <span className="form-item__required">*</span>
-              </Label>
-              <RichTextEditor
-                name="description"
-                placeholder="Please describe the situation in detail..."
-              />
-              {formErrors.find((error) => error.field === 'description')
-                ?.message && (
-                <FormMessage className="report__form--error-message">
-                  {
-                    formErrors.find((error) => error.field === 'description')
-                      ?.message
-                  }
-                </FormMessage>
-              )}
-            </div>
+            <RichTextEditorFormField
+              name="description"
+              label="Description"
+              required
+              placeholder="Please describe the situation in detail..."
+              formErrors={formErrors}
+            />
 
             <div className="report__form--location">
               <p className="report__form--helper-text">
@@ -238,7 +221,6 @@ export const ReportAbuseForm = () => {
                     label="Address"
                     type="text"
                     name="address"
-                    id="address"
                     required
                     placeholder="Street, building number, apartment number"
                   />
@@ -247,7 +229,6 @@ export const ReportAbuseForm = () => {
                       label="City"
                       type="text"
                       name="city"
-                      id="city"
                       required
                       placeholder="City name"
                     />
@@ -255,7 +236,6 @@ export const ReportAbuseForm = () => {
                       label="Postal Code"
                       type="text"
                       name="postalCode"
-                      id="postalCode"
                       required
                       pattern="[0-9]{2}-[0-9]{3}"
                       placeholder="Postal code in format 00-000"
@@ -266,10 +246,7 @@ export const ReportAbuseForm = () => {
               {formErrors.find((error) => error.field === 'address')
                 ?.message && (
                 <FormMessage className="report__form--error-message">
-                  {
-                    formErrors.find((error) => error.field === 'address')
-                      ?.message
-                  }
+                  {getFormFieldError('address', formErrors)}
                 </FormMessage>
               )}
             </div>
@@ -278,11 +255,7 @@ export const ReportAbuseForm = () => {
               label="Upload Photo, max 5MB (optional)"
               type="file"
               name="image"
-              id="image"
               accept="image/*"
-              errorMessage={
-                formErrors.find((error) => error.field === 'image')?.message
-              }
             />
 
             <div className="report__form--contact">
@@ -309,21 +282,18 @@ export const ReportAbuseForm = () => {
                   label="Your Name (optional)"
                   type="text"
                   name="contactName"
-                  id="contactName"
                   placeholder="Enter your name"
                 />
                 <CustomFormField
                   label="Email (optional)"
                   type="email"
                   name="contactEmail"
-                  id="contactEmail"
                   placeholder="Enter your email address"
                 />
                 <CustomFormField
                   label="Phone Number (optional)"
                   type="tel"
                   name="contactPhone"
-                  id="contactPhone"
                   placeholder="Enter your phone number (9 digits)"
                 />
               </>

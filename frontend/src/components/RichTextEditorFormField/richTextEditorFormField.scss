@@ -1,0 +1,26 @@
+.rich-text-editor-form-field {
+  &__label {
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
+  &__required {
+    color: red;
+  }
+
+  &__editor {
+    .rsw-ce[contentEditable='false']:empty:not(:focus):before {
+      color: hsl(var(--muted-foreground) / 46%);
+      content: attr(placeholder);
+      pointer-events: none;
+
+      span {
+        font-family: inherit !important; // needed to override inline library style
+      }
+    }
+
+    .rsw-ce[contentEditable='false'] {
+      cursor: not-allowed;
+    }
+  }
+}

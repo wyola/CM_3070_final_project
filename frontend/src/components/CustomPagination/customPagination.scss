@@ -1,6 +1,10 @@
 .pagination {
   margin-top: 1.5rem;
 
+  ul {
+    list-style: none;
+  }
+
   &__button {
     cursor: pointer;
   }
