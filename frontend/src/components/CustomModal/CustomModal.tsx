@@ -17,7 +17,7 @@ type CustomModalProps = {
   buttonLabel: string;
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: () => void | Promise<void>;
   className?: string;
   buttonDisabled?: boolean;
 };
@@ -53,10 +53,7 @@ export const CustomModal = ({
             <Button
               type="button"
               variant="secondary"
-              onClick={() => {
-                onConfirm();
-                onClose();
-              }}
+              onClick={onConfirm}
               disabled={buttonDisabled}
             >
               {buttonLabel}

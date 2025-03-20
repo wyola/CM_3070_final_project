@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import axios from 'axios';
 import {
@@ -62,6 +62,24 @@ export const AddEditNeedModal = ({
 
   const isFormValid = Boolean(kind) && Boolean(description?.trim());
   const isButtonDisabled = !isFormValid || (isEditing && !isDirty);
+
+  useEffect(() => {
+    if (defaultValues) {
+      reset(defaultValues);
+    }
+  }, [defaultValues, reset]);
+
+  useEffect(() => {
+    if (isOpen) {
+      if (!isEditing) {
+        reset({
+          kind: '' as KindsOfNeeds,
+          description: '',
+          priority: false,
+        });
+      }
+    }
+  }, [isOpen, isEditing, reset]);
 
   const onSubmit = async (data: NeedI) => {
     setError(null);
