@@ -110,6 +110,8 @@ export const organizationQuerySchema = z.object({
         Object.values(KindsOfNeeds).includes(need as KindsOfNeeds)
       );
     }),
+  lat: z.coerce.number().optional(),
+  long: z.coerce.number().optional(),
 });
 
 export type OrganizationQueryDto = z.infer<typeof organizationQuerySchema>;

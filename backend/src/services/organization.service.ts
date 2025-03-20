@@ -109,9 +109,17 @@ export class OrganizationService {
   async getOrganizations(
     query: OrganizationQueryDto
   ): Promise<PaginatedOrganizationsResult> {
-    const { page, limit, search, voivodeship, acceptsReports, animals, needs } =
-      query;
-    const skip = (page - 1) * limit;
+    const {
+      page,
+      limit,
+      search,
+      voivodeship,
+      acceptsReports,
+      animals,
+      needs,
+      lat,
+      long,
+    } = query;
 
     let where: Prisma.OrganizationWhereInput = {};
 
@@ -148,6 +156,94 @@ export class OrganizationService {
         },
       };
     }
+
+    // If geolocation coordinates are provided for distance sorting
+    if (lat !== undefined && long !== undefined) {
+      return this.getOrganizationsByDistance(where, { page, limit, lat, long });
+    } else {
+      return this.getOrganizationsByName(where, { page, limit });
+    }
+  }
+
+  private async getOrganizationsByDistance(
+    where: Prisma.OrganizationWhereInput,
+    options: { page: number; limit: number; lat: number; long: number }
+  ): Promise<PaginatedOrganizationsResult> {
+    const { page, limit, lat, long } = options;
+    const skip = (page - 1) * limit;
+
+    const [total, allMatchingOrganizations] = await Promise.all([
+      prisma.organization.count({ where }),
+      prisma.organization.findMany({
+        where,
+        select: { id: true, geolocation: true },
+      }),
+    ]);
+
+    // sort by distance from lat and long
+    const sortedIds = allMatchingOrganizations
+      .map((org) => {
+        const geoData = org.geolocation ? JSON.parse(org.geolocation) : null;
+        // if no geolocation, put it at the end
+        let distance = Number.MAX_VALUE;
+
+        if (geoData) {
+          distance = this.geolocationService.calculateDistance(
+            lat,
+            long,
+            geoData.lat,
+            geoData.lon
+          );
+        }
+
+        return {
+          id: org.id,
+          distance,
+        };
+      })
+      .sort((a, b) => a.distance - b.distance)
+      .map((org) => org.id);
+
+    const idsForCurrentPage = sortedIds.slice(skip, skip + limit);
+
+    // get full org data for current page
+    const pagedOrganizations = await prisma.organization.findMany({
+      where: {
+        id: {
+          in: idsForCurrentPage,
+        },
+      },
+      select: organizationSelect,
+      orderBy: {
+        id: 'asc',
+      },
+    });
+
+    // Ensure proper sort order based on previous sorting
+    const sortedOrganizations = idsForCurrentPage
+      .map((id) => pagedOrganizations.find((org) => org.id === id))
+      .filter(Boolean)
+      .map((org) => this.transformOrganization(org!));
+
+    const pages = Math.ceil(total / limit);
+
+    return {
+      organizations: sortedOrganizations,
+      pagination: {
+        total,
+        page,
+        limit,
+        pages,
+      },
+    };
+  }
+
+  private async getOrganizationsByName(
+    where: Prisma.OrganizationWhereInput,
+    options: { page: number; limit: number }
+  ): Promise<PaginatedOrganizationsResult> {
+    const { page, limit } = options;
+    const skip = (page - 1) * limit;
 
     const [total, organizations] = await Promise.all([
       prisma.organization.count({ where }),
@@ -224,18 +320,20 @@ export class OrganizationService {
       }
 
       let geolocation = organization.geolocation;
-      const addressChanged = 
-        (data.address && data.address !== organization.address) || 
-        (data.city && data.city !== organization.city) || 
+      const addressChanged =
+        (data.address && data.address !== organization.address) ||
+        (data.city && data.city !== organization.city) ||
         (data.postalCode && data.postalCode !== organization.postalCode);
-        
+
       if (addressChanged) {
-        const geoData = await this.geolocationService.getCoordinatesFromAddress({
-          address: data.address || organization.address,
-          city: data.city || organization.city,
-          postalCode: data.postalCode || organization.postalCode,
-        });
-        
+        const geoData = await this.geolocationService.getCoordinatesFromAddress(
+          {
+            address: data.address || organization.address,
+            city: data.city || organization.city,
+            postalCode: data.postalCode || organization.postalCode,
+          }
+        );
+
         geolocation = geoData ? JSON.stringify(geoData) : null;
       }
 
@@ -244,7 +342,7 @@ export class OrganizationService {
         geolocation,
         animals: JSON.stringify(data.animals),
       };
-      
+
       if (logoPath) {
         updateData.logo = logoPath;
       }
@@ -273,7 +371,7 @@ export class OrganizationService {
   private transformOrganization(org: any) {
     const { user, ...orgData } = org;
     const ownerId = user ? user.id : null;
-    
+
     return {
       ...orgData,
       ownerId,
