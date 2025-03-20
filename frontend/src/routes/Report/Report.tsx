@@ -1,9 +1,10 @@
-import { ReportAbuseForm } from "@/components/ReportAbuseForm/ReportAbuseForm";
+import { PageTitle } from '@/components';
+import { ReportAbuseForm } from '@/components/ReportAbuseForm/ReportAbuseForm';
 
 export const Report = () => {
   return (
     <section className="content report">
-      <h1 className="heading-primary">Report</h1>
+      <PageTitle title="Report mistreated animals" />
       <ReportAbuseForm />
     </section>
   );

@@ -25,3 +25,4 @@ export { ReportsTable } from './ReportsTable/ReportsTable';
 export { ReportDetailsModal } from './ReportDetailsModal/ReportDetailsModal';
 export { LocationMap } from './LocationMap/LocationMap';
 export { RichTextEditorFormField } from './RichTextEditorFormField/RichTextEditorFormField';
+export { PageTitle } from './PageTitle/PageTitle';

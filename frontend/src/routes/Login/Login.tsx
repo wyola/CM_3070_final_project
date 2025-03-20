@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Button, CustomFormField } from '@/components';
+import { Button, CustomFormField, PageTitle } from '@/components';
 import { LoginFormDataI, LoginResponseI } from '@/types';
 import { API_ENDPOINTS, ORGANIZATION, REGISTER } from '@/constants';
 import { axiosInstance } from '@/lib/axios';
@@ -52,7 +52,7 @@ export const Login = () => {
 
   return (
     <section className="content login">
-      <p className="login__header">Hello Animal Ally! Please login below</p>
+      <PageTitle title="Hello Animal Ally!" />
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="login__form">
           <CustomFormField
