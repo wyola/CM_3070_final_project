@@ -3,17 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  &__logo {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-size: 1.5rem;
-
-    &--image {
-      width: 2.5rem;
-    }
-  }
+  background-color: #D7CCC8;
 
   &__nav {
     ul,
