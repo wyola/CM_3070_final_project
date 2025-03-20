@@ -36,6 +36,11 @@
     flex-direction: column;
     gap: 0.2rem;
 
+    ul {
+      list-style: disc;
+      padding-left: 1rem;
+    }
+
     a {
       text-transform: capitalize;
       display: flex;

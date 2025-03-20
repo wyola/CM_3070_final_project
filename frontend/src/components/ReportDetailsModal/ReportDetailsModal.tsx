@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import DOMPurify from 'dompurify';
 import {
   Badge,
   Button,
@@ -86,14 +85,7 @@ export const ReportDetailsModal = ({
 
         <div>
           <h3 className="report-details__subheader">Description</h3>
-          <p
-            className="report-details__description"
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(report.description, {
-                USE_PROFILES: { html: true },
-              }),
-            }}
-          />
+          <p>{report.description}</p>
         </div>
 
         {report.address && (
