@@ -9,7 +9,7 @@ import {
   RichTextEditor,
 } from '@/components';
 import { KindsOfNeeds, NeedI } from '@/types';
-import { mapKindToLabel } from '@/utils';
+import { getFormFieldError, mapKindToLabel } from '@/utils';
 import { axiosInstance } from '@/lib/axios';
 import { API_ENDPOINTS } from '@/constants';
 import './addEditNeedModal.scss';
@@ -143,10 +143,7 @@ export const AddEditNeedModal = ({
             options={needsOptions}
             required
             label="Need"
-            errorMessage={
-              error ||
-              formErrors.find((error) => error.field === 'kind')?.message
-            }
+            errorMessage={getFormFieldError('kind', formErrors, error)}
           />
 
           <div className="add-need__form--field">
@@ -161,9 +158,7 @@ export const AddEditNeedModal = ({
               formErrors.find((error) => error.field === 'description')
                 ?.message) && (
               <p className="add-need__form--error">
-                {error ||
-                  formErrors.find((error) => error.field === 'description')
-                    ?.message}
+                {getFormFieldError('description', formErrors, error)}
               </p>
             )}
           </div>
