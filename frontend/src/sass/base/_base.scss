@@ -26,6 +26,7 @@ html {
 body {
   line-height: $line-height-regular;
   color: $color-text-dark;
+  font-family: var(--font-sans);
 
   .content {
     max-width: 90rem;

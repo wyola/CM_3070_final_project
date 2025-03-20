@@ -143,7 +143,7 @@ export const RegisterEditOrganizationForm = ({
       {isSuccess && !isEditing ? (
         <SuccessMessage
           message="Registration was successful!"
-          imageSrc="./success_dog.png"
+          imageSrc="./images/success_dog.png"
         />
       ) : (
         <>

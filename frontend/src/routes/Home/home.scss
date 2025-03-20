@@ -1,0 +1,36 @@
+.home {
+  &__hero-wrapper {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    background-color: hsl(var(--secondary));
+    border-top: 1px solid hsl(var(--border));
+    margin-bottom: 3rem;
+    overflow: hidden;
+  }
+
+  &__hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    min-height: 450px;
+
+    &--header {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    &--slogan {
+      font-size: 1.4rem;
+      color: hsl(var(--text));
+      margin-bottom: 0.6rem;
+
+    }
+
+    &--image {
+        position: absolute;
+        right: 0;
+        bottom: -5%;
+    }
+  }
+}
