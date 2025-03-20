@@ -1,4 +1,97 @@
 .footer {
-  background: #d7ccc8;
-  height: 200px;
+  background-color: hsl(var(--secondary));
+  padding: 4rem 0 0;
+
+  &__content {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5rem;
+  }
+
+  .logo {
+    margin-bottom: 1rem;
+  }
+
+  &__tagline {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.9rem;
+    max-width: 90%;
+  }
+
+  &__heading {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  &__link {
+    color: hsl(var(--muted-foreground));
+    text-decoration: none;
+    transition: color 0.2s;
+    // TODO: global link styles
+    &:hover {
+      color: hsl(var(--primary));
+    }
+  }
+
+  &__contact {
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    &-item {
+      display: flex;
+      align-items: center;
+      color: hsl(var(--muted-foreground));
+      line-height: 1.5;
+      gap: 0.75rem;
+    }
+  }
+
+  &__icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  &__social {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  &__bottom {
+    border-top: 1px solid hsl(var(--border));
+    padding: 1rem 0;
+    margin-top: 1rem;
+  }
+
+  &__copyright {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  // TODO: decide on breakpoints and do mobile styles
+  @media (max-width: 1024px) {
+    &__content {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    &__content {
+      grid-template-columns: 1fr;
+    }
+  }
 }

@@ -1,9 +1,12 @@
 .header {
-  padding: 2rem 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #D7CCC8;
+  background-color: hsl(var(--secondary));
+
+  &__content {
+    padding: 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
   &__nav {
     ul,
