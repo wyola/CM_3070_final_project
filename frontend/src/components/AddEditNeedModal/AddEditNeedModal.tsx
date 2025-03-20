@@ -5,8 +5,7 @@ import {
   CustomFormField,
   CustomModal,
   CustomSelect,
-  Label,
-  RichTextEditor,
+  RichTextEditorFormField,
 } from '@/components';
 import { KindsOfNeeds, NeedI } from '@/types';
 import { getFormFieldError, mapKindToLabel } from '@/utils';
@@ -146,22 +145,13 @@ export const AddEditNeedModal = ({
             errorMessage={getFormFieldError('kind', formErrors, error)}
           />
 
-          <div className="add-need__form--field">
-            <Label className="add-need__form--label">
-              Description <span className="form-item__required"> *</span>
-            </Label>
-            <RichTextEditor
-              name="description"
-              placeholder="Enter detailed description of this need..."
-            />
-            {(error ||
-              formErrors.find((error) => error.field === 'description')
-                ?.message) && (
-              <p className="add-need__form--error">
-                {getFormFieldError('description', formErrors, error)}
-              </p>
-            )}
-          </div>
+          <RichTextEditorFormField
+            name="description"
+            label="Description"
+            required
+            placeholder="Enter detailed description of this need..."
+            formErrors={formErrors}
+          />
 
           <CustomFormField
             label="High priority"

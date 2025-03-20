@@ -15,8 +15,7 @@ import {
   FormMessage,
   ReportSummary,
   LocationMap,
-  RichTextEditor,
-  Label,
+  RichTextEditorFormField,
 } from '@/components';
 import { ReportFormDataI } from '@/types';
 import { createReportApi } from '@/lib/axios';
@@ -173,21 +172,13 @@ export const ReportAbuseForm = () => {
               errorMessage={getFormFieldError('animals', formErrors)}
             />
 
-            <div className="description-field">
-              <Label htmlFor="description" className="description-field__label">
-                Description<span className="form-item__required"> *</span>
-              </Label>
-              <RichTextEditor
-                name="description"
-                placeholder="Please describe the situation in detail..."
-              />
-              {formErrors.find((error) => error.field === 'description')
-                ?.message && (
-                <FormMessage className="report__form--error-message">
-                  {getFormFieldError('description', formErrors)}
-                </FormMessage>
-              )}
-            </div>
+            <RichTextEditorFormField
+              name="description"
+              label="Description"
+              required
+              placeholder="Please describe the situation in detail..."
+              formErrors={formErrors}
+            />
 
             <div className="report__form--location">
               <p className="report__form--helper-text">

@@ -11,8 +11,7 @@ import {
   CustomFormField,
   CustomMultiSelect,
   Button,
-  RichTextEditor,
-  Label,
+  RichTextEditorFormField,
 } from '@/components';
 import './registerEditOrganizationForm.scss';
 
@@ -290,28 +289,18 @@ export const RegisterEditOrganizationForm = ({
                 }
               />
 
-              <div className="register-form__field">
-                <Label className="register-form__label" htmlFor="description">
-                  Description
-                  <span className="form-item__required"> *</span>
-                </Label>
-                <RichTextEditor
-                  name="description"
-                  placeholder={
-                    isKRSValid
-                      ? 'Short description of your organization'
-                      : placeholderEnabled
-                  }
-                  disabled={!isKRSValid && !isEditing}
-                />
-                {isKRSValid &&
-                  formErrors.find((error) => error.field === 'description')
-                    ?.message && (
-                    <span className="register-form__error">
-                      {getFormFieldError('description', formErrors)}
-                    </span>
-                  )}
-              </div>
+              <RichTextEditorFormField
+                name="description"
+                label="Description"
+                required
+                placeholder={
+                  isKRSValid
+                    ? 'Short description of your organization'
+                    : placeholderEnabled
+                }
+                disabled={!isKRSValid && !isEditing}
+                formErrors={formErrors}
+              />
 
               <CustomMultiSelect
                 name="animals"
