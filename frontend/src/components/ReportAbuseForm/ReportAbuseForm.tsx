@@ -200,7 +200,7 @@ export const ReportAbuseForm = () => {
             <div className="report__form--location">
               <p className="report__form--helper-text">
                 Provide abuse location by showing it on map or by filling out
-                address form <span className="form-item__required">*</span>
+                address form<span className="form-item__required"> *</span>
               </p>
 
               <Tabs
@@ -333,7 +333,6 @@ export const ReportAbuseForm = () => {
               type="submit"
               className="submit-button"
               disabled={isSubmitting}
-              onClick={() => console.log('xxx ass')}
             >
               {isLoading ? 'Submitting...' : 'Submit'}
             </Button>
