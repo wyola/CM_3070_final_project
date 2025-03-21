@@ -1,4 +1,7 @@
 @use './shadcn_theme.css';
 
+@use 'abstract/variables';
+@use 'abstract/mixins';
+
 @use 'base/base';
 @use 'base/typography';
