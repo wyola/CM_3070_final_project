@@ -88,7 +88,9 @@ export class OrganizationController {
         voivodeship: req.query.voivodeship,
         acceptsReports: req.query.acceptsReports,
         animals: req.query.animals,
-        needs: req.query.needs
+        needs: req.query.needs,
+        lat: req.query.lat,
+        long: req.query.long,
       });
 
       const result = await organizationService.getOrganizations(query);
@@ -173,7 +175,7 @@ export class OrganizationController {
   ): Promise<void> => {
     try {
       const id = parseInt(req.params.organizationId);
-      
+
       if (isNaN(id)) {
         res.status(400).json({
           message: 'Invalid ID format',
@@ -181,16 +183,18 @@ export class OrganizationController {
         return;
       }
 
-      const updateOrganizationSchema = organizationSchema.omit({ 
-        krs: true, 
-        password: true 
-      }).partial();
-      
+      const updateOrganizationSchema = organizationSchema
+        .omit({
+          krs: true,
+          password: true,
+        })
+        .partial();
+
       const validatedData = updateOrganizationSchema.parse(req.body);
       const logoPath = req.file?.path;
-      
+
       let oldLogoPath: string | null = null;
-      
+
       if (logoPath) {
         const organization = await organizationService.getOrganizationById(id);
         if (organization && organization.logo) {
@@ -227,19 +231,19 @@ export class OrganizationController {
           field: err.path.join('.'),
           message: err.message,
         }));
-        
+
         res.status(400).json({
           message: 'Validation failed',
           errors,
         });
         return;
       }
-      
+
       if (error instanceof Error) {
         res.status(400).json({ message: error.message });
         return;
       }
-      
+
       res.status(500).json({ message: 'Internal server error' });
     }
   };

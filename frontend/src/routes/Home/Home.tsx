@@ -2,7 +2,6 @@ import { OrganizationsListProvider } from '@/contexts';
 import {
   OrganizationsTable,
   OrganizationsSearchFilterForm,
-  PageTitle,
 } from '@/components';
 import './home.scss';
 

@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useCallback,
+} from 'react';
 import { OrganizationI, OrganizationSearchFilterFormDataI } from '@/types';
 import { axiosInstance } from '@/lib/axios';
 import { API_ENDPOINTS } from '@/constants';
@@ -41,57 +47,63 @@ export const OrganizationsListProvider = ({
     : 1;
   const [currentPage, setCurrentPage] = useState(pageFromSearchParams);
 
-  const fetchOrganizations = async (
-    filters?: OrganizationSearchFilterFormDataI
-  ) => {
-    setIsLoading(true);
-    setError(null);
+  const fetchOrganizations = useCallback(
+    async (filters?: OrganizationSearchFilterFormDataI) => {
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      const params = new URLSearchParams();
+      try {
+        const params = new URLSearchParams();
 
-      if (filters?.search) {
-        params.append('search', filters.search);
+        if (filters?.search) {
+          params.append('search', filters.search);
+        }
+
+        if (filters?.voivodeship && filters.voivodeship !== 'all') {
+          params.append('voivodeship', filters.voivodeship);
+        }
+
+        if (filters?.acceptsReports) {
+          params.append('acceptsReports', String(filters.acceptsReports));
+        }
+
+        if (filters?.animals && filters.animals.length > 0) {
+          params.append('animals', filters.animals.join(','));
+        }
+
+        if (filters?.needs) {
+          params.append('needs', filters.needs);
+        }
+
+        if (filters?.lat && filters?.long) {
+          params.append('lat', filters.lat.toString());
+          params.append('long', filters.long.toString());
+        }
+
+        params.append('page', currentPage.toString());
+
+        const { data: response } = await axiosInstance.get(
+          `${API_ENDPOINTS.ORGANIZATIONS.ALL}?${params.toString()}`
+        );
+
+        setOrganizations(response.data.organizations);
+        setPagination(response.data.pagination);
+      } catch (error) {
+        console.error('Error fetching organizations:', error);
+        setError('Failed to load organizations');
+      } finally {
+        setIsLoading(false);
       }
+    },
+    [currentPage]
+  );
 
-      if (filters?.voivodeship && filters.voivodeship !== 'all') {
-        params.append('voivodeship', filters.voivodeship);
-      }
-
-      if (filters?.acceptsReports) {
-        params.append('acceptsReports', String(filters.acceptsReports));
-      }
-
-      if (filters?.animals && filters.animals.length > 0) {
-        params.append('animals', filters.animals.join(','));
-      }
-
-      if (filters?.needs) {
-        params.append('needs', filters.needs);
-      }
-
-      params.append('page', currentPage.toString());
-
-      const { data: response } = await axiosInstance.get(
-        `${API_ENDPOINTS.ORGANIZATIONS.ALL}?${params.toString()}`
-      );
-
-      setOrganizations(response.data.organizations);
-      setPagination(response.data.pagination);
-    } catch (error) {
-      console.error('Error fetching organizations:', error);
-      setError('Failed to load organizations');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const updateCurrentPage = (page: number) => {
+  const updateCurrentPage = useCallback((page: number) => {
     setCurrentPage(page);
     const params = new URLSearchParams(searchParams);
     params.set('page', page.toString());
     setSearchParams(params);
-  };
+  }, []);
 
   const value = {
     organizations,

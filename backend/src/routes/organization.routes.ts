@@ -294,6 +294,18 @@ const upload = multer({ storage });
  *           enum: [accessories, bedding, cleaning, food, grooming, medication, other, toys, vet]
  *         description: Filter organizations by need type
  *         example: "food"
+ *       - in: query
+ *         name: lat
+ *         schema:
+ *           type: number
+ *         description: Latitude coordinate to sort organizations by distance
+ *         example: 52.2297
+ *       - in: query
+ *         name: long
+ *         schema:
+ *           type: number
+ *         description: Longitude coordinate to sort organizations by distance
+ *         example: 21.0122
  *     responses:
  *       200:
  *         description: Organizations retrieved successfully
@@ -531,10 +543,10 @@ router.get('/', organizationController.getOrganizations);
 router.get('/:id', organizationController.getOrganizationById);
 router.get('/krs/:krs', organizationController.getOrganizationByKrs);
 router.put(
-  '/:organizationId', 
+  '/:organizationId',
   authenticateJWT,
   isOrganizationOwner,
-  upload.single('logo'), 
+  upload.single('logo'),
   organizationController.updateOrganization
 );
 
