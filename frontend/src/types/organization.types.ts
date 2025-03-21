@@ -51,4 +51,7 @@ export interface OrganizationSearchFilterFormDataI {
   acceptsReports?: boolean;
   animals?: string[];
   needs?: string;
+  useLocation: boolean;
+  lat?: number;
+  long?: number;
 }
