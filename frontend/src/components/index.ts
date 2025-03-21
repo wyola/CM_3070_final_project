@@ -1,4 +1,5 @@
 export * from './ui/index';
+export * from './icons/index';
 
 export { AddEditNeedModal } from './AddEditNeedModal/AddEditNeedModal';
 export { CustomAlertDialog } from './CustomAlertDialog/CustomAlertDialog';
@@ -28,3 +29,4 @@ export { RichTextEditorFormField } from './RichTextEditorFormField/RichTextEdito
 export { PageTitle } from './PageTitle/PageTitle';
 export { Logo } from './Logo/Logo';
 export { Footer } from './Footer/Footer';
+export { ReportAbuseForm } from './ReportAbuseForm/ReportAbuseForm';

@@ -26,13 +26,14 @@ html {
 body {
   line-height: $line-height-regular;
   color: $color-text-dark;
+  font-family: var(--font-sans);
 
   .content {
     max-width: 90rem;
     width: 100%;
     margin: 0 auto;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 
   // overwrite Tailwind base styles

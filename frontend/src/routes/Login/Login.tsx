@@ -61,6 +61,7 @@ export const Login = () => {
             name="email"
             required
             errorMessage={error}
+            placeholder="Enter your email"
           />
 
           <CustomFormField
@@ -69,6 +70,7 @@ export const Login = () => {
             name="password"
             required
             errorMessage={error}
+            placeholder="Enter your password"
           />
 
           <Button type="submit" className="submit-button">

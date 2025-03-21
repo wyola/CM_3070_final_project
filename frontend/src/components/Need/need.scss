@@ -1,3 +1,5 @@
+@use '../../sass/abstract/mixins' as *;
+
 .need {
   display: flex;
   flex-direction: column;
@@ -31,15 +33,21 @@
     gap: 0.5rem;
     margin-top: auto;
 
-    img {
+    .edit-icon,
+    .bin-icon {
+      @include action-button-styles;
       width: 1.5rem;
       height: 1.5rem;
     }
 
-    &--button:is(button) {
+    &--button {
       padding: 0;
-      border-radius: 50%;
       height: unset;
+      border-radius: 50%;
+      
+      &:hover {
+        background-color: hsl(var(--primary));
+      }
     }
   }
 }
