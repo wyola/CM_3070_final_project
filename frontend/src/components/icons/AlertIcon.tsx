@@ -4,7 +4,6 @@ export const AlertIcon = ({
   width = 20,
   height = 20,
   className,
-  ...props
 }: SVGProps<SVGSVGElement> & { width?: number; height?: number }) => {
   return (
     <svg
@@ -13,7 +12,6 @@ export const AlertIcon = ({
       width={width}
       height={height}
       className={className}
-      {...props}
     >
       <path
         fill="currentColor"

@@ -1,5 +1,4 @@
-import { PageTitle } from '@/components';
-import { ReportAbuseForm } from '@/components/ReportAbuseForm/ReportAbuseForm';
+import { PageTitle, ReportAbuseForm } from '@/components';
 
 export const Report = () => {
   return (
