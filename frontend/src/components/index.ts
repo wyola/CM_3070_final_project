@@ -1,4 +1,5 @@
 export * from './ui/index';
+export * from './icons/index';
 
 export { AddEditNeedModal } from './AddEditNeedModal/AddEditNeedModal';
 export { CustomAlertDialog } from './CustomAlertDialog/CustomAlertDialog';

@@ -41,10 +41,12 @@ export const UserMenu = ({ organizationId }: UserMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="user-menu__trigger">
-        <img src="/avatar.svg" alt="user avatar" width="32" height="32" />
-        <Badge variant="destructive" className="user-menu__trigger--badge">
-          {reportCount < 10 ? reportCount : '9+'}
-        </Badge>
+        <img src="/avatar.png" width="56" height="56" />
+        {reportCount > 0 && (
+          <Badge variant="destructive" className="user-menu__trigger--badge">
+            {reportCount < 10 ? reportCount : '9+'}
+          </Badge>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="user-menu__content">
         <DropdownMenuItem className="user-menu__item">

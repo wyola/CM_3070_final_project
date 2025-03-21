@@ -1,5 +1,7 @@
 .header {
   background-color: hsl(var(--secondary));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  z-index: 10;
 
   &__content {
     padding: 0.5rem 0;
@@ -9,12 +11,32 @@
   }
 
   &__nav {
+    font-size: 1.2rem;
+    color: hsl(var(--primary-foreground));
     ul,
     li {
       display: inline-flex;
       align-items: center;
       gap: 2rem;
       list-style: none;
+    }
+
+    &--report {
+      border: 1px solid hsl(var(--primary));
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      span {
+        position: relative;
+        top: 2px;
+      }
+
+      &:hover {
+        background-color: hsl(var(--primary));
+      }
     }
   }
 }

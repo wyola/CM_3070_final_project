@@ -1,7 +1,5 @@
 .home {
   &__hero-wrapper {
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
     background-color: hsl(var(--secondary));
     border-top: 1px solid hsl(var(--border));
     margin-bottom: 3rem;
@@ -18,12 +16,13 @@
     &--intro {
       background-color: hsl(var(--secondary) / 85%);
       z-index: 10;
-      padding: 1rem 2rem 1rem 0;
+      padding: 2rem 2rem 2rem 0;
     }
 
     &--header {
       font-size: 3rem;
       margin-bottom: 1rem;
+      color: hsl(var(--primary-foreground));
     }
 
     &--slogan {
