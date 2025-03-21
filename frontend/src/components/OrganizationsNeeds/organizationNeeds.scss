@@ -1,3 +1,5 @@
+@use '../../sass/abstract/mixins' as *;
+
 .needs {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -9,13 +11,19 @@
     gap: 1rem;
   }
 
-  &__add-button:is(button) {
+  &__add-button {
     padding: 0;
     border-radius: 50%;
     height: unset;
 
-    img {
-      width: 1.5rem;
+    .add-icon {
+      @include action-button-styles;
+      width: 2rem;
+      height: 2rem;
+    }
+
+    &:hover {
+      background-color: hsl(var(--primary));
     }
   }
 

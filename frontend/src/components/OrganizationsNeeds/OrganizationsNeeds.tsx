@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { AddEditNeedModal, Button, CustomCard, Need } from '@/components';
+import {
+  AddEditNeedModal,
+  AddIcon,
+  Button,
+  CustomCard,
+  Need,
+} from '@/components';
 import { API_ENDPOINTS } from '@/constants';
 import axios from 'axios';
 import { axiosInstance } from '@/lib/axios';
@@ -68,7 +74,7 @@ export const OrganizationsNeeds = ({
             onClick={() => setIsModalOpen(true)}
             aria-label="Add new need"
           >
-            <img src="/add.svg" alt="" />
+            <AddIcon width={32} height={32} className="add-icon" />
           </Button>
         )}
       </div>

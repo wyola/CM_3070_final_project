@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import DOMPurify from 'dompurify';
-import { CustomCard } from '@/components';
+import { CustomCard, EditIcon } from '@/components';
 import { OrganizationAnimals } from '@/types';
 import { useOwnership } from '@/hooks';
 import './organizationHeader.scss';
@@ -32,7 +32,7 @@ export const OrganizationHeader = ({
             to={`/organizations/${organizationId}/edit`}
             aria-label="Go to edit organization form"
           >
-            <img src="/edit.svg" alt="" />
+            <EditIcon width={32} height={32} className='edit-icon' />
           </Link>
         )}
       </div>

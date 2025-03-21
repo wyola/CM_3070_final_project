@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { KindsOfNeeds } from '@/types';
 import {
   AddEditNeedModal,
+  BinIcon,
   Button,
   CustomAlertDialog,
   CustomCard,
+  EditIcon,
   IconLabel,
 } from '@/components';
 import { mapKindToLabel } from '@/utils';
@@ -92,7 +94,7 @@ export const Need = ({
                 setIsModalOpen(true);
               }}
             >
-              <img src="/edit.svg" alt="" />
+              <EditIcon width={32} height={32} className="edit-icon" />
             </Button>
             <Button
               className="need__actions--button"
@@ -104,7 +106,7 @@ export const Need = ({
               disabled={isDeleting}
               aria-label="Delete need"
             >
-              <img src="/bin.svg" alt="" />
+              <BinIcon width={32} height={32} className="bin-icon" />
             </Button>
           </div>
         )}

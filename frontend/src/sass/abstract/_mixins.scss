@@ -1,0 +1,10 @@
+@mixin action-button-styles {
+  color: hsl(var(--primary-foreground));
+  background-color: hsl(var(--primary) / 30%);
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: hsl(var(--primary));
+  }
+}
