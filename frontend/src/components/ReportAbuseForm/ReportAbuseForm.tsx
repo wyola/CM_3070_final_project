@@ -284,12 +284,14 @@ export const ReportAbuseForm = () => {
                   name="contactName"
                   placeholder="Enter your name"
                 />
+
                 <CustomFormField
                   label="Email (optional)"
                   type="email"
                   name="contactEmail"
                   placeholder="Enter your email address"
                 />
+
                 <CustomFormField
                   label="Phone Number (optional)"
                   type="tel"
@@ -301,7 +303,7 @@ export const ReportAbuseForm = () => {
 
             <Button
               type="submit"
-              className="submit-button"
+              className="report__form--submit-button"
               disabled={isSubmitting}
             >
               {isLoading ? 'Submitting...' : 'Submit'}

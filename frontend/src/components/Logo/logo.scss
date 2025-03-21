@@ -1,6 +1,24 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+
+  &__name {
+    margin-top: 0.6rem;
+
+    p {
+      line-height: 1;
+    }
+
+    &--animal {
+      font-size: 2rem;
+      color: #47270a;
+    }
+
+    &--allies {
+      margin-left: -0.8rem;
+      margin-top: -0.2rem;
+      color: #776e67;
+    }
+  }
 }

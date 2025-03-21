@@ -1,0 +1,40 @@
+.home {
+  &__hero-wrapper {
+    background-color: hsl(var(--secondary));
+    border-top: 1px solid hsl(var(--border));
+    margin-bottom: 3rem;
+    overflow: hidden;
+  }
+
+  &__hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    min-height: 450px;
+
+    &--intro {
+      background-color: hsl(var(--secondary) / 85%);
+      z-index: 10;
+      padding: 2rem 2rem 2rem 0;
+    }
+
+    &--header {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: hsl(var(--primary-foreground));
+    }
+
+    &--slogan {
+      font-size: 1.4rem;
+      color: hsl(var(--text));
+      margin-bottom: 0.6rem;
+    }
+
+    &--image {
+      position: absolute;
+      right: 0;
+      bottom: -5%;
+    }
+  }
+}
