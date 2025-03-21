@@ -12,7 +12,7 @@ export const Home = () => {
       <section className="home">
         <div className="home__hero-wrapper">
           <div className="home__hero content">
-            <div>
+            <div className="home__hero--intro">
               <h1 className="home__hero--header">AnimalAllies</h1>
               <p className="home__hero--slogan">
                 Connecting people to help animals in need

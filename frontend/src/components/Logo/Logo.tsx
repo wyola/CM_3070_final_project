@@ -5,13 +5,16 @@ export const Logo = () => {
   return (
     <Link to="/" className="logo">
       <img
-        src="/logo.svg"
+        src="/logo.png"
         alt="logo"
         className="logo__image"
-        width="40"
-        height="40"
+        width="100"
+        height="100"
       />
-      <span className="logo__name">AnimalAllies</span>
+      <div className="logo__name">
+        <p className="logo__name--animal">Animal</p>
+        <p className="logo__name--allies">Allies</p>
+      </div>
     </Link>
   );
 };
