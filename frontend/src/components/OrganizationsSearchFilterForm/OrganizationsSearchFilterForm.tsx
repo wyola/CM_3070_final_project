@@ -246,19 +246,18 @@ export const OrganizationsSearchFilterForm = () => {
           />
 
           {isGettingLocation && (
-            <div className="search-form__location-status">
-              <div className="search-form__location-loading"></div>
+            <div className="search-form__location--info">
               Getting your location...
             </div>
           )}
 
           {locationError && (
-            <div className="search-form__location-error">{locationError}</div>
+            <div className="search-form__location--info">{locationError}</div>
           )}
 
           {useLocation && location && (
-            <div className="search-form__location-success">
-              Using your current location
+            <div className="search-form__location--info">
+              ✓ Using your current location
             </div>
           )}
         </div>

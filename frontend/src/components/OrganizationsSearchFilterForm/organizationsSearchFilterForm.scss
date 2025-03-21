@@ -1,11 +1,19 @@
 .search-form {
-  display: flex;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
   margin-bottom: 2rem;
+  align-items: center;
 
-  > * {
-    flex: 1;
+  &__location {
+    &--info {
+      font-size: 0.8rem;
+      font-style: italic;
+      margin-left: 1.5rem;
+      margin-bottom: -1.2rem;
+    }
   }
+
 
   &__checkbox {
     display: flex;
