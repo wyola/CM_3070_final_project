@@ -1,9 +1,15 @@
+@use '@sass/abstract/breakpoints' as *;
+
 .home {
   &__hero-wrapper {
     background-color: hsl(var(--secondary));
     border-top: 1px solid hsl(var(--border));
     margin-bottom: 3rem;
     overflow: hidden;
+
+    @include sm {
+      margin-bottom: 2rem;
+    }
   }
 
   &__hero {
@@ -11,30 +17,115 @@
     justify-content: space-between;
     align-items: center;
     position: relative;
-    min-height: 450px;
+    min-height: 550px;
+
+    @include xl {
+      min-height: 450px;
+    }
+
+    @include sm {
+      min-height: 400px;
+    }
+
+    @include xs {
+      min-height: 350px;
+    }
 
     &--intro {
       background-color: hsl(var(--secondary) / 85%);
       z-index: 10;
-      padding: 2rem 2rem 2rem 0;
+      padding: 3rem;
+      padding-left: 0;
+      font-weight: 500;
+
+      @include sm {
+        padding: 2.5rem;
+        padding-left: 0;
+      }
+
+      @include xs {
+        padding: 1.5rem;
+        padding-left: 0;
+      }
     }
 
     &--header {
-      font-size: 3rem;
-      margin-bottom: 1rem;
+      font-size: 4rem;
+      margin-bottom: 3rem;
       color: hsl(var(--primary-foreground));
+
+      @include xl {
+        font-size: 3.5rem;
+      }
+
+      @include lg {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      @include sm {
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      @include xs {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+      }
     }
 
     &--slogan {
-      font-size: 1.4rem;
-      color: hsl(var(--text));
-      margin-bottom: 0.6rem;
+      font-size: 1.8rem;
+
+      &:not(:last-child) {
+        margin-bottom: 1.5rem;
+      }
+
+      @include xl {
+        font-size: 1.5rem;
+      }
+
+      @include lg {
+        font-size: 1.2rem;
+        &:not(:last-child) {
+          margin-bottom: 1.2rem;
+        }
+      }
+
+      @include sm {
+        font-size: 1.1rem;
+      }
+
+      @include xs {
+        font-size: 1rem;
+        &:not(:last-child) {
+          margin-bottom: 1rem;
+        }
+      }
     }
 
     &--image {
       position: absolute;
       right: 0;
-      bottom: -5%;
+      bottom: -10%;
+
+      @include xl {
+        width: 37.5rem;
+        right: 5%;
+        bottom: -5%;
+      }
+
+      @include lg {
+        right: 0;
+      }
+
+      @include md {
+        right: -10%;
+      }
+
+      @include sm {
+        width: 31.5rem;
+      }
     }
   }
 }
