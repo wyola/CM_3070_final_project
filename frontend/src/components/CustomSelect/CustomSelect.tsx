@@ -19,6 +19,7 @@ type CustomSelectProps = {
   required?: boolean;
   label?: string;
   errorMessage?: string;
+  className?: string;
 };
 
 export const CustomSelect = ({
@@ -28,6 +29,7 @@ export const CustomSelect = ({
   required,
   label,
   errorMessage,
+  className,
 }: CustomSelectProps) => {
   const { control } = useFormContext();
   const fieldId = useId();
@@ -37,7 +39,7 @@ export const CustomSelect = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="multiselect form-item">
+        <FormItem className={`multiselect form-item ${className || ''}`}>
           {label && (
             <FormLabel htmlFor={fieldId}>
               {label}

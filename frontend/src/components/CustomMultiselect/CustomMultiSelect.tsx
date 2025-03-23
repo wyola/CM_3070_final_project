@@ -21,6 +21,7 @@ type CustomMultiSelectProps = {
   required?: boolean;
   errorMessage?: string;
   disabled?: boolean;
+  className?: string;
 };
 
 export const CustomMultiSelect = ({
@@ -31,6 +32,7 @@ export const CustomMultiSelect = ({
   required,
   errorMessage,
   disabled,
+  className,
 }: CustomMultiSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { control, setValue, watch } = useFormContext();
@@ -55,7 +57,7 @@ export const CustomMultiSelect = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="multiselect form-item">
+        <FormItem className={`multiselect form-item ${className || ''}`}>
           {label && (
             <FormLabel htmlFor={fieldId}>
               {label}

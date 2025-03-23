@@ -128,4 +128,42 @@
       }
     }
   }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  &__filters {
+    &--icon {
+      rotate: 90deg;
+    }
+
+    &--mobile {
+      display: none;
+
+      @include sm {
+        display: initial;
+      }
+
+      &-content {
+        padding: 1rem;
+        padding-top: 0;
+
+        .search-form {
+          margin-top: 1rem;
+        }
+      }
+    }
+
+    &--desktop {
+      display: grid;
+
+      @include sm {
+        display: none;
+      }
+    }
+  }
 }

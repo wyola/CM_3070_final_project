@@ -2,6 +2,12 @@ import { OrganizationsListProvider } from '@/contexts';
 import {
   OrganizationsTable,
   OrganizationsSearchFilterForm,
+  Drawer,
+  FiltersIcon,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerClose,
+  Button,
 } from '@/components';
 import './home.scss';
 
@@ -32,7 +38,25 @@ export const Home = () => {
         </div>
 
         <div className="content">
-          <OrganizationsSearchFilterForm />
+          <div className="home__header">
+            <h2 className="heading-secondary">Browse organizations</h2>
+            <Drawer>
+              <DrawerTrigger className="home__filters--mobile">
+                <Button>
+                  <FiltersIcon className="home__filters--icon" />
+                </Button>
+              </DrawerTrigger>
+              <DrawerContent className="home__filters--mobile-content">
+                <OrganizationsSearchFilterForm />
+                <DrawerClose asChild>
+                  <Button className="home__filters--apply-btn">
+                    See Results
+                  </Button>
+                </DrawerClose>
+              </DrawerContent>
+            </Drawer>
+          </div>
+          <OrganizationsSearchFilterForm className="home__filters--desktop" />
           <OrganizationsTable />
         </div>
       </section>
