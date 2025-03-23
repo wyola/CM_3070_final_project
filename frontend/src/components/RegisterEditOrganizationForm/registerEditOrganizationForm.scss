@@ -87,6 +87,11 @@
     max-width: fit-content;
   }
 
+  &__button-group {
+    display: flex;
+    gap: 1rem;
+  }
+
   @keyframes fadeInFields {
     from {
       opacity: 0;

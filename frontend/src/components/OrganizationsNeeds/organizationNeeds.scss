@@ -1,14 +1,22 @@
 @use '@sass/abstract/mixins' as *;
+@use '@sass/abstract/breakpoints' as *;
 
 .needs {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-
   &__header {
     display: flex;
     align-items: center;
     gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+
+    @include md {
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
 
   &__add-button {
@@ -27,8 +35,8 @@
     }
   }
 
-  > :first-child,
-  &__empty {
-    grid-column: span 2;
-  }
+  // > :first-child,
+  // &__empty {
+  //   grid-column: span 2;
+  // }
 }

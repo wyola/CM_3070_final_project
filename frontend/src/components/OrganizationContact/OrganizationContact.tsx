@@ -1,4 +1,4 @@
-import { CustomCard, IconLabel } from '@/components';
+import { IconLabel, LocationMap } from '@/components';
 import './organizationContact.scss';
 
 type OrganizationContactProps = {
@@ -9,6 +9,10 @@ type OrganizationContactProps = {
   city: string;
   postalCode: string;
   voivodeship: string;
+  geolocation: {
+    lat: number;
+    lon: number;
+  } | null;
 };
 
 export const OrganizationContact = ({
@@ -19,31 +23,35 @@ export const OrganizationContact = ({
   city,
   postalCode,
   voivodeship,
+  geolocation,
 }: OrganizationContactProps) => {
   return (
-    <CustomCard className="organization-contact">
-      <div className="organization-contact__contact">
+    <section className="organization-contact">
+      {geolocation && (
+        <LocationMap geolocation={geolocation} mapContainerHeight="200px" />
+      )}
+      <div className="organization-contact__data">
         <IconLabel iconSrc="/website.svg">
           <a href={website} target="_blank">
             Go to website
           </a>
         </IconLabel>
+
         <IconLabel iconSrc="/phone.svg">
           <a href={`tel:${phone}`}>{phone}</a>
         </IconLabel>
+
         <IconLabel iconSrc="/email.svg">
           <a href={`mailto:${email}`}>{email}</a>
         </IconLabel>
-      </div>
 
-      <div className="organization-contact__address">
         <IconLabel
           iconSrc="/pin.svg"
-          className="organization-contact__address--street"
+          className="organization-contact__data--address"
         >
           {streetNumber}, {postalCode} {city}, {voivodeship}
         </IconLabel>
       </div>
-    </CustomCard>
+    </section>
   );
 };

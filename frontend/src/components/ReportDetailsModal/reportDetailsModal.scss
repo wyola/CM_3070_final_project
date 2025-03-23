@@ -1,6 +1,12 @@
+@use '@sass/abstract/breakpoints' as *;
+
 .report-modal {
   width: 90vw;
   max-width: unset;
+
+  @include sm {
+    width: 100%;
+  }
 }
 
 .report-details {
@@ -9,11 +15,11 @@
   gap: 1rem;
 
   &__subheader {
-    font-weight: 500;
+    font-weight: 600;
   }
 
   &__date-status {
-    font-weight: 500;
+    font-weight: 600;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -48,11 +54,14 @@
     }
   }
 
-  &__actions {
-    &--buttons {
-      display: flex;
-      gap: 1rem;
-      margin-top: 0.8rem;
+  &__actions--buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.8rem;
+
+    @include sm {
+      flex-direction: column;
+      margin-bottom: 1.5rem;
     }
   }
 }

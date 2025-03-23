@@ -7,6 +7,7 @@ import {
   LocationMap,
   OrganizationsNeeds,
   ReportsTable,
+  Separator,
 } from '@/components';
 import { OrganizationI } from '@/types';
 import { axiosInstance } from '@/lib/axios';
@@ -65,6 +66,7 @@ export const Organization = () => {
     postalCode,
     city,
     animals,
+    geolocation
   } = organization;
 
   return (
@@ -77,6 +79,8 @@ export const Organization = () => {
         organizationId={id}
       />
 
+      <Separator />
+
       <OrganizationContact
         website={website}
         phone={phone}
@@ -85,15 +89,10 @@ export const Organization = () => {
         postalCode={postalCode}
         city={city}
         voivodeship={voivodeship}
+        geolocation={geolocation}
       />
 
-      {organization.geolocation && (
-        <LocationMap
-          geolocation={organization.geolocation}
-          popupHeader={name}
-          mapContainerHeight="200px"
-        />
-      )}
+      <Separator />
 
       <OrganizationsNeeds organizationId={id} />
 
@@ -101,7 +100,7 @@ export const Organization = () => {
 
       <div className="organization__volunteering">
         <h2 className="heading-secondary">Volunteering options</h2>
-        <CustomCard>volunteering options</CustomCard>
+        <CustomCard>Coming soon!</CustomCard>
       </div>
     </section>
   );

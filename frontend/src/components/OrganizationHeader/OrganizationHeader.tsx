@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import DOMPurify from 'dompurify';
-import { CustomCard, EditIcon } from '@/components';
+import { EditIcon, Separator } from '@/components';
 import { OrganizationAnimals } from '@/types';
 import { useOwnership } from '@/hooks';
 import './organizationHeader.scss';
@@ -23,7 +23,7 @@ export const OrganizationHeader = ({
   const isOwner = useOwnership();
 
   return (
-    <CustomCard className="organization-header">
+    <section className="organization-header">
       <div className="organization-header__title">
         <img src={`http://localhost:3000/${logo}`} alt={`logo of ${name}`} />
         <h1 className="heading-primary">{name}</h1>
@@ -32,13 +32,11 @@ export const OrganizationHeader = ({
             to={`/organizations/${organizationId}/edit`}
             aria-label="Go to edit organization form"
           >
-            <EditIcon width={32} height={32} className='edit-icon' />
+            <EditIcon width={32} height={32} className="edit-icon" />
           </Link>
         )}
       </div>
-      <div className="organization-header__animals">
-        We take care of: {animals.join(', ')}
-      </div>
+
       <p
         className="organization-header__description"
         dangerouslySetInnerHTML={{
@@ -47,6 +45,10 @@ export const OrganizationHeader = ({
           }),
         }}
       ></p>
-    </CustomCard>
+      <Separator className="organization-header__separator" />
+      <div className="organization-header__animals">
+        We take care of: {animals.join(', ')}
+      </div>
+    </section>
   );
 };

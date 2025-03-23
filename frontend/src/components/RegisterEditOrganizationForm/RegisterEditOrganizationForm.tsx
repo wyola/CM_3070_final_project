@@ -224,7 +224,6 @@ export const RegisterEditOrganizationForm = ({
                       isKRSValid ? getFormFieldError('name', formErrors) : ''
                     }
                   />
-
                   <CustomFormField
                     label="City"
                     type="text"
@@ -236,7 +235,6 @@ export const RegisterEditOrganizationForm = ({
                       isKRSValid ? getFormFieldError('city', formErrors) : ''
                     }
                   />
-
                   <CustomFormField
                     label="Voivodeship"
                     type="text"
@@ -252,7 +250,6 @@ export const RegisterEditOrganizationForm = ({
                         : ''
                     }
                   />
-
                   <CustomFormField
                     label="Postal Code"
                     type="text"
@@ -271,7 +268,6 @@ export const RegisterEditOrganizationForm = ({
                         : ''
                     }
                   />
-
                   <CustomFormField
                     label="Address"
                     type="text"
@@ -287,7 +283,6 @@ export const RegisterEditOrganizationForm = ({
                       isKRSValid ? getFormFieldError('address', formErrors) : ''
                     }
                   />
-
                   {!isEditing && (
                     <>
                       <CustomFormField
@@ -325,7 +320,6 @@ export const RegisterEditOrganizationForm = ({
                       />
                     </>
                   )}
-
                   <CustomFormField
                     label="Phone Number"
                     type="tel"
@@ -339,7 +333,6 @@ export const RegisterEditOrganizationForm = ({
                       isKRSValid ? getFormFieldError('phone', formErrors) : ''
                     }
                   />
-
                   <CustomFormField
                     label="Upload Logo"
                     type="file"
@@ -350,7 +343,6 @@ export const RegisterEditOrganizationForm = ({
                       isKRSValid ? getFormFieldError('logo', formErrors) : ''
                     }
                   />
-
                   <CustomMultiSelect
                     name="animals"
                     placeholder={
@@ -366,7 +358,6 @@ export const RegisterEditOrganizationForm = ({
                     }
                     disabled={!isKRSValid && !isEditing}
                   />
-
                   <RichTextEditorFormField
                     name="description"
                     label="Description"
@@ -379,7 +370,6 @@ export const RegisterEditOrganizationForm = ({
                     disabled={!isKRSValid && !isEditing}
                     formErrors={formErrors}
                   />
-
                   <CustomFormField
                     label="Website"
                     type="url"
@@ -395,7 +385,6 @@ export const RegisterEditOrganizationForm = ({
                       isKRSValid ? getFormFieldError('website', formErrors) : ''
                     }
                   />
-
                   <CustomFormField
                     label="Accept Reports"
                     type="checkbox"
@@ -404,7 +393,6 @@ export const RegisterEditOrganizationForm = ({
                     disabled={!isKRSValid && !isEditing}
                     placeholder={placeholderEnabled}
                   />
-
                   <p className="register-form__accept-reports-info">
                     By enabling this option, your organization will be listed as
                     available to receive animal abuse reports from users. When a
@@ -415,13 +403,35 @@ export const RegisterEditOrganizationForm = ({
                     assigned reports in your dashboard.
                   </p>
 
-                  <Button
-                    type="submit"
-                    className="register-form__submit-button"
-                    disabled={isSubmitting || (isEditing && !isDirty)}
-                  >
-                    {isEditing ? 'Save changes' : 'Register'}
-                  </Button>
+                  {isEditing ? (
+                    <div className="register-form__button-group">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="register-form__cancel-button"
+                        onClick={() =>
+                          navigate(`${ORGANIZATION}/${organizationId}`)
+                        }
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="submit"
+                        className="register-form__submit-button"
+                        disabled={isSubmitting || !isDirty}
+                      >
+                        Save changes
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button
+                      type="submit"
+                      className="register-form__submit-button"
+                      disabled={isSubmitting}
+                    >
+                      Register
+                    </Button>
+                  )}
                 </>
               )}
             </form>
