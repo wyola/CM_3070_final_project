@@ -3,6 +3,7 @@
 
   ul {
     list-style: none;
+    padding-left: 0;
   }
 
   &__button {
@@ -10,7 +11,6 @@
   }
 
   &__disabled {
-    pointer-events: none;
-    opacity: 0.5;
+    display: none;
   }
 }

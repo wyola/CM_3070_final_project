@@ -6,3 +6,4 @@ export * from './BinIcon';
 export * from './PinIcon';
 export * from './PhoneIcon';
 export * from './EmailIcon';
+export * from './ArrowIcon';

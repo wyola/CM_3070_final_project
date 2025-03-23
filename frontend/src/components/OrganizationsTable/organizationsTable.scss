@@ -1,20 +1,29 @@
+@use '@sass/abstract/breakpoints' as *;
+
 .organizations-table {
   thead tr {
+    th {
+      color: hsl(var(--primary-foreground));
+      font-weight: 600;
+    }
+
     &:hover {
       background-color: transparent;
     }
   }
+
   tbody tr {
     text-transform: capitalize;
 
-    td {
-      &[data-column='email'] {
-        text-transform: none;
-      }
-    }
-
     &:hover {
       cursor: pointer;
+    }
+  }
+
+  @include xs {
+    th:nth-child(3), // Voivodeship header
+    td[data-column='voivodeship'] {
+      display: none;
     }
   }
 }

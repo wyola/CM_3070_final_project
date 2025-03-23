@@ -68,7 +68,13 @@ export const CustomMultiSelect = ({
             value={field.value}
             disabled={disabled}
           >
-            <SelectTrigger>
+            <SelectTrigger
+              aria-label={
+                selectedValues.length > 0
+                  ? `${selectedValues.length} ${placeholder} selected`
+                  : placeholder
+              }
+            >
               <SelectValue placeholder={placeholder}>
                 {selectedValues.length > 0
                   ? `${selectedValues.length} selected`
