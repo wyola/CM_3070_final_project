@@ -1,24 +1,45 @@
+@use '@sass/abstract/breakpoints' as *;
+
 .logo {
   display: flex;
   align-items: center;
   font-size: 1.8rem;
+
+  &__image {
+    @include sm {
+      width: 4.5rem;
+      height: 4.5rem;
+    }
+  }
 
   &__name {
     margin-top: 0.6rem;
 
     p {
       line-height: 1;
+
+      @include xs {
+        display: none;
+      }
     }
 
     &--animal {
       font-size: 2rem;
-      color: #47270a;
+      color: hsl(var(--primary-foreground));
+
+      @include sm {
+        font-size: 1.6rem;
+      }
     }
 
     &--allies {
       margin-left: -0.8rem;
       margin-top: -0.2rem;
-      color: #776e67;
+      color: hsl(var(--muted-foreground));
+
+      @include sm {
+        font-size: 1.4rem;
+      }
     }
   }
 }

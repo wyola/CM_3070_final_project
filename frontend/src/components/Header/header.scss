@@ -1,3 +1,5 @@
+@use '@sass/abstract/breakpoints' as *;
+
 .header {
   background-color: hsl(var(--secondary));
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
@@ -8,6 +10,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @include md {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+
+    @include xs {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
 
   &__nav {
@@ -19,6 +31,11 @@
       align-items: center;
       gap: 2rem;
       list-style: none;
+      padding-left: 0;
+
+      @include xs {
+        // gap: 1.5rem;
+      }
     }
 
     &--report {
