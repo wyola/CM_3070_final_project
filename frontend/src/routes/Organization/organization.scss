@@ -5,6 +5,10 @@
   flex-direction: column;
   gap: 1.5rem;
 
+  &__feedback {
+    margin-top: 3rem;
+  }
+
   &__separator--map {
     @include sm {
       display: none;

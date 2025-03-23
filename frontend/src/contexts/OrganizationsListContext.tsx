@@ -90,7 +90,7 @@ export const OrganizationsListProvider = ({
         setPagination(response.data.pagination);
       } catch (error) {
         console.error('Error fetching organizations:', error);
-        setError('Failed to load organizations');
+        setError('Failed to load organizations. Please try again later...');
       } finally {
         setIsLoading(false);
       }

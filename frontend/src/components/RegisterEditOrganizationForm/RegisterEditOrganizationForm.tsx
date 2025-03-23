@@ -7,12 +7,13 @@ import { axiosInstance, organizationRegistrationApi } from '@/lib/axios';
 import { OrganizationI, OrganizationRegistrationI } from '@/types';
 import { getFormFieldError } from '@/utils';
 import {
-  SuccessMessage,
+  FeedbackMessage,
   CustomFormField,
   CustomMultiSelect,
   Button,
   RichTextEditorFormField,
   LightBulbIcon,
+  FormMessage,
 } from '@/components';
 import './registerEditOrganizationForm.scss';
 
@@ -128,7 +129,7 @@ export const RegisterEditOrganizationForm = ({
         } else {
           setError(
             error.response?.data?.message ||
-              `${isEditing ? 'Update' : 'Registration'} failed`
+              `${isEditing ? 'Update' : 'Registration'} failed. Please try again later...`
           );
         }
       } else {
@@ -143,7 +144,7 @@ export const RegisterEditOrganizationForm = ({
     <>
       {isSuccess && !isEditing ? (
         <div className="register-form__success">
-          <SuccessMessage
+          <FeedbackMessage
             message="Registration was successful!"
             imageSrc="./images/dog-high-five.svg"
           />
@@ -434,6 +435,7 @@ export const RegisterEditOrganizationForm = ({
                   )}
                 </>
               )}
+              {error && isKRSValid && <FormMessage>{error}</FormMessage>}
             </form>
           </FormProvider>
         </>
