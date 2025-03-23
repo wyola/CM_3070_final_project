@@ -1,0 +1,76 @@
+// Breakpoint variables
+$breakpoint-xs: 480px;
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+// Media query mixins
+@mixin xs {
+  @media (max-width: $breakpoint-xs) {
+    @content;
+  }
+}
+
+@mixin sm {
+  @media (max-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (max-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (max-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (max-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+@mixin xxl {
+  @media (max-width: $breakpoint-2xl) {
+    @content;
+  }
+}
+
+// TODO: remove? probably not needed
+// Min-width (mobile-first) variants
+// @mixin min-sm {
+//   @media (min-width: $breakpoint-sm) {
+//     @content;
+//   }
+// }
+
+// @mixin min-md {
+//   @media (min-width: $breakpoint-md) {
+//     @content;
+//   }
+// }
+
+// @mixin min-lg {
+//   @media (min-width: $breakpoint-lg) {
+//     @content;
+//   }
+// }
+
+// @mixin min-xl {
+//   @media (min-width: $breakpoint-xl) {
+//     @content;
+//   }
+// }
+
+// @mixin min-xxl {
+//   @media (min-width: $breakpoint-2xl) {
+//     @content;
+//   }
+// }
