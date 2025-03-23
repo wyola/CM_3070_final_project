@@ -308,6 +308,7 @@ export const ReportAbuseForm = () => {
             >
               {isLoading ? 'Submitting...' : 'Submit'}
             </Button>
+            {error && <FormMessage>{error}</FormMessage>}
           </form>
         </FormProvider>
       )}

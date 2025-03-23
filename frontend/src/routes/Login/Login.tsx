@@ -41,7 +41,7 @@ export const Login = () => {
       navigate(`${ORGANIZATION}/${result.data.user.id}`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setError(error.response?.data?.message || 'Login failed');
+        setError(error.response?.data?.message || 'Login failed. Please try again later.');
       } else {
         setError('An unexpected error occurred');
       }

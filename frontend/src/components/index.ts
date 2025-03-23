@@ -18,7 +18,7 @@ export { OrganizationHeader } from './OrganizationHeader/OrganizationHeader';
 export { OrganizationsSearchFilterForm } from './OrganizationsSearchFilterForm/OrganizationsSearchFilterForm';
 export { OrganizationsTable } from './OrganizationsTable/OrganizationsTable';
 export { RegisterEditOrganizationForm } from './RegisterEditOrganizationForm/RegisterEditOrganizationForm';
-export { SuccessMessage } from './SuccessMessage/SuccessMessage';
+export { FeedbackMessage } from './FeedbackMessage/FeedbackMessage';
 export { CustomSwitch } from './CustomSwitch/CustomSwitch';
 export { ReportSummary } from './ReportSummary/ReportSummary';
 export { UserMenu } from './UserMenu/UserMenu';

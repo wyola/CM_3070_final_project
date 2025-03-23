@@ -54,18 +54,6 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
     }
   };
 
-  if (isLoading) {
-    return <div className="loading">Loading reports...</div>;
-  }
-
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
-
-  if (reports.length === 0) {
-    return <div className="no-reports">No reports found.</div>;
-  }
-
   const handleRowClick = async (report: ReportI) => {
     setSelectedReport(report);
     setIsModalOpen(true);
@@ -99,47 +87,58 @@ export const ReportsTable = ({ organizationId }: ReportsTableProps) => {
   return (
     <div className="reports">
       <h2 className="heading-secondary">Reports</h2>
-      <Table className="reports__table">
-        <TableHeader>
-          <TableRow>
-            {columns.map((column) => (
-              <TableHead key={column.accessor}>{column.header}</TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {reports.map((report) => (
-            <TableRow
-              key={report.id}
-              onClick={() => handleRowClick(report)}
-              className={
-                report.viewed
-                  ? 'reports__table-row--viewed'
-                  : 'reports__table-row'
-              }
-            >
-              {columns.map((column) => (
-                <TableCell
-                  key={`${report.id}-${column.accessor}`}
-                  data-column={column.accessor}
-                >
-                  {getCellContent(report, column.accessor)}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
 
-      {selectedReport && (
-        <ReportDetailsModal
-          report={selectedReport}
-          organizationId={organizationId}
-          onClose={handleClose}
-          isOpen={isModalOpen}
-          updateReportStatus={handleStatusUpdate}
-          deleteReport={deleteReport}
-        />
+      {isLoading ? (
+        <p>Loading reports...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : reports.length === 0 ? (
+        <p>No reports for now!</p>
+      ) : (
+        <>
+          <Table className="reports__table">
+            <TableHeader>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableHead key={column.accessor}>{column.header}</TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {reports.map((report) => (
+                <TableRow
+                  key={report.id}
+                  onClick={() => handleRowClick(report)}
+                  className={
+                    report.viewed
+                      ? 'reports__table-row--viewed'
+                      : 'reports__table-row'
+                  }
+                >
+                  {columns.map((column) => (
+                    <TableCell
+                      key={`${report.id}-${column.accessor}`}
+                      data-column={column.accessor}
+                    >
+                      {getCellContent(report, column.accessor)}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          {selectedReport && (
+            <ReportDetailsModal
+              report={selectedReport}
+              organizationId={organizationId}
+              onClose={handleClose}
+              isOpen={isModalOpen}
+              updateReportStatus={handleStatusUpdate}
+              deleteReport={deleteReport}
+            />
+          )}
+        </>
       )}
     </div>
   );

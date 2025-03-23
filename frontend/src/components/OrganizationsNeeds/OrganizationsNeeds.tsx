@@ -3,7 +3,6 @@ import {
   AddEditNeedModal,
   AddIcon,
   Button,
-  CustomCard,
   Need,
 } from '@/components';
 import { API_ENDPOINTS } from '@/constants';
@@ -93,9 +92,7 @@ export const OrganizationsNeeds = ({
           ))}
         </div>
       ) : (
-        <CustomCard className="needs__empty">
-          <p>No needs were posted for now!</p>
-        </CustomCard>
+        <p>No needs were posted for now!</p>
       )}
 
       {isOwner && (

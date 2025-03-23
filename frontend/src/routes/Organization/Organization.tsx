@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import {
-  CustomCard,
   OrganizationContact,
   OrganizationHeader,
-  LocationMap,
   OrganizationsNeeds,
   ReportsTable,
   Separator,
+  FeedbackMessage,
 } from '@/components';
 import { OrganizationI } from '@/types';
 import { axiosInstance } from '@/lib/axios';
@@ -35,7 +34,8 @@ export const Organization = () => {
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setError(
-            error.response?.data?.message || 'Failed to load organization'
+            error.response?.data?.message ||
+              'Failed to load organization. Please try again later...'
           );
         } else {
           setError('An unexpected error occurred');
@@ -48,10 +48,32 @@ export const Organization = () => {
     fetchOrganization();
   }, [idFromParams]);
 
-  // TODO success / fail screens
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!organization) return <div>Organization not found</div>;
+  if (isLoading)
+    return (
+      <FeedbackMessage
+        message="Loading organization details..."
+        imageSrc="/images/dog-question.svg"
+        className="organization__feedback"
+      />
+    );
+
+  if (error)
+    return (
+      <FeedbackMessage
+        message={error}
+        imageSrc="/images/dog-question.svg"
+        className="organization__feedback"
+      />
+    );
+
+  if (!organization)
+    return (
+      <FeedbackMessage
+        message="Organization not found"
+        imageSrc="/images/dog-question.svg"
+        className="organization__feedback"
+      />
+    );
 
   const {
     id,
@@ -66,7 +88,7 @@ export const Organization = () => {
     postalCode,
     city,
     animals,
-    geolocation
+    geolocation,
   } = organization;
 
   return (
@@ -100,7 +122,7 @@ export const Organization = () => {
 
       <div className="organization__volunteering">
         <h2 className="heading-secondary">Volunteering options</h2>
-        <CustomCard>Coming soon!</CustomCard>
+        <p>Coming soon!</p>
       </div>
     </section>
   );
