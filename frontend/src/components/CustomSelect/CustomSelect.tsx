@@ -49,7 +49,7 @@ export const CustomSelect = ({
             defaultValue={field.value}
             required={required}
           >
-            <SelectTrigger id={fieldId}>
+            <SelectTrigger id={fieldId} aria-label={placeholder}>
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>

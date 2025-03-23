@@ -1,28 +1,55 @@
+@use '@sass/abstract/breakpoints' as *;
+
 .footer {
   background-color: hsl(var(--secondary));
-  padding: 4rem 0 0;
+  color: hsl(var(--primary-foreground));
+  padding: 3rem 0 0;
 
   &__content {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
     gap: 2.5rem;
+
+    @include lg {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include sm {
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
 
-  .logo {
-    margin-bottom: 1rem;
-  }
+  &__logo {
+    .logo {
+      margin-bottom: 0.2rem;
 
-  &__tagline {
-    color: hsl(var(--muted-foreground));
-    font-size: 0.9rem;
-    max-width: 90%;
+      p {
+        @include xs {
+          display: block;
+        }
+      }
+    }
+
+    &--tagline {
+      font-size: 0.9rem;
+      max-width: 70%;
+
+      @include xs {
+        max-width: unset;
+      }
+    }
+
+    &--social {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
   }
 
   &__heading {
     font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 1.25rem;
-    color: hsl(var(--muted-foreground));
+    font-weight: 600;
+    margin-bottom: 1.5rem;
   }
 
   &__list {
@@ -31,16 +58,14 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.8rem;
   }
 
   &__link {
-    color: hsl(var(--muted-foreground));
     text-decoration: none;
     transition: color 0.2s;
-    // TODO: global link styles
     &:hover {
-      color: hsl(var(--primary));
+      text-decoration: underline;
     }
   }
 
@@ -48,26 +73,25 @@
     font-style: normal;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.8rem;
 
     &-item {
       display: flex;
-      align-items: center;
-      color: hsl(var(--muted-foreground));
       line-height: 1.5;
       gap: 0.75rem;
+      align-items: center;
+
+      svg {
+        display: flex;
+        flex-shrink: 0;
+      }
+
+      a {
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
-  }
-
-  &__icon {
-    width: 18px;
-    height: 18px;
-  }
-
-  &__social {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
   }
 
   &__bottom {
@@ -77,21 +101,7 @@
   }
 
   &__copyright {
-    color: hsl(var(--muted-foreground));
     font-size: 0.85rem;
     text-align: center;
-  }
-
-  // TODO: decide on breakpoints and do mobile styles
-  @media (max-width: 1024px) {
-    &__content {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 640px) {
-    &__content {
-      grid-template-columns: 1fr;
-    }
   }
 }

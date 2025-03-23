@@ -79,17 +79,19 @@ export const OrganizationsNeeds = ({
         )}
       </div>
       {needs.length > 0 ? (
-        needs.map((need) => (
-          <Need
-            key={need.id}
-            needId={need.id}
-            organizationId={organizationId}
-            kind={need.kind as KindsOfNeeds}
-            priority={need.priority}
-            description={need.description}
-            onActionCompleted={fetchNeeds}
-          />
-        ))
+        <div className="needs__list">
+          {needs.map((need) => (
+            <Need
+              key={need.id}
+              needId={need.id}
+              organizationId={organizationId}
+              kind={need.kind as KindsOfNeeds}
+              priority={need.priority}
+              description={need.description}
+              onActionCompleted={fetchNeeds}
+            />
+          ))}
+        </div>
       ) : (
         <CustomCard className="needs__empty">
           <p>No needs were posted for now!</p>

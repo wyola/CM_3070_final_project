@@ -1,6 +1,17 @@
+@use '@sass/abstract/breakpoints' as *;
+
 .user-menu {
   &__trigger {
     position: relative;
+    display: flex;
+    flex-shrink: 0;
+
+    &--avatar {
+      @include sm {
+        width: 3rem;
+        height: 3rem;
+      }
+    }
 
     &--badge {
       position: absolute;
@@ -14,6 +25,14 @@
       align-items: center;
       justify-content: center;
       font-weight: 700;
+      padding: 0.2rem;
+
+      @include sm {
+        width: 1.2rem;
+        height: 1.2rem;
+        top: -5%;
+        right: -8%;
+      }
     }
   }
 

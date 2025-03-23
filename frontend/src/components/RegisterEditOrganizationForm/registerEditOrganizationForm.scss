@@ -1,6 +1,23 @@
+@use '@sass/abstract/breakpoints' as *;
+
 .register-form {
   gap: 1.5rem;
   display: flex;
+  position: relative;
+
+  @include lg {
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  @include md {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  label {
+    font-weight: 600;
+  }
 
   &__success {
     display: flex;
@@ -35,17 +52,39 @@
     flex-direction: column;
     gap: 1.5rem;
 
+    .form-item input {
+      @include lg {
+        max-width: 65%;
+      }
+      @include md {
+        max-width: unset;
+      }
+    }
+
     &--explain {
       display: flex;
       margin-top: 1rem;
       gap: 1.5rem;
-      align-items: center;
+      align-items: flex-start;
 
       svg {
         left: 0;
         rotate: -15deg;
         color: hsl(var(--primary));
         flex-shrink: 0;
+
+        @include sm {
+          width: 4rem;
+        }
+      }
+
+      @include lg {
+        max-width: 65%;
+        gap: 1rem;
+      }
+
+      @include md {
+        max-width: unset;
       }
     }
   }
@@ -53,6 +92,21 @@
   &__image {
     margin-top: -8rem;
     margin-bottom: -4rem;
+    z-index: -1;
+
+    @include lg {
+      position: absolute;
+      right: -10%;
+      bottom: 13%;
+      height: 80%;
+    }
+
+    @include md {
+      position: relative;
+      margin-top: -2rem;
+      z-index: 10;
+      width: 80%
+    }
   }
 
   input[name='name'],
@@ -85,6 +139,11 @@
 
   &__submit-button {
     max-width: fit-content;
+  }
+
+  &__button-group {
+    display: flex;
+    gap: 1rem;
   }
 
   @keyframes fadeInFields {

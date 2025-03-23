@@ -7,6 +7,7 @@ import {
   TableBody,
   TableCell,
   CustomPagination,
+  ArrowIcon,
 } from '@/components';
 import { OrganizationI } from '@/types';
 import { ORGANIZATION } from '@/constants';
@@ -24,10 +25,9 @@ export const OrganizationsTable = () => {
 
   const columns = [
     { header: 'Name', accessor: 'name' },
-    { header: 'Email', accessor: 'email' },
-    { header: 'Phone', accessor: 'phone' },
     { header: 'City', accessor: 'city' },
     { header: 'Voivodeship', accessor: 'voivodeship' },
+    { header: '', accessor: 'action' },
   ];
 
   return (
@@ -51,14 +51,18 @@ export const OrganizationsTable = () => {
                   key={`${organization.id}-${column.accessor}`}
                   data-column={column.accessor}
                 >
-                  {organization[column.accessor as keyof OrganizationI]}
+                  {column.accessor === 'action' ? (
+                    <ArrowIcon width={20} height={20} />
+                  ) : (
+                    organization[column.accessor as keyof OrganizationI]
+                  )}
                 </TableCell>
               ))}
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      {pagination && (
+      {pagination && pagination.pages > 1 && (
         <CustomPagination
           currentPage={pagination.page}
           totalPages={pagination.pages}

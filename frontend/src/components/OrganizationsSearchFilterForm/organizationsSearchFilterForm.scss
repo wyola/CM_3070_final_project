@@ -1,9 +1,19 @@
+@use '@sass/abstract/breakpoints' as *;
+
 .search-form {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.2rem;
   margin-bottom: 2rem;
   align-items: center;
+
+  @include lg {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include sm {
+    grid-template-columns: repeat(1, 1fr);
+  }
 
   &__location {
     &--info {
@@ -13,7 +23,6 @@
       margin-bottom: -1.2rem;
     }
   }
-
 
   &__checkbox {
     display: flex;

@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router';
-import { Logo } from '@/components';
+import { Logo, PinIcon, PhoneIcon, EmailIcon } from '@/components';
 import { HOME, LOGIN, REGISTER, REPORT } from '@/constants';
 import './footer.scss';
 
@@ -9,15 +9,43 @@ export const Footer = () => {
   return (
     <footer className="footer">
       <div className="content footer__content">
-        <div className="footer__column footer__column--logo">
-          <Logo />
-          <p className="footer__tagline">
-            Connecting people to help animals in need
-          </p>
+        <div className="footer__logo">
+          <div>
+            <Logo />
+            <p className="footer__logo--tagline">
+              Connecting people to help animals in need
+            </p>
+          </div>
+          <div className="footer__logo--social">
+            <a href="#" aria-label="go to Facebook">
+              <img
+                src="/social-media/facebook.png"
+                alt=""
+                width="24"
+                height="24"
+              />
+            </a>
+            <a href="#" aria-label="go to TikTok">
+              <img
+                src="/social-media/tik-tok.png"
+                alt=""
+                width="24"
+                height="24"
+              />
+            </a>
+            <a href="#" aria-label="go to Instagram">
+              <img
+                src="/social-media/instagram.png"
+                alt=""
+                width="24"
+                height="24"
+              />
+            </a>
+          </div>
         </div>
 
-        <div className="footer__column">
-          <h3 className="footer__heading">Quick Links</h3>
+        <div>
+          <p className="footer__heading">Quick Links</p>
           <ul className="footer__list">
             <li className="footer__item">
               <NavLink to={REPORT} className="footer__link">
@@ -42,8 +70,8 @@ export const Footer = () => {
           </ul>
         </div>
 
-        <div className="footer__column">
-          <h3 className="footer__heading">Information</h3>
+        <div>
+          <p className="footer__heading">Information</p>
           <ul className="footer__list">
             <li className="footer__item">
               <NavLink to="" className="footer__link">
@@ -63,36 +91,25 @@ export const Footer = () => {
           </ul>
         </div>
 
-        <div className="footer__column">
-          <h3 className="footer__heading">Contact Us</h3>
+        <div>
+          <p className="footer__heading">Contact Us</p>
           <address className="footer__contact">
             <p className="footer__contact-item">
-              <img src="/pin.svg" alt="" className="footer__icon" />
-              123 Animal Street, Warsaw, Poland
+              <PinIcon width={20} height={20} />
+              123 Animal Street, Wroclaw, Poland
             </p>
             <p className="footer__contact-item">
-              <img src="/phone.svg" alt="" className="footer__icon" />
-              +48 123 123 123
+              <PhoneIcon width={20} height={20} />
+              <a href="tel:+48123123123">+48 123 123 123</a>
             </p>
+
             <p className="footer__contact-item">
-              <img src="/email.svg" alt="" className="footer__icon" />
+              <EmailIcon width={20} height={20} />
               <a href="mailto:info@animalallies.com" className="footer__link">
                 info@animalallies.com
               </a>
             </p>
           </address>
-          {/* TODO: SOME find icons */}
-          <div className="footer__social">
-            <a href="#" aria-label="Facebook">
-              <img src="/facebook.svg" alt="" width="24" height="24" />
-            </a>
-            <a href="#" aria-label="TikTok">
-              <img src="/tiktok.svg" alt="" width="24" height="24" />
-            </a>
-            <a href="#" aria-label="Instagram">
-              <img src="/instagram.svg" alt="" width="24" height="24" />
-            </a>
-          </div>
         </div>
       </div>
 

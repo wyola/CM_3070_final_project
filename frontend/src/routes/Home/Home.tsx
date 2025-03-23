@@ -17,16 +17,14 @@ export const Home = () => {
                 Connecting people to help animals in need
               </p>
               <p className="home__hero--slogan">
-                Search for organizations and find the one that fits your needs
+                Find where your help matters most
               </p>
-              <p className="home__hero--slogan">
-                Report mistreatment of animals and help make a difference
-              </p>
+              <p className="home__hero--slogan">Speak up for animals in need</p>
             </div>
 
             <img
-              src="./images/dog-give-paw.svg"
-              width="600"
+              src="./images/dog-give-paw.webp"
+              width="800"
               alt=""
               className="home__hero--image"
             />
