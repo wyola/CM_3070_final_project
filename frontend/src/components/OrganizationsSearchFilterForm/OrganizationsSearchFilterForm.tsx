@@ -2,14 +2,25 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useOrganizationsList } from '@/contexts';
-import { CustomFormField, CustomMultiSelect, CustomSelect } from '@/components';
+import {
+  CustomFormField,
+  CustomMultiSelect,
+  CustomSelect,
+  Button,
+} from '@/components';
 import { ANIMAL_OPTIONS, VOIVODESHIPS } from '@/constants';
 import { KindsOfNeeds, OrganizationSearchFilterFormDataI } from '@/types';
+import { mapKindToLabel } from '@/utils';
 import debounce from 'lodash.debounce';
 import './organizationsSearchFilterForm.scss';
-import { mapKindToLabel } from '@/utils';
 
-export const OrganizationsSearchFilterForm = () => {
+type OrganizationsSearchFilterFormProps = {
+  className?: string;
+};
+
+export const OrganizationsSearchFilterForm = ({
+  className,
+}: OrganizationsSearchFilterFormProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
@@ -201,46 +212,81 @@ export const OrganizationsSearchFilterForm = () => {
     })),
   ];
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
+  const clearFilters = () => {
+    methods.reset({
+      search: '',
+      voivodeship: 'all',
+      acceptsReports: false,
+      animals: [],
+      needs: 'all',
+      useLocation: false,
+    });
+
+    setSearchParams(new URLSearchParams());
+
+    fetchOrganizations({
+      search: '',
+      voivodeship: 'all',
+      acceptsReports: false,
+      animals: [],
+      needs: 'all',
+      useLocation: false,
+    });
+
+    updateCurrentPage(1);
+  };
+
   return (
     <FormProvider {...methods}>
-      <form className="search-form">
+      <form
+        className={`search-form ${className || ''}`}
+        onSubmit={handleSubmit}
+      >
         <CustomFormField
           type="text"
           name="search"
           id="search"
           placeholder="Search by name or city..."
+          className="search-form__field--search"
         />
 
         <CustomSelect
           name="voivodeship"
           placeholder="Select voivodeship"
           options={voivodeshipOptions}
+          className="search-form__field--voivodeship"
         />
 
         <CustomMultiSelect
           name="animals"
           placeholder="Select animals"
           options={ANIMAL_OPTIONS}
+          className="search-form__field--animals"
         />
 
         <CustomSelect
           name="needs"
           placeholder="Filter by need"
           options={needsOptions}
+          className="search-form__field--needs"
         />
 
         <CustomFormField
           type="checkbox"
           name="acceptsReports"
           label="Accepts reports"
-          className="search-form__checkbox"
+          className="search-form__checkbox search-form__field--accepts-reports"
         />
 
         <div className="search-form__location">
           <CustomFormField
             type="checkbox"
             name="useLocation"
-            label="Find nearest organizations"
+            label="Find nearest"
             className="search-form__checkbox"
             disabled={isGettingLocation}
           />
@@ -257,10 +303,19 @@ export const OrganizationsSearchFilterForm = () => {
 
           {useLocation && location && (
             <div className="search-form__location--info">
-              ✓ Using your current location
+              ✓ Using your location
             </div>
           )}
         </div>
+
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={clearFilters}
+          className="search-form__clear-button"
+        >
+          Clear filters
+        </Button>
       </form>
     </FormProvider>
   );

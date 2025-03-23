@@ -14,3 +14,4 @@ export * from './switch';
 export * from './dropdown-menu';
 export * from './badge';
 export * from './separator';
+export * from './drawer';

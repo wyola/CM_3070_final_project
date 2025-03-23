@@ -35,7 +35,7 @@ export const CustomFormField = ({
       control={control}
       name={name}
       render={({ field: { onChange, value, ...fieldProps } }) => (
-        <FormItem className={`${className} form-item`}>
+        <FormItem className={`${className || ''} form-item`}>
           {label && (
             <FormLabel htmlFor={fieldId}>
               {label}
@@ -59,7 +59,7 @@ export const CustomFormField = ({
               {...(inputProps.type === 'file' ? {} : { value })}
               {...inputProps}
               {...(inputProps.type === 'checkbox'
-                ? { defaultChecked: value }
+                ? { checked: value }
                 : {})}
             />
           </FormControl>

@@ -2,26 +2,51 @@
 
 .search-form {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 1.2rem;
   margin-bottom: 2rem;
   align-items: center;
 
-  @include lg {
-    grid-template-columns: repeat(2, 1fr);
+  @include sm {
+    margin-bottom: 1rem;
   }
 
-  @include sm {
-    grid-template-columns: repeat(1, 1fr);
+  // First row
+  &__field {
+    &--search {
+      grid-column: span 2;
+    }
+
+    &--voivodeship {
+      grid-column: span 2;
+    }
+
+    &--animals {
+      grid-column: span 2;
+    }
+
+    // Second row
+    &--needs {
+      grid-column: span 2;
+    }
+
+    &--accepts-reports {
+      grid-column: span 1;
+    }
   }
 
   &__location {
+    grid-column: span 1;
+
     &--info {
       font-size: 0.8rem;
       font-style: italic;
-      margin-left: 1.5rem;
-      margin-bottom: -1.2rem;
+      margin-bottom: -1.6rem;
     }
+  }
+
+  &__clear-button {
+    grid-column: span 2;
   }
 
   &__checkbox {
@@ -36,6 +61,57 @@
       width: 1rem;
       height: 1rem;
       accent-color: hsl(var(--primary));
+    }
+  }
+
+  @include lg {
+    grid-template-columns: repeat(4, 1fr);
+
+    &__field {
+      &--search,
+      &--voivodeship,
+      &--animals,
+      &--needs {
+        grid-column: span 2;
+      }
+
+      &--accepts-reports {
+        grid-column: span 1;
+      }
+    }
+
+    &__location {
+      grid-column: span 1;
+    }
+
+    &__clear-button {
+      grid-column: span 2;
+    }
+  }
+
+  @include sm {
+    grid-template-columns: repeat(2, 1fr);
+
+    &__field {
+      &--search,
+      &--voivodeship,
+      &--animals,
+      &--needs {
+        grid-column: span 2;
+      }
+
+      &--accepts-reports {
+        grid-column: span 1;
+      }
+    }
+
+    &__location {
+      grid-column: span 1;
+    }
+
+    &__clear-button {
+      grid-column: span 2;
+      margin-top: 1rem;
     }
   }
 }
