@@ -24,8 +24,8 @@ html {
 }
 
 body {
-  line-height: $line-height-regular;
-  color: $color-text-dark;
+  line-height: 1.6rem;
+  color: hsl(var(--primary-foreground));
   font-family: var(--font-sans);
 
   .content {
