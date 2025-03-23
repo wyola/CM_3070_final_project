@@ -204,7 +204,7 @@ export const RegisterEditOrganizationForm = ({
                 <img
                   src="./images/dog-high-five.svg"
                   alt=""
-                  width="500"
+                  width="400"
                   className="register-form__image"
                 />
               )}
