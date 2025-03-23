@@ -8,8 +8,8 @@ export const Logo = () => {
         src="/logo.png"
         alt="logo"
         className="logo__image"
-        width="100"
-        height="100"
+        width="80"
+        height="80"
       />
       <div className="logo__name">
         <p className="logo__name--animal">Animal</p>
