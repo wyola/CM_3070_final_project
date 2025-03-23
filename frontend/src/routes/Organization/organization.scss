@@ -1,7 +1,15 @@
+@use '@sass/abstract/breakpoints' as *;
+
 .organization {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  &__separator--map {
+    @include sm {
+      display: none;
+    }
+  }
 
   &__volunteering {
     display: flex;

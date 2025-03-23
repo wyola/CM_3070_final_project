@@ -20,5 +20,9 @@
       display: flex;
       text-transform: capitalize;
     }
+
+    a:hover {
+      text-decoration: underline;
+    }
   }
 }

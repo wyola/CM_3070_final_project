@@ -34,6 +34,7 @@
     button {
       display: flex;
       gap: 0.5rem;
+      text-align: left;
     }
   }
 
@@ -44,12 +45,11 @@
 
     a {
       text-transform: capitalize;
-      display: flex;
-      align-items: center;
 
       img {
         display: inline;
-        margin-left: 0.8rem;
+        margin-left: 0.5rem;
+        margin-bottom: 0.3rem;
       }
     }
   }

@@ -92,7 +92,7 @@ export const Organization = () => {
         geolocation={geolocation}
       />
 
-      <Separator />
+      <Separator className="organization__separator--map" />
 
       <OrganizationsNeeds organizationId={id} />
 

@@ -3,6 +3,17 @@
   flex-direction: column;
   gap: 1rem;
 
+  thead tr {
+    th {
+      color: hsl(var(--primary-foreground));
+      font-weight: 600;
+    }
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
   &__table-row {
     background-color: hsl(var(--secondary));
   }
