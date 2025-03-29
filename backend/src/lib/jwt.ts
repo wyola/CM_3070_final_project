@@ -8,7 +8,14 @@ export const generateAccessToken = (userId: number) => {
 };
 
 export const generateRefreshToken = (userId: number) => {
-  return jwt.sign({ sub: userId }, jwtConfig.refreshToken.secret, {
-    expiresIn: jwtConfig.refreshToken.expiresIn,
-  } as SignOptions);
+  return jwt.sign(
+    {
+      sub: userId,
+      jti: `${Math.random()}-${Date.now()}`,
+    },
+    jwtConfig.refreshToken.secret,
+    {
+      expiresIn: jwtConfig.refreshToken.expiresIn,
+    } as SignOptions
+  );
 };

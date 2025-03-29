@@ -177,7 +177,7 @@ export class OrganizationController {
       const id = parseInt(req.params.organizationId);
 
       if (isNaN(id)) {
-        res.status(400).json({
+        res.status(404).json({
           message: 'Invalid ID format',
         });
         return;

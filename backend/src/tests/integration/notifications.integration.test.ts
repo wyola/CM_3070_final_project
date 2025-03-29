@@ -61,6 +61,7 @@ describe('Notification API', () => {
         postalCode: '12-345',
         geolocation: JSON.stringify({ lat: 52.2297, lon: 21.0122 }),
         status: ReportStatus.OPEN,
+        animals: JSON.stringify(['dogs', 'cats']),
       },
     });
 
@@ -141,6 +142,7 @@ describe('Notification API', () => {
           postalCode: '12-345',
           geolocation: JSON.stringify({ lat: 52.2297, lon: 21.0122 }),
           status: ReportStatus.OPEN,
+          animals: JSON.stringify(['dogs', 'cats']),
         },
       });
 

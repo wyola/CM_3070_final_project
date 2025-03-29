@@ -29,7 +29,7 @@ export class AuthController {
       const tokens = authService.generateTokens(user.id);
       await authService.saveRefreshToken(user.id, tokens.refreshToken);
 
-      res.json({
+      res.status(200).json({
         message: 'Login successful',
         data: {
           accessToken: tokens.accessToken,
@@ -46,6 +46,7 @@ export class AuthController {
         res.status(400).json({ message: 'Invalid input' });
         return;
       }
+      console.log(error);
       res.status(500).json({ message: 'Internal server error' });
     }
   };

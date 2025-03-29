@@ -17,7 +17,7 @@ export const isOrganizationOwner = async (
   const organizationId = parseInt(req.params.organizationId);
 
   if (isNaN(organizationId)) {
-    res.status(400).json({ message: 'Invalid organization ID' });
+    res.status(404).json({ message: 'Invalid organization ID' });
     return;
   }
 
