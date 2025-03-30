@@ -27,7 +27,12 @@ export const OrganizationEdit = () => {
         const orgResponse = await axiosInstance.get(
           API_ENDPOINTS.ORGANIZATIONS.BY_ID(Number(idFromParams))
         );
-        setOrganization(orgResponse.data.organization);
+        setOrganization({
+          ...orgResponse.data.organization,
+          name: orgResponse.data.organization.name.toUpperCase(),
+          city: orgResponse.data.organization.city.toUpperCase(),
+          voivodeship: orgResponse.data.organization.voivodeship.toUpperCase(),
+        });
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setError(

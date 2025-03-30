@@ -340,6 +340,9 @@ export class OrganizationService {
       const updateData: Prisma.OrganizationUpdateInput = {
         ...data,
         geolocation,
+        name: data.name?.toLowerCase(),
+        city: data.city?.toLowerCase(),
+        voivodeship: data.voivodeship?.toLowerCase(),
         animals: JSON.stringify(data.animals),
       };
 
