@@ -45,6 +45,12 @@
     &:not(:empty) {
       animation: fadeInFields 0.6s ease-out;
     }
+
+    input[name='name'],
+    input[name='city'],
+    input[name='voivodeship'] {
+      text-transform: capitalize;
+    }
   }
 
   &__info {
@@ -105,14 +111,8 @@
       position: relative;
       margin-top: -2rem;
       z-index: 10;
-      width: 80%
+      width: 80%;
     }
-  }
-
-  input[name='name'],
-  input[name='city'],
-  input[name='voivodeship'] {
-    text-transform: capitalize;
   }
 
   &__accept-reports-info {

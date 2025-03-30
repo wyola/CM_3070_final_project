@@ -8,8 +8,11 @@ import {
   DrawerContent,
   DrawerClose,
   Button,
+  VisuallyHidden,
+  DrawerDescription,
 } from '@/components';
 import './home.scss';
+import { DialogTitle } from '@radix-ui/react-dialog';
 
 export const Home = () => {
   return (
@@ -42,11 +45,16 @@ export const Home = () => {
             <h2 className="heading-secondary">Browse organizations</h2>
             <Drawer>
               <DrawerTrigger className="home__filters--mobile">
-                <Button>
-                  <FiltersIcon className="home__filters--icon" />
-                </Button>
+                <FiltersIcon className="home__filters--icon" aria-hidden />
+                <VisuallyHidden>Filters</VisuallyHidden>
               </DrawerTrigger>
               <DrawerContent className="home__filters--mobile-content">
+                <VisuallyHidden>
+                  <DialogTitle>Filters</DialogTitle>
+                  <DrawerDescription>
+                    Apply filters to find the right organization for you
+                  </DrawerDescription>
+                </VisuallyHidden>
                 <OrganizationsSearchFilterForm />
                 <DrawerClose asChild>
                   <Button className="home__filters--apply-btn">

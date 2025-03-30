@@ -30,3 +30,4 @@ export { PageTitle } from './PageTitle/PageTitle';
 export { Logo } from './Logo/Logo';
 export { Footer } from './Footer/Footer';
 export { ReportAbuseForm } from './ReportAbuseForm/ReportAbuseForm';
+export { VisuallyHidden } from './VisuallyHidden/VisuallyHidden';
