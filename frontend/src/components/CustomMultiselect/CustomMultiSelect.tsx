@@ -67,7 +67,7 @@ export const CustomMultiSelect = ({
           <Select
             open={isOpen}
             onOpenChange={setIsOpen}
-            value={field.value}
+            value={field.value.join(',')}
             disabled={disabled}
           >
             <SelectTrigger
