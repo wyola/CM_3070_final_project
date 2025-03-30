@@ -2,6 +2,8 @@
 
 AnimalAllies is a web application that connects people with animal welfare organizations, enabling reporting of animal abuse, finding and supporting NGOs.
 
+Application was built as Final Project for BSc Computer Science degree at Goldsmiths, University of London.
+
 ## Project Structure
 
 - `frontend/` - React + TypeScript + Vite application
