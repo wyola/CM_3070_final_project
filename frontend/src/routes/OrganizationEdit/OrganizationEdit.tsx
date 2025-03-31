@@ -9,8 +9,8 @@ import { useOwnership } from '@/hooks';
 
 export const OrganizationEdit = () => {
   const [organization, setOrganization] = useState<OrganizationI | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [_isLoading, setIsLoading] = useState(true);
+  const [_error, setError] = useState<string | null>(null);
 
   const { id: idFromParams } = useParams();
   const isOwner = useOwnership();
