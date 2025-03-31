@@ -28,6 +28,8 @@ This is the backend service for the AnimalAllies application, built with Node.js
 - `npm run build` - Compiles TypeScript code to JavaScript
 - `npm run start` - Runs the compiled application
 - `npm run dev` - Runs the application in development mode with hot-reload
+- `npm test:unit` - Runs unit tests
+- `npm test:integration` - Runs integration tests
 - `npm test` - Runs all tests
 - `npm run test:watch` - Runs tests in watch mode for development
 - `npm run test:coverage` - Runs tests and generates coverage report
