@@ -58,3 +58,26 @@ For development and testing purposes, you can use the provided test data. Follow
 ## Available Documentation
 
 - API Documentation: http://localhost:3000/api/docs (when backend is running)
+
+## Image Credits
+
+### Icons
+UICONS Straight Thin by UIcons
+https://www.freepik.com/author/uicons/icons/uicons-straight-thin_5091
+
+### Logo
+with changed colors
+https://www.freepik.com/icon/socialization_16823782
+
+### Homepage image
+Image by storyset on Freepik
+https://www.freepik.com/free-vector/good-doggy-concept-illustration_20135123.htm
+
+### Homepage, Organization page - when no results / failed to load
+Image by storyset on Freepik
+https://www.freepik.com/free-vector/cautious-dog-concept-illustration_12832201.htm
+
+### Registration form
+Image by storyset on Freepik
+https://www.freepik.com/free-vector/dog-high-five-concept-illustration_31197047.htm
+
