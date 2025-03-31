@@ -7,7 +7,7 @@
 
 ## Running related applications
 
-In order to run e2e tests, both backend and frontend applications needs to be started.
+In order to run e2e tests, both backend and frontend applicatons needs to be started.
 
 - Frontend - go to `frontend/` directory, and run the application `npm run dev`
 - Backend - go to `backend/` directory, and run the application with script `npm run dev:e2e` - this will start the application with clean database.

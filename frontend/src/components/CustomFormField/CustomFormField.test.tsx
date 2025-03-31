@@ -78,7 +78,7 @@ describe('CustomFormField', () => {
     const user = userEvent.setup();
 
     render(
-      <FormWrapper defaultValues={{ acceptTerms: false }}>
+      <FormWrapper>
         <CustomFormField
           name="acceptTerms"
           label="Accept Terms"
@@ -124,7 +124,7 @@ describe('CustomFormField', () => {
     const user = userEvent.setup();
 
     render(
-      <FormWrapper defaultValues={{ search: '' }}>
+      <FormWrapper>
         <CustomFormField name="search" type="text" />
       </FormWrapper>
     );

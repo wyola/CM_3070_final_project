@@ -1,46 +1,67 @@
-# AnimalAllies Frontend
+# React + TypeScript + Vite
 
-This is the frontend application for the AnimalAllies platform, built with React, TypeScript, and Vite.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Prerequisites
+Currently, two official plugins are available:
 
-- Node.js >= 20.12.2
-- npm or yarn package manager
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Tech Stack
+## Expanding the ESLint configuration
 
-- **Framework**: React
-- **Language**: TypeScript
-- **Build Tool**: Vite
-- **UI Components library**: shadcn/ui
-- **Styling**: SASS
-- **Routing**: React Router
-- **Form Handling**: React Hook Form
-- **Testing**: Vitest + React Testing Library
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-## Project Setup
+- Configure the top-level `parserOptions` property like this:
 
-1. Install dependencies: `npm install`
-2. Start development server: `npm run dev`
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+});
+```
 
-## Available Scripts
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-- `npm run dev` - Starts the development server with hot-reload
-- `npm run build` - Builds the application for production
-- `npm run preview` - Previews the production build locally
-- `npm run lint` - Lints the codebase
-- `npm test` - Runs all tests
-- `npm run test:watch` - Runs tests in watch mode for development
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react';
+
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+});
+```
 
 ## Testing
 
 The project uses Vitest with React Testing Library for unit testing.
+
+### Running Tests
+
+- Run all tests: `npm test`
+- Run tests in watch mode: `npm run test:watch`
 
 ### Test Files Structure
 
 Tests are located next to the components they test with the `.test.tsx` extension.
 
 For example:
-
 - `src/components/CustomSelect/CustomSelect.tsx` - Component
 - `src/components/CustomSelect/CustomSelect.test.tsx` - Component tests

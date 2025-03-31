@@ -15,7 +15,6 @@ uploads/logos/*
 dist
 
 src/tests/integration/test-logo.png
-coverage
 
 # SQLite files
 prisma/src/database/sqlite.db
