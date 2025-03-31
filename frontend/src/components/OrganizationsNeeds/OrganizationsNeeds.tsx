@@ -19,9 +19,9 @@ type OrganizationNeedsProps = {
 export const OrganizationsNeeds = ({
   organizationId,
 }: OrganizationNeedsProps) => {
-  const [error, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
   const [needs, setNeeds] = useState<NeedI[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [_isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const isOwner = useOwnership();

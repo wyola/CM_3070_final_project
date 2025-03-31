@@ -146,6 +146,9 @@
 
       @include sm {
         display: initial;
+        background-color: hsl(var(--primary));
+        padding: 0.5rem;
+        border-radius: 0.4rem;
       }
 
       &-content {
