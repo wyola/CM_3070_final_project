@@ -11,7 +11,7 @@ import './login.scss';
 
 export const Login = () => {
   const navigate = useNavigate();
-  const [_isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
 
   const { setUser } = useUser();

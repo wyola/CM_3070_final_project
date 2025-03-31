@@ -28,7 +28,7 @@ export const RegisterEditOrganizationForm = ({
   defaultData,
   organizationId,
 }: RegisterEditOrganizationFormProps) => {
-  const [_isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<
     { field: string; message: string }[]
